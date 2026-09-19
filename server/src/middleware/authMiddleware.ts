@@ -7,6 +7,12 @@ import type {
 import { verifyAuthToken } from "../utils/jwt";
 
 export interface AuthenticatedRequest extends ExpressRequest {
+  // Explicitly retain the Express request fields when compiling under the
+  // Node 24 / TypeScript resolver used by Render.
+  body: any;
+  params: any;
+  query: any;
+  cookies: any;
   user?: {
     userId: string;
     role: string;

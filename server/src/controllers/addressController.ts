@@ -1,15 +1,6 @@
-import type {
-  Request as ExpressRequest,
-  Response,
-} from "express";
+import type { Response } from "express";
 import prisma from "../config/prisma";
-
-interface AuthenticatedRequest extends ExpressRequest {
-  user?: {
-    userId: string;
-    role: string;
-  };
-}
+import type { AuthenticatedRequest } from "../middleware/authMiddleware";
 
 export async function createAddressController(
   req: AuthenticatedRequest,
