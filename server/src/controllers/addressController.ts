@@ -1,7 +1,10 @@
-import { Request, Response } from "express";
+import type {
+  Request as ExpressRequest,
+  Response,
+} from "express";
 import prisma from "../config/prisma";
 
-interface AuthenticatedRequest extends Request {
+interface AuthenticatedRequest extends ExpressRequest {
   user?: {
     userId: string;
     role: string;
