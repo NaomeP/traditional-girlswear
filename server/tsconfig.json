@@ -18,14 +18,13 @@
     "noFallthroughCasesInSwitch": true,
 
     "sourceMap": true,
-    "declaration": true,
-
-    "types": ["node"]
+    "declaration": true
   },
   "include": [
     "src/**/*",
-    "prisma.config.ts"
-, "src/services/orderService.ts"  ],
+    "prisma.config.ts",
+    "src/services/orderService.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist"
