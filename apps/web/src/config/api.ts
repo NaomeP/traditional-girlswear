@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  "https://traditional-girlswear-3ldqxwsib-naomecampbel-3748s-projects.vercel.app/api/v1";
+  "https://traditional-girlswear-api.onrender.com/api/v1";
 
 export const API_ENDPOINTS = {
   products: `${API_BASE_URL}/products`,
