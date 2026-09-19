@@ -228,8 +228,16 @@ export async function createOrder(input: CreateOrderInput) {
     }
 
     let subtotal = new Prisma.Decimal(0);
-
-    const orderItems = [];
+const orderItems: {
+  variantId: string;
+  productName: string;
+  size: string;
+  color: string;
+  sku: string;
+  quantity: number;
+  unitPrice: Prisma.Decimal;
+  totalPrice: Prisma.Decimal;
+}[] = [];
 
     for (const item of items) {
       const variant = variants.find(

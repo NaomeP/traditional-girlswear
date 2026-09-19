@@ -26,8 +26,7 @@ import imageUploadRoutes from "./routes/imageUploadRoutes";
 import returnRoutes from "./routes/returnRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import adminReturnRoutes from "./routes/adminReturnRoutes";
-import { Request, Response } from "express";
-import expressApp from "../src/app";
+
 
 const app = express();
 const allowedOrigins = [

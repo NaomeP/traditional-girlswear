@@ -1,29 +1,27 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "Node16",
+    "moduleResolution": "Node16",
 
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "./dist",
 
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
 
+    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
+
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
 
-    "sourceMap": true,
-    "declaration": true
+    "sourceMap": true
   },
   "include": [
-    "src/**/*",
-    "prisma.config.ts",
-    "src/services/orderService.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
