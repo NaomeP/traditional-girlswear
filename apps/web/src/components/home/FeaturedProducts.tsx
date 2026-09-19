@@ -1,0 +1,451 @@
+
+import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Link } from "react-router";
+import { useEffect, useState } from "react";
+
+import {
+  getProducts,
+  type Product,
+} from "../../services/productService";
+
+import {
+  getWishlist,
+  addWishlistItem,
+  removeWishlistItem,
+} from "../../services/wishlistService";
+
+function FeaturedProducts() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [hoveredProduct, setHoveredProduct] =
+    useState<string | null>(null);
+
+  const [wishlistVariantIds, setWishlistVariantIds] =
+    useState<Set<string>>(new Set());
+
+  const [wishlistLoading, setWishlistLoading] =
+    useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadProducts(): Promise<void> {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getProducts();
+
+        const featuredProducts = data.filter(
+          (product) =>
+            product.status === "ACTIVE" &&
+            product.isFeatured === true,
+        );
+
+        setProducts(featuredProducts);
+      } catch (error) {
+        console.error(
+          "Failed to load featured products:",
+          error,
+        );
+
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load featured products",
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function loadWishlist(): Promise<void> {
+      try {
+        const wishlist = await getWishlist();
+
+        setWishlistVariantIds(
+          new Set(
+            wishlist.map(
+              (item) => item.variantId,
+            ),
+          ),
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load wishlist:",
+          error,
+        );
+      }
+    }
+
+    void loadProducts();
+    void loadWishlist();
+  }, []);
+
+  function getWishlistVariantId(
+    product: Product,
+  ): string | null {
+    const availableVariant =
+      product.variants?.find(
+        (variant) => Number(variant.stock) > 0,
+      ) ?? product.variants?.[0];
+
+    return availableVariant?.id ?? null;
+  }
+
+  function isProductInWishlist(
+    product: Product,
+  ): boolean {
+    return (
+      product.variants?.some((variant) =>
+        wishlistVariantIds.has(variant.id),
+      ) ?? false
+    );
+  }
+
+  async function handleWishlistClick(
+    product: Product,
+  ): Promise<void> {
+    if (wishlistLoading === product.id) {
+      return;
+    }
+
+    const variantId =
+      getWishlistVariantId(product);
+
+    if (!variantId) {
+      window.alert(
+        "This product is currently unavailable.",
+      );
+
+      return;
+    }
+
+    try {
+      setWishlistLoading(product.id);
+
+      const alreadyInWishlist =
+        isProductInWishlist(product);
+
+      if (alreadyInWishlist) {
+        const wishlistVariant =
+          product.variants?.find((variant) =>
+            wishlistVariantIds.has(
+              variant.id,
+            ),
+          );
+
+        if (!wishlistVariant) {
+          return;
+        }
+
+        await removeWishlistItem(
+          wishlistVariant.id,
+        );
+
+        setWishlistVariantIds((current) => {
+          const next = new Set(current);
+
+          next.delete(
+            wishlistVariant.id,
+          );
+
+          return next;
+        });
+      } else {
+        const addedItem =
+          await addWishlistItem(variantId);
+
+        setWishlistVariantIds((current) => {
+          const next = new Set(current);
+
+          next.add(addedItem.variantId);
+
+          return next;
+        });
+      }
+    } catch (error) {
+      console.error(
+        "Wishlist action failed:",
+        error,
+      );
+
+      window.alert(
+        error instanceof Error
+          ? error.message
+          : "Please login to use the wishlist.",
+      );
+    } finally {
+      setWishlistLoading(null);
+    }
+  }
+
+  return (
+    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div className="absolute -right-20 -top-40 h-96 w-96 rounded-full bg-[#D4AF37]/8 blur-3xl" />
+
+      <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#C9A227]/8 blur-3xl" />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="mb-16 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#C9A227]">
+              Featured Collection
+            </p>
+
+            <h2 className="mt-4 text-3xl font-black tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
+              Little looks,
+              <br />
+              timeless charm
+            </h2>
+
+            <p className="mt-5 max-w-xl text-sm leading-7 text-[#0B0B0B]/65 sm:text-base">
+              Explore our carefully selected traditional
+              styles, created for celebrations and
+              cherished moments.
+            </p>
+          </div>
+
+          <Link
+            to="/shop"
+            className="group inline-flex w-fit items-center gap-3 text-sm font-bold uppercase tracking-[0.15em] text-[#0B0B0B] transition-colors hover:text-[#C9A227]"
+          >
+            <ShoppingBag size={18} />
+
+            <span>View All Products</span>
+
+            <span className="h-0.5 w-0 bg-[#C9A227] transition-all group-hover:w-4" />
+          </Link>
+        </div>
+
+        {loading && (
+          <div className="py-16 text-center">
+            <p className="text-sm text-[#0B0B0B]/60">
+              Loading featured products...
+            </p>
+          </div>
+        )}
+
+        {!loading && error && (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+            <h3 className="text-lg font-semibold text-red-800">
+              Unable to load featured products
+            </h3>
+
+            <p className="mt-2 text-sm text-red-700">
+              {error}
+            </p>
+          </div>
+        )}
+
+        {!loading &&
+          !error &&
+          products.length === 0 && (
+            <div className="rounded-2xl border border-[#D4AF37]/20 bg-white/60 p-12 text-center">
+              <h3 className="text-xl font-bold text-[#0B0B0B]">
+                No featured products yet
+              </h3>
+
+              <p className="mt-3 text-sm text-[#0B0B0B]/60">
+                Products marked as featured in the admin
+                panel will appear here.
+              </p>
+            </div>
+          )}
+
+        {!loading &&
+          !error &&
+          products.length > 0 && (
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+              {products.map((product, index) => {
+                const primaryImage =
+                  product.images.find(
+                    (image) => image.isPrimary,
+                  ) ??
+                  product.images[0];
+
+                const price = Number(
+                  product.discountPrice ??
+                    product.basePrice,
+                );
+
+                const originalPrice =
+                  product.discountPrice !== null
+                    ? Number(product.basePrice)
+                    : null;
+
+                const isWishlisted =
+                  isProductInWishlist(product);
+
+                const isWishlistActionLoading =
+                  wishlistLoading === product.id;
+
+                return (
+                  <article
+                    key={product.id}
+                    className="group"
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                    }}
+                    onMouseEnter={() =>
+                      setHoveredProduct(product.id)
+                    }
+                    onMouseLeave={() =>
+                      setHoveredProduct(null)
+                    }
+                  >
+                    <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-md transition-all duration-500 group-hover:shadow-xl">
+                      <Link
+                        to={`/product/${product.slug}`}
+                      >
+                        {primaryImage?.imageUrl ? (
+                          <img
+                            src={primaryImage.imageUrl}
+                            alt={
+                              primaryImage.altText ||
+                              product.name
+                            }
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">
+                            No image available
+                          </div>
+                        )}
+                      </Link>
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+                      {(product.isNewArrival ||
+                        product.isBestseller) && (
+                        <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+                          <span className="rounded bg-gradient-to-r from-[#D4AF37] to-[#C9A227] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0B0B0B] shadow-lg">
+                            {product.isBestseller
+                              ? "Bestseller"
+                              : "New"}
+                          </span>
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        aria-label={
+                          isWishlisted
+                            ? `Remove ${product.name} from wishlist`
+                            : `Add ${product.name} to wishlist`
+                        }
+                        disabled={
+                          isWishlistActionLoading
+                        }
+                        onClick={() =>
+                          void handleWishlistClick(
+                            product,
+                          )
+                        }
+                        className={`absolute right-3 top-3 rounded-full p-2.5 shadow-lg transition-all sm:right-4 sm:top-4 ${
+                          isWishlisted
+                            ? "bg-red-500 text-white hover:bg-red-600"
+                            : "bg-[#FFF9ED]/95 text-[#0B0B0B] hover:bg-[#D4AF37] hover:text-white"
+                        } ${
+                          isWishlistActionLoading
+                            ? "cursor-wait opacity-60"
+                            : ""
+                        }`}
+                      >
+                        <Heart
+                          size={18}
+                          strokeWidth={1.7}
+                          className={
+                            isWishlisted
+                              ? "fill-current"
+                              : ""
+                          }
+                        />
+                      </button>
+
+                      {hoveredProduct ===
+                        product.id && (
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <div className="flex items-center gap-1 rounded-lg bg-[#FFF9ED]/95 px-3 py-2 backdrop-blur">
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map(
+                                (_, i) => (
+                                  <Star
+                                    key={i}
+                                    size={14}
+                                    className="fill-[#D4AF37] text-[#D4AF37]"
+                                  />
+                                ),
+                              )}
+                            </div>
+
+                            <span className="ml-auto text-xs font-semibold">
+                              New
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 sm:mt-5">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#C9A227] sm:text-xs">
+                        {product.category.name}
+                      </p>
+
+                      <Link
+                        to={`/product/${product.slug}`}
+                      >
+                        <h3 className="mt-2.5 line-clamp-2 text-sm font-semibold leading-tight text-[#0B0B0B] transition-colors hover:text-[#C9A227] sm:text-base">
+                          {product.name}
+                        </h3>
+                      </Link>
+
+                      <div className="mt-2.5 flex items-center gap-1">
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map(
+                            (_, i) => (
+                              <Star
+                                key={i}
+                                size={13}
+                                className="fill-[#D4AF37] text-[#D4AF37]"
+                              />
+                            ),
+                          )}
+                        </div>
+
+                        <span className="ml-1 text-xs text-[#0B0B0B]/60">
+                          5.0
+                        </span>
+                      </div>
+
+                      <div className="mt-3 flex items-center gap-2">
+                        <p className="text-base font-bold text-[#0B0B0B] sm:text-lg">
+                          ₹
+                          {price.toLocaleString(
+                            "en-IN",
+                          )}
+                        </p>
+
+                        {originalPrice !== null &&
+                          originalPrice > price && (
+                            <p className="text-xs text-[#0B0B0B]/45 line-through sm:text-sm">
+                              ₹
+                              {originalPrice.toLocaleString(
+                                "en-IN",
+                              )}
+                            </p>
+                          )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+      </div>
+    </section>
+  );
+}
+
+export default FeaturedProducts;
+

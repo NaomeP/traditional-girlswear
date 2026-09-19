@@ -1,0 +1,187 @@
+import { Minus, Plus, Trash2 } from "lucide-react";
+import { Link } from "react-router";
+import { useCartStore } from "../store/cartStore";
+
+function Cart() {
+  const items = useCartStore((state) => state.items);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+
+  const subtotal = items.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
+
+  if (items.length === 0) {
+    return (
+      <section className="flex min-h-[60vh] items-center justify-center bg-[#FFF9ED] px-4 py-16">
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Your Cart Is Empty
+          </h1>
+
+          <p className="mt-3 text-sm text-black/60">
+            Add something beautiful to your little one's wardrobe.
+          </p>
+
+          <Link
+            to="/shop"
+            className="mt-7 inline-flex bg-[#0B0B0B] px-7 py-3.5 text-sm font-semibold text-[#FFF9ED] transition hover:bg-[#D4AF37] hover:text-[#0B0B0B]"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="min-h-screen bg-[#FFF9ED] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A227]">
+            Your Selection
+          </p>
+
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            Shopping Cart
+          </h1>
+        </div>
+
+        <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
+          <div className="space-y-6">
+            {items.map((item) => (
+              <article
+                key={`${item.product.id}-${item.size}`}
+                className="flex gap-4 border-b border-black/10 pb-6 sm:gap-6"
+              >
+                <Link
+                  to={`/product/${item.product.slug}`}
+                  className="h-32 w-24 shrink-0 overflow-hidden bg-[#F7F3EA] sm:h-40 sm:w-32"
+                >
+                  <img
+                    src={item.product.image}
+                    alt={item.product.name}
+                    className="h-full w-full object-cover"
+                  />
+                </Link>
+
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#C9A227]">
+                    {item.product.category}
+                  </p>
+
+                  <Link to={`/product/${item.product.slug}`}>
+                    <h2 className="mt-1 text-sm font-semibold leading-6 sm:text-base">
+                      {item.product.name}
+                    </h2>
+                  </Link>
+
+                  <p className="mt-2 text-xs text-black/60">
+                    Size: <span className="font-medium text-black">{item.size}</span>
+                  </p>
+
+                  <p className="mt-1 text-sm font-semibold">
+                    ₹{item.product.price.toLocaleString("en-IN")}
+                  </p>
+
+                  <div className="mt-4 flex items-center justify-between gap-4">
+                    <div className="flex items-center border border-black/15">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(
+                            item.product.id,
+                            item.size,
+                            item.quantity - 1
+                          )
+                        }
+                        aria-label="Decrease quantity"
+                        className="p-2.5 transition hover:bg-black/5"
+                      >
+                        <Minus size={14} />
+                      </button>
+
+                      <span className="min-w-9 text-center text-sm font-medium">
+                        {item.quantity}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          updateQuantity(
+                            item.product.id,
+                            item.size,
+                            item.quantity + 1
+                          )
+                        }
+                        aria-label="Increase quantity"
+                        className="p-2.5 transition hover:bg-black/5"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        removeFromCart(item.product.id, item.size)
+                      }
+                      className="flex items-center gap-1.5 text-xs text-black/50 transition hover:text-red-600"
+                    >
+                      <Trash2 size={15} />
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside className="h-fit border border-black/10 bg-[#F7F3EA] p-6 sm:p-8">
+            <h2 className="text-lg font-semibold">Order Summary</h2>
+
+            <div className="mt-6 space-y-4 text-sm">
+              <div className="flex justify-between">
+                <span className="text-black/60">Subtotal</span>
+                <span className="font-medium">
+                  ₹{subtotal.toLocaleString("en-IN")}
+                </span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-black/60">Shipping</span>
+                <span className="font-medium">Calculated at checkout</span>
+              </div>
+            </div>
+
+            <div className="my-6 h-px bg-black/10" />
+
+            <div className="flex items-center justify-between">
+              <span className="font-semibold">Total</span>
+              <span className="text-lg font-semibold">
+                ₹{subtotal.toLocaleString("en-IN")}
+              </span>
+            </div>
+
+            <Link
+              to="/checkout"
+              className="mt-7 flex w-full items-center justify-center bg-[#0B0B0B] px-5 py-4 text-sm font-semibold text-[#FFF9ED] transition hover:bg-[#D4AF37] hover:text-[#0B0B0B]"
+            >
+              Proceed to Checkout
+            </Link>
+
+            <Link
+              to="/shop"
+              className="mt-3 flex w-full items-center justify-center border border-black/15 px-5 py-4 text-sm font-medium transition hover:border-[#C9A227]"
+            >
+              Continue Shopping
+            </Link>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Cart;
