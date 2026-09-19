@@ -26,6 +26,9 @@ import imageUploadRoutes from "./routes/imageUploadRoutes";
 import returnRoutes from "./routes/returnRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import adminReturnRoutes from "./routes/adminReturnRoutes";
+import { Request, Response } from "express";
+import expressApp from "../src/app";
+
 const app = express();
 const allowedOrigins = [
   env.FRONTEND_URL,
@@ -220,13 +223,15 @@ console.log(
   "adminOrderRoutes type:",
   typeof adminOrderRoutes,
 );
-app.use("/api/v1/admin/orders", adminOrderRoutes);
+
 
 //app.use(
  // "/api/v1/admin/categories-management",
   //adminCategoryManagementRoutes,
 //);
-export default app;
 
+
+app.use("/api/v1/admin/orders", adminOrderRoutes);
+export default app;
 
 
