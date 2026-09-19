@@ -32,6 +32,10 @@ const app = express();
 const allowedOrigins = [
   env.FRONTEND_URL,
   env.ADMIN_URL,
+  // Render production sites. Keep these here so a missing/stale dashboard
+  // variable cannot block the public storefront.
+  "https://traditional-girlswear-web.onrender.com",
+  "https://traditional-girlswear-admin.onrender.com",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
