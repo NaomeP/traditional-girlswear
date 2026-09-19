@@ -4,11 +4,13 @@ import AgeSection from "../components/home/AgeSection";
 import FeaturedProducts from "../components/home/FeaturedProducts";
 import BrandStory from "../components/home/BrandStory";
 import CTASection from "../components/home/CTASection";
+import HomeHighlights from "../components/home/HomeHighlights";
 
 function Home() {
   return (
     <>
       <Hero />
+      <HomeHighlights />
       <CollectionSection />
       <AgeSection />
       <FeaturedProducts />

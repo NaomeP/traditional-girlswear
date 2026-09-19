@@ -66,8 +66,12 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/8 bg-[#FFF9ED]/98 backdrop-blur-md transition-all duration-300">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-[#24160f]/10 bg-[#fffaf1]/95 shadow-[0_10px_30px_rgba(55,35,20,0.05)] backdrop-blur-md transition-all duration-300">
+      <div className="bg-[#24160f] px-4 py-2 text-center text-[10px] font-semibold uppercase tracking-[0.22em] text-[#f6d77c] sm:text-[11px]">
+        Little traditions, beautifully made · NB to 10Y
+      </div>
+
+      <div className="mx-auto flex h-[74px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Mobile Menu Button */}
         <button
@@ -94,11 +98,14 @@ function Header() {
             closeMenu();
             closeSearch();
           }}
-          className="text-lg font-bold tracking-[0.2em] text-[#0B0B0B] transition-all duration-300 hover:text-[#C9A227]"
+          className="group inline-flex items-center gap-2.5 text-[#24160f] transition-all duration-300 hover:text-[#a56c25]"
         >
-          <span className="relative">
-            DUMMY BRAND
-            <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-[#D4AF37] to-[#C9A227] transition-all duration-500 group-hover:w-full" />
+          <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#c99b4a]/60 bg-[#f8e8bd] font-serif text-lg font-bold italic text-[#8b541d] shadow-sm">
+            N
+          </span>
+          <span className="leading-none">
+            <span className="block font-serif text-xl font-semibold tracking-[0.12em]">NILA</span>
+            <span className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.25em] text-[#a56c25]">Girlswear</span>
           </span>
         </Link>
 

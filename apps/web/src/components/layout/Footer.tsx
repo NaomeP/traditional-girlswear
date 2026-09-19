@@ -17,17 +17,23 @@ function Footer() {
           ================================= */}
 
           <div>
-            <Link to="/" className="group inline-block">
-              <h2 className="text-xl font-bold tracking-[0.2em] text-[#FFF9ED] transition-colors duration-300 group-hover:text-[#D4AF37]">
-                DUMMY BRAND
-              </h2>
-
-              <div className="mt-1 h-0.5 w-0 bg-gradient-to-r from-[#D4AF37] to-[#C9A227] transition-all duration-500 group-hover:w-20" />
+            <Link to="/" className="group inline-flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4af37]/55 bg-[#fff9ed] font-serif text-xl font-bold italic text-[#8b541d] transition-transform group-hover:rotate-6">
+                N
+              </span>
+              <span>
+                <span className="block font-serif text-2xl font-semibold tracking-[0.14em] text-[#fff9ed] transition-colors duration-300 group-hover:text-[#d4af37]">
+                  NILA
+                </span>
+                <span className="block text-[9px] font-semibold uppercase tracking-[0.24em] text-[#d4af37]">
+                  Girlswear
+                </span>
+              </span>
             </Link>
 
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#FFF9ED]/70">
-              Traditional girlswear crafted with timeless South Indian elegance
-              for every little celebration.
+            <p className="mt-5 max-w-sm text-sm leading-7 text-[#FFF9ED]/70">
+              A little wardrobe for grand celebrations, everyday comfort and
+              the memories in between.
             </p>
 
             {/* Social Links */}
@@ -203,7 +209,7 @@ function Footer() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-[#FFF9ED]/50">
-              © {currentYear} DUMMY BRAND. All rights reserved.
+              © {currentYear} NILA GIRLSWEAR. All rights reserved.
             </p>
 
             <div className="flex flex-wrap gap-x-6 gap-y-3">

@@ -279,6 +279,9 @@ export async function updateAdminProduct(
         where: {
           id: productId,
         },
+        include: {
+          variants: true,
+        },
       });
 
     if (!existingProduct) {
@@ -410,6 +413,55 @@ export async function updateAdminProduct(
       }
     }
 
+    const variantsChanged =
+      data.variants !== undefined &&
+      (
+        data.variants.length !==
+          existingProduct.variants.length ||
+        data.variants.some((variant) => {
+          const existingVariant =
+            existingProduct.variants.find(
+              (candidate) =>
+                candidate.sku === variant.sku,
+            );
+
+          return (
+            !existingVariant ||
+            existingVariant.size !== variant.size ||
+            existingVariant.color !== variant.color ||
+            Number(existingVariant.price) !==
+              variant.price ||
+            existingVariant.stock !== variant.stock
+          );
+        })
+      );
+
+    if (variantsChanged) {
+      const hasOrderHistory =
+        await prisma.orderItem.findFirst({
+          where: {
+            variantId: {
+              in: existingProduct.variants.map(
+                (variant) => variant.id,
+              ),
+            },
+          },
+          select: {
+            id: true,
+          },
+        });
+
+      if (hasOrderHistory) {
+        res.status(409).json({
+          success: false,
+          message:
+            "Products with order history cannot have their variants changed",
+        });
+
+        return;
+      }
+    }
+
     const updatedProduct =
       await prisma.$transaction(async (tx) => {
         const product =
@@ -502,7 +554,7 @@ export async function updateAdminProduct(
           }
         }
 
-        if (data.variants !== undefined) {
+        if (variantsChanged && data.variants !== undefined) {
           await tx.productVariant.deleteMany({
             where: {
               productId,

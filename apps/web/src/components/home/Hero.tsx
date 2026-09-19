@@ -4,7 +4,7 @@ import heroImage from "../../assets/hero.png";
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden bg-[#0B0B0B]">
+    <section className="relative overflow-hidden bg-[#24160f]">
       <div className="relative min-h-[520px] w-full sm:min-h-[580px] lg:min-h-[620px]">
         {/* Hero Image */}
         <img
@@ -14,7 +14,7 @@ function Hero() {
         />
 
         {/* Simple, softer overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0B]/90 via-[#0B0B0B]/55 to-[#0B0B0B]/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#24160f]/95 via-[#24160f]/62 to-[#24160f]/10" />
 
         {/* Subtle bottom fade */}
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B0B0B]/45 to-transparent" />
@@ -22,15 +22,20 @@ function Hero() {
         {/* Content */}
         <div className="relative z-10 mx-auto flex min-h-[520px] max-w-7xl items-center px-5 py-16 sm:min-h-[580px] sm:px-8 lg:min-h-[620px] lg:px-12">
           <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
+              New festive edit
+            </div>
+
             {/* Eyebrow */}
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#D4AF37] sm:text-xs">
+            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f6d77c] sm:text-xs">
               Tradition · Comfort · Elegance
             </p>
 
             {/* Heading */}
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-[#FFF9ED] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-4 font-serif text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-5xl lg:text-6xl">
               Little girls,
-              <span className="mt-1 block text-[#D4AF37]">
+              <span className="mt-1 block text-[#f6d77c]">
                 timeless traditions.
               </span>
             </h1>
@@ -46,7 +51,7 @@ function Hero() {
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 to="/shop"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#D4AF37] px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#0B0B0B] transition hover:bg-[#E0C45A]"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#f6d77c] px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#24160f] shadow-[0_8px_24px_rgba(246,215,124,0.18)] transition hover:bg-[#fff0bf]"
               >
                 Shop Collection
 
@@ -58,7 +63,7 @@ function Hero() {
 
               <Link
                 to="/shop?category=Pattu%20Frocks"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-[#FFF9ED]/45 bg-[#0B0B0B]/10 px-5 text-xs font-semibold uppercase tracking-[0.12em] text-[#FFF9ED] backdrop-blur-sm transition hover:border-[#D4AF37] hover:text-[#D4AF37]"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#fffaf1]/45 bg-[#24160f]/10 px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#fffaf1] backdrop-blur-sm transition hover:border-[#f6d77c] hover:text-[#f6d77c]"
               >
                 Explore Pattu
 
