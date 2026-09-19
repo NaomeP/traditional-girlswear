@@ -17,10 +17,7 @@ import {
 
 const router = Router();
 
-const uploadDirectory = path.resolve(
-  process.cwd(),
-  "uploads/products",
-);
+const uploadDirectory = "/tmp/uploads/products";
 
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, {
