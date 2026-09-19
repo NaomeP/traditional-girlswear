@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-const API_URL = "http://localhost:5000/api/v1/auth/login";
+import { API_BASE_URL } from "./config/api";
 
 export default function Login({
   onLogin,
@@ -19,7 +19,7 @@ export default function Login({
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

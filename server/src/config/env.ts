@@ -14,6 +14,8 @@ const envSchema = z.object({
     .string()
     .url()
     .default("http://localhost:5173"),
+
+  ADMIN_URL: z.string().url().optional(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

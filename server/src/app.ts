@@ -31,12 +31,13 @@ import adminReturnRoutes from "./routes/adminReturnRoutes";
 const app = express();
 const allowedOrigins = [
   env.FRONTEND_URL,
+  env.ADMIN_URL,
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5175",
   "http://localhost:5176",
   "http://localhost:5177",
-];
+].filter((origin): origin is string => Boolean(origin));
 
 app.use(
   cors({

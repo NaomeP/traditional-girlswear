@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-
-const API_BASE_URL = "http://localhost:5000/api/v1";
+import { API_BASE_URL } from "../../config/api";
 
 function ProtectedRoute() {
   const [checking, setChecking] = useState(true);

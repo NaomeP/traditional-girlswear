@@ -1,5 +1,9 @@
-export const API_BASE_URL =
-  "https://traditional-girlswear-api.onrender.com/api/v1";
+const configuredApiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:5000/api/v1";
+
+// Remove a trailing slash so every endpoint below has exactly one separator.
+export const API_BASE_URL = configuredApiBaseUrl.replace(/\/$/, "");
 
 export const API_ENDPOINTS = {
   products: `${API_BASE_URL}/products`,

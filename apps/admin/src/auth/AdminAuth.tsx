@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Login from "../Login";
 import App from "../App";
-
-const ME_URL = "http://localhost:5000/api/v1/auth/me";
+import { API_BASE_URL } from "../config/api";
 
 export default function AdminAuth() {
   const [checking, setChecking] = useState(true);
@@ -11,7 +10,7 @@ export default function AdminAuth() {
   useEffect(() => {
     async function checkAuth() {
       try {
-        const response = await fetch(ME_URL, {
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
           credentials: "include",
         });
 
