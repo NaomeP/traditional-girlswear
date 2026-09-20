@@ -1,15 +1,28 @@
 import { HeartHandshake, Ruler, Sparkles } from "lucide-react";
-import type { HomePageContent } from "../../services/homePageService";
 
-const icons = { sparkles: Sparkles, ruler: Ruler, heart: HeartHandshake };
+const highlights = [
+  {
+    icon: Sparkles,
+    title: "Made for little moments",
+    description: "Festive details with an easy, playful feel.",
+  },
+  {
+    icon: Ruler,
+    title: "A fit for every chapter",
+    description: "Thoughtful styles from newborn through 10 years.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Easy returns",
+    description: "A seven-day return window for extra peace of mind.",
+  },
+];
 
-export default function HomeHighlights({ items }: { items: HomePageContent["highlights"] }) {
+export default function HomeHighlights() {
   return (
     <section className="relative z-20 -mt-7 px-4 sm:-mt-8 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-6xl overflow-hidden rounded-2xl border border-[#c99b4a]/20 bg-[#fffaf1] shadow-[0_18px_45px_rgba(53,35,18,0.13)] md:grid-cols-3">
-        {items.map(({ icon, title, description }, index) => {
-          const Icon = icons[icon as keyof typeof icons] ?? Sparkles;
-          return (
+        {highlights.map(({ icon: Icon, title, description }, index) => (
           <div
             key={title}
             className={`flex gap-4 px-5 py-5 sm:px-7 sm:py-6 ${
@@ -28,7 +41,7 @@ export default function HomeHighlights({ items }: { items: HomePageContent["high
               </p>
             </div>
           </div>
-        )})}
+        ))}
       </div>
     </section>
   );

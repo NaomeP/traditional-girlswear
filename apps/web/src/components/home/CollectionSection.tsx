@@ -1,9 +1,14 @@
 
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
-import type { HomePageContent } from "../../services/homePageService";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../config/api";
 
-function CollectionSection({ content }: { content: HomePageContent["collections"] }) {
+type Collection = { id: string; name: string; description: string | null; imageUrl: string | null };
+
+function CollectionSection() {
+  const [collections, setCollections] = useState<Collection[]>([]);
+  useEffect(() => { void fetch(`${API_BASE_URL}/categories`).then((response) => response.json()).then((result) => { if (result.success) setCollections(result.data); }).catch(console.error); }, []);
   return (
     <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       {/* Decorative Background Elements */}
@@ -16,23 +21,23 @@ function CollectionSection({ content }: { content: HomePageContent["collections"
         <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-lg">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C9A227] animate-in fade-in slide-in-from-left-4 duration-500">
-              {content.eyebrow}
+              Our Collections
             </p>
 
             <h2 className="text-3xl font-black tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
-              {content.title}
+              Featured Collections
             </h2>
 
             <p className="mt-4 text-sm leading-6 text-[#0B0B0B]/60 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
-              {content.description}
+              Curated collections of traditional South Indian wear for every occasion and age group.
             </p>
           </div>
 
           <Link
-            to={content.linkHref}
+            to="/shop"
             className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.15em] text-[#0B0B0B] transition-all duration-300 hover:text-[#C9A227] animate-in fade-in slide-in-from-right-4 duration-700 delay-300"
           >
-            {content.linkLabel}
+            View All Collections
 
             <ArrowRight
               size={18}
@@ -43,10 +48,10 @@ function CollectionSection({ content }: { content: HomePageContent["collections"
 
         {/* Collection Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {content.items.map((collection, index) => (
+          {collections.map((collection, index) => (
             <Link
-              key={`${collection.title}-${index}`}
-              to={collection.href}
+              key={collection.id}
+              to={`/shop?category=${encodeURIComponent(collection.name)}`}
               className="group block animate-in fade-in slide-in-from-bottom-4 duration-700"
               style={{
                 animationDelay: `${index * 100}ms`,
@@ -55,8 +60,8 @@ function CollectionSection({ content }: { content: HomePageContent["collections"
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-lg transition-all duration-500 group-hover:shadow-2xl">
                 {/* Image */}
                 <img
-                  src={collection.image}
-                  alt={collection.title}
+                  src={collection.imageUrl || "/images/products/traditional-cotton-frock.jpg"}
+                  alt={collection.name}
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
 
@@ -66,11 +71,11 @@ function CollectionSection({ content }: { content: HomePageContent["collections"
                 {/* Content */}
                 <div className="absolute inset-x-0 bottom-0 p-6 transition-all duration-500">
                   <h3 className="text-xl font-bold text-[#FFF9ED] transition-colors duration-300 group-hover:text-[#D4AF37]">
-                    {collection.title}
+                    {collection.name}
                   </h3>
 
                   <p className="mt-2 text-sm leading-6 text-[#FFF9ED]/80">
-                    {collection.description}
+                    {collection.description || "Beautiful traditional styles for little girls."}
                   </p>
 
                   <div className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#D4AF37] transition-all duration-300 group-hover:gap-3">
@@ -88,9 +93,6 @@ function CollectionSection({ content }: { content: HomePageContent["collections"
         </div>
 
         {/* Stats Section */}
-        <div className="mx-auto mt-20 grid max-w-3xl grid-cols-1 gap-12 rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-r from-[#D4AF37]/10 to-[#C9A227]/10 p-8 sm:grid-cols-2 sm:gap-16 sm:p-10">
-          {content.stats.map((stat, index) => <div key={`${stat.label}-${index}`} className="text-center"><p className="text-3xl font-bold text-[#D4AF37]">{stat.value}</p><p className="mt-2 text-sm text-[#0B0B0B]/70">{stat.label}</p></div>)}
-        </div>
       </div>
     </section>
   );

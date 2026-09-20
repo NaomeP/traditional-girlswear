@@ -44,6 +44,7 @@ export async function createAdminCategory(
       name,
       slug,
       description,
+      imageUrl,
       isActive,
       sortOrder,
     } = req.body;
@@ -129,6 +130,7 @@ export async function createAdminCategory(
             description.trim()
               ? description.trim()
               : null,
+          imageUrl: typeof imageUrl === "string" && imageUrl.trim() ? imageUrl.trim() : null,
 
           isActive:
             typeof isActive === "boolean"

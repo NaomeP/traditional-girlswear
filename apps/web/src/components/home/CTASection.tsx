@@ -1,8 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-import type { HomePageContent } from "../../services/homePageService";
 
-function CTASection({ content }: { content: HomePageContent["cta"] }) {
+function CTASection() {
   return (
     <section className="bg-[#F7F3EA] px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-5xl">
@@ -13,22 +12,24 @@ function CTASection({ content }: { content: HomePageContent["cta"] }) {
 
           <div className="relative z-10 mx-auto max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#D4AF37]">
-              {content.eyebrow}
+              Celebrate Every Little Moment
             </p>
 
             <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-tight text-[#FFF9ED] sm:text-4xl lg:text-5xl">
-              {content.title}
+              Dress them in traditions they'll always remember.
             </h2>
 
             <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-[#FFF9ED]/65 sm:text-base">
-              {content.description}
+              Discover beautiful traditional girlswear made for festivals,
+              celebrations, family gatherings, and precious childhood
+              memories.
             </p>
 
             <Link
-              to={content.buttonHref}
+              to="/shop"
               className="mt-8 inline-flex items-center gap-3 bg-[#D4AF37] px-7 py-3.5 text-sm font-semibold text-[#0B0B0B] transition hover:bg-[#C9A227]"
             >
-              {content.buttonLabel}
+              Shop Collection
               <ArrowRight size={18} />
             </Link>
           </div>

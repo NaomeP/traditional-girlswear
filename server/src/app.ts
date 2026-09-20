@@ -26,8 +26,7 @@ import imageUploadRoutes from "./routes/imageUploadRoutes";
 import returnRoutes from "./routes/returnRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import adminReturnRoutes from "./routes/adminReturnRoutes";
-import homePageRoutes from "./routes/homePageRoutes";
-import adminHomePageRoutes from "./routes/adminHomePageRoutes";
+import categoryRoutes from "./routes/categoryRoutes";
 
 
 const app = express();
@@ -201,8 +200,7 @@ app.use(
   "/api/v1/products",
   productRoutes,
 );
-app.use("/api/v1/homepage", homePageRoutes);
-app.use("/api/v1/admin/homepage", adminHomePageRoutes);
+app.use("/api/v1/categories", categoryRoutes);
 
 app.use(
   "/api/v1/orders",
@@ -244,5 +242,3 @@ console.log(
 
 app.use("/api/v1/admin/orders", adminOrderRoutes);
 export default app;
-
-

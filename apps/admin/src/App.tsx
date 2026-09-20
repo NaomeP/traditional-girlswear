@@ -9,7 +9,6 @@ import AgeGroupSelector from "./components/AgeGroupSelector";
 import type { FormEvent } from "react";
 import AdminReturnManagement from "./components/AdminReturnManagement";
 import AdminDashboard from "./components/AdminDashboard";
-import HomePageManager from "./components/HomePageManager";
 import {
   createAdminProduct,
   deleteAdminProduct,
@@ -21,6 +20,7 @@ import {
   createAdminCategory,
   deleteAdminCategory,
   getAdminCategories,
+  updateAdminCategory,
 } from "./services/adminCategoryService";
 
 import {
@@ -205,6 +205,7 @@ const [orderSearch, setOrderSearch] = useState("");
 
   const [categorySaving, setCategorySaving] =
     useState(false);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   const [deletingCategoryId, setDeletingCategoryId] =
     useState<string | null>(null);
@@ -214,6 +215,7 @@ const [orderSearch, setOrderSearch] = useState("");
       name: "",
       slug: "",
       description: "",
+      imageUrl: "",
       isActive: true,
       sortOrder: 0,
     });
@@ -391,10 +393,12 @@ const [orderSearch, setOrderSearch] = useState("");
   }, []);
 
   function openCategoryModal(): void {
+    setEditingCategory(null);
     setCategoryForm({
       name: "",
       slug: "",
       description: "",
+      imageUrl: "",
       isActive: true,
       sortOrder: categories.length,
     });
@@ -417,6 +421,7 @@ const [orderSearch, setOrderSearch] = useState("");
       | "name"
       | "slug"
       | "description"
+      | "imageUrl"
       | "isActive"
       | "sortOrder",
     value:
@@ -462,17 +467,19 @@ const [orderSearch, setOrderSearch] = useState("");
         );
       }
 
-      await createAdminCategory({
+      const payload = {
         name: categoryForm.name.trim(),
         slug: categoryForm.slug.trim(),
         description:
           categoryForm.description.trim(),
-        imageUrl: "",
+        imageUrl: categoryForm.imageUrl.trim(),
         isActive:
           categoryForm.isActive,
         sortOrder:
           categoryForm.sortOrder,
-      });
+      };
+      if (editingCategory) await updateAdminCategory(editingCategory.id, payload);
+      else await createAdminCategory(payload);
 
       await loadCategories();
 
@@ -481,7 +488,8 @@ const [orderSearch, setOrderSearch] = useState("");
       setCategoryForm({
         name: "",
         slug: "",
-        description: "",
+      description: "",
+        imageUrl: "",
         isActive: true,
         sortOrder: 0,
       });
@@ -496,6 +504,25 @@ const [orderSearch, setOrderSearch] = useState("");
           ? err.message
           : "Failed to create category",
       );
+    } finally {
+      setCategorySaving(false);
+    }
+  }
+
+  function openEditCategoryModal(category: Category): void {
+    setEditingCategory(category);
+    setCategoryForm({ name: category.name, slug: category.slug, description: category.description || "", imageUrl: category.imageUrl || "", isActive: category.isActive, sortOrder: category.sortOrder });
+    setCategoryModalOpen(true);
+  }
+
+  async function handleCategoryImageUpload(file: File): Promise<void> {
+    try {
+      setCategorySaving(true);
+      setError("");
+      const imageUrl = await uploadProductImage(file);
+      updateCategoryField("imageUrl", imageUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to upload collection image");
     } finally {
       setCategorySaving(false);
     }
@@ -1705,7 +1732,6 @@ const [orderSearch, setOrderSearch] = useState("");
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
        <AdminDashboard />
 <AdminReturnManagement />
-        <HomePageManager />
         {error &&
           !modalOpen &&
           !categoryModalOpen &&
@@ -2114,6 +2140,7 @@ const [orderSearch, setOrderSearch] = useState("");
                         </td>
 
                         <td className="px-5 py-4 text-right">
+                          <button type="button" onClick={() => openEditCategoryModal(category)} className="mr-2 border border-black/15 px-3 py-2 text-xs font-semibold">Edit</button>
                           <button
                             type="button"
                             onClick={() =>
@@ -3664,7 +3691,7 @@ setDeliveredAt(
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-semibold">
-                  Add Category
+                  {editingCategory ? "Edit Category" : "Add Category"}
                 </h2>
 
                 <p className="mt-1 text-sm text-black/50">
@@ -3754,6 +3781,16 @@ setDeliveredAt(
               </div>
 
               <div>
+                <label className="block text-sm font-medium">Collection Image URL</label>
+                <input type="url" value={categoryForm.imageUrl} onChange={(event) => updateCategoryField("imageUrl", event.target.value)} className="mt-2 w-full border border-black/15 px-4 py-3 outline-none focus:border-[#D4AF37]" placeholder="https://... or /images/..." />
+                <label className="mt-3 inline-flex cursor-pointer border border-black/15 px-4 py-2 text-sm font-semibold hover:border-[#D4AF37]">
+                  {categorySaving ? "Uploading..." : "Upload new image"}
+                  <input type="file" accept="image/*" disabled={categorySaving} className="hidden" onChange={(event) => { const file = event.target.files?.[0]; if (file) void handleCategoryImageUpload(file); }} />
+                </label>
+                {categoryForm.imageUrl && <img src={categoryForm.imageUrl} alt="Collection preview" className="mt-3 h-32 w-24 object-cover" />}
+              </div>
+
+              <div>
                 <label className="block text-sm font-medium">
                   Sort Order
                 </label>
@@ -3810,8 +3847,8 @@ setDeliveredAt(
                   className="flex-1 bg-[#0B0B0B] px-4 py-3 text-sm font-semibold text-[#FFF9ED] disabled:opacity-50"
                 >
                   {categorySaving
-                    ? "Creating..."
-                    : "Create Category"}
+                    ? "Saving..."
+                    : editingCategory ? "Update Category" : "Create Category"}
                 </button>
               </div>
             </form>

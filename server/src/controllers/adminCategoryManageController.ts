@@ -13,6 +13,7 @@ export async function updateAdminCategory(
       name,
       slug,
       description,
+      imageUrl,
       isActive,
       sortOrder,
     } = req.body;
@@ -123,6 +124,7 @@ export async function updateAdminCategory(
             description.trim()
               ? description.trim()
               : null,
+          imageUrl: typeof imageUrl === "string" && imageUrl.trim() ? imageUrl.trim() : null,
 
           isActive:
             typeof isActive === "boolean"
