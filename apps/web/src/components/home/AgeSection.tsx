@@ -1,46 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
+import type { HomePageContent } from "../../services/homePageService";
 
-const ageGroups = [
-  {
-    label: "Newborn",
-    shortLabel: "NB",
-    description: "First little traditions",
-    age: "0–3M",
-  },
-  {
-    label: "Tiny Tots",
-    shortLabel: "01",
-    description: "Soft everyday styles",
-    age: "0–2Y",
-  },
-  {
-    label: "Little Ones",
-    shortLabel: "02",
-    description: "Playful festive looks",
-    age: "2–4Y",
-  },
-  {
-    label: "Growing Girls",
-    shortLabel: "03",
-    description: "Beautiful celebration wear",
-    age: "4–6Y",
-  },
-  {
-    label: "Young Girls",
-    shortLabel: "04",
-    description: "Elegant traditional styles",
-    age: "6–8Y",
-  },
-  {
-    label: "Big Girls",
-    shortLabel: "05",
-    description: "Timeless festive elegance",
-    age: "8–10Y",
-  },
-];
-
-function AgeSection() {
+function AgeSection({ content }: { content: HomePageContent["ages"] }) {
   return (
     <section className="bg-[#FFF9ED] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
@@ -48,28 +10,24 @@ function AgeSection() {
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#C9A227] sm:text-xs">
-              Shop by Age
+              {content.eyebrow}
             </p>
 
             <h2 className="mt-4 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
-              Beautiful traditions,
-              <br />
-              made for every age.
+              {content.title}
             </h2>
           </div>
 
           <p className="max-w-lg text-sm leading-7 text-black/55 lg:ml-auto">
-            From their very first celebrations to their growing years,
-            discover thoughtfully chosen styles designed for every
-            little milestone.
+            {content.description}
           </p>
         </div>
 
         {/* Age Journey */}
         <div className="mt-14 border-t border-black/15">
-        {ageGroups.map((group) => (
+        {content.items.map((group, index) => (
             <Link
-              key={group.age}
+              key={`${group.age}-${index}`}
               to={`/shop?age=${encodeURIComponent(group.age)}`}
               className="group grid min-h-[108px] grid-cols-[60px_1fr_auto] items-center gap-4 border-b border-black/10 transition-colors duration-300 hover:bg-[#F7F3EA] sm:grid-cols-[90px_1fr_1fr_auto] sm:gap-6 lg:min-h-[120px] lg:grid-cols-[100px_1fr_1fr_auto]"
             >
@@ -117,15 +75,14 @@ function AgeSection() {
         {/* Bottom Statement */}
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-md text-xs leading-6 text-black/40">
-            Designed around childhood, comfort, and the timeless beauty
-            of South Indian tradition.
+            {content.footer}
           </p>
 
           <Link
-            to="/shop"
+            to={content.linkHref}
             className="inline-flex w-fit items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B0B0B] underline decoration-[#C9A227] decoration-1 underline-offset-8 transition hover:text-[#C9A227]"
           >
-            Explore All Styles
+            {content.linkLabel}
             <ArrowUpRight size={15} strokeWidth={1.6} />
           </Link>
         </div>

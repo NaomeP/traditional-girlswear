@@ -1,6 +1,7 @@
 import { Link } from "react-router";
+import type { HomePageContent } from "../../services/homePageService";
 
-function BrandStory() {
+function BrandStory({ content }: { content: HomePageContent["story"] }) {
   return (
     <section className="bg-[#F7F3EA] px-6 py-20 sm:px-10 lg:px-12 lg:py-28">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-20">
@@ -9,8 +10,8 @@ function BrandStory() {
         <div className="relative overflow-hidden">
           <div className="aspect-[4/5] overflow-hidden bg-[#EDE7D9]">
             <img
-              src="/images/story/our-story.jpg"
-              alt="Our traditional girlswear story"
+              src={content.imageUrl}
+              alt={content.title}
               loading="lazy"
               className="h-full w-full object-cover transition duration-700 hover:scale-105"
             />
@@ -22,33 +23,29 @@ function BrandStory() {
         {/* Content */}
         <div className="max-w-xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A227]">
-            Our Story
+            {content.eyebrow}
           </p>
 
           <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
-            Tradition made for
+            {content.title}
             <span className="block text-[#C9A227]">
-              little moments.
+              {content.accentTitle}
             </span>
           </h2>
 
           <p className="mt-6 text-base leading-8 text-[#0B0B0B]/65">
-            We believe traditional clothing should feel as beautiful as the
-            memories created while wearing it. Our collection brings together
-            comfortable fabrics, graceful details and timeless South Indian
-            styles for little girls.
+            {content.paragraphOne}
           </p>
 
           <p className="mt-5 text-base leading-8 text-[#0B0B0B]/65">
-            From everyday cotton frocks to festive pattu pavadai, each style
-            is chosen to celebrate childhood while keeping tradition close.
+            {content.paragraphTwo}
           </p>
 
           <Link
-            to="/shop"
+            to={content.linkHref}
             className="mt-8 inline-flex items-center border-b border-[#0B0B0B] pb-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#0B0B0B] transition hover:border-[#C9A227] hover:text-[#C9A227]"
           >
-            Discover the Collection →
+            {content.linkLabel} →
           </Link>
         </div>
 

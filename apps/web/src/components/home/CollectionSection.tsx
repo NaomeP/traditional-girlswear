@@ -1,35 +1,9 @@
 
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
+import type { HomePageContent } from "../../services/homePageService";
 
-const collections = [
-  {
-    title: "Cotton Frocks",
-    description: "Soft, comfortable styles for everyday elegance.",
-    image: "/images/products/traditional-cotton-frock.jpg",
-    category: "Cotton Frocks",
-  },
-  {
-    title: "Pattu Frocks",
-    description: "Festive silhouettes crafted for special moments.",
-    image: "/images/products/festive-pattu-frock.jpg",
-    category: "Pattu Frocks",
-  },
-  {
-    title: "Cotton Pavadai",
-    description: "Timeless traditional comfort for little girls.",
-    image: "/images/products/classic-cotton-pavadai.jpg",
-    category: "Cotton Pavadai",
-  },
-  {
-    title: "Pattu Pavadai",
-    description: "Graceful festive dressing with a traditional touch.",
-    image: "/images/products/festive-pattu-pavadai.jpg",
-    category: "Pattu Pavadai",
-  },
-];
-
-function CollectionSection() {
+function CollectionSection({ content }: { content: HomePageContent["collections"] }) {
   return (
     <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       {/* Decorative Background Elements */}
@@ -42,24 +16,23 @@ function CollectionSection() {
         <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-lg">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C9A227] animate-in fade-in slide-in-from-left-4 duration-500">
-              Our Collections
+              {content.eyebrow}
             </p>
 
             <h2 className="text-3xl font-black tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
-              Featured Collections
+              {content.title}
             </h2>
 
             <p className="mt-4 text-sm leading-6 text-[#0B0B0B]/60 animate-in fade-in slide-in-from-left-4 duration-700 delay-200">
-              Curated collections of traditional South Indian
-              wear for every occasion and age group.
+              {content.description}
             </p>
           </div>
 
           <Link
-            to="/shop"
+            to={content.linkHref}
             className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.15em] text-[#0B0B0B] transition-all duration-300 hover:text-[#C9A227] animate-in fade-in slide-in-from-right-4 duration-700 delay-300"
           >
-            View All Collections
+            {content.linkLabel}
 
             <ArrowRight
               size={18}
@@ -70,12 +43,10 @@ function CollectionSection() {
 
         {/* Collection Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {collections.map((collection, index) => (
+          {content.items.map((collection, index) => (
             <Link
-              key={collection.category}
-              to={`/shop?category=${encodeURIComponent(
-                collection.category,
-              )}`}
+              key={`${collection.title}-${index}`}
+              to={collection.href}
               className="group block animate-in fade-in slide-in-from-bottom-4 duration-700"
               style={{
                 animationDelay: `${index * 100}ms`,
@@ -118,25 +89,7 @@ function CollectionSection() {
 
         {/* Stats Section */}
         <div className="mx-auto mt-20 grid max-w-3xl grid-cols-1 gap-12 rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-r from-[#D4AF37]/10 to-[#C9A227]/10 p-8 sm:grid-cols-2 sm:gap-16 sm:p-10">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-[#D4AF37]">
-              500+
-            </p>
-
-            <p className="mt-2 text-sm text-[#0B0B0B]/70">
-              Premium Products
-            </p>
-          </div>
-
-          <div className="text-center">
-            <p className="text-3xl font-bold text-[#D4AF37]">
-              NB–10Y
-            </p>
-
-            <p className="mt-2 text-sm text-[#0B0B0B]/70">
-              Age Groups Covered
-            </p>
-          </div>
+          {content.stats.map((stat, index) => <div key={`${stat.label}-${index}`} className="text-center"><p className="text-3xl font-bold text-[#D4AF37]">{stat.value}</p><p className="mt-2 text-sm text-[#0B0B0B]/70">{stat.label}</p></div>)}
         </div>
       </div>
     </section>
