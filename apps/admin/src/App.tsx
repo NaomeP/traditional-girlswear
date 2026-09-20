@@ -1713,8 +1713,8 @@ const [orderSearch, setOrderSearch] = useState("");
 
   return (
     <div className="min-h-screen bg-[#FFF9ED] text-[#0B0B0B]">
-      <header className="border-b border-black/10 bg-[#0B0B0B] px-4 py-5 text-[#FFF9ED] sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
+      <header className="border-b border-black/10 bg-[#0B0B0B] px-4 py-4 text-[#FFF9ED] sm:px-6 sm:py-5">
+        <div className="mx-auto flex max-w-7xl items-start justify-between gap-4 sm:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
               Traditional Girlswear
@@ -1732,9 +1732,9 @@ const [orderSearch, setOrderSearch] = useState("");
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-        <nav aria-label="Admin sections" className="mb-6 flex flex-wrap gap-2 border-b border-black/10 pb-5">
+        <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border-b border-black/10 px-4 pb-4 sm:mx-0 sm:flex-wrap sm:px-0 sm:pb-5">
           {[ ["dashboard", "Dashboard"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
-            <button key={id} type="button" onClick={() => setActivePage(id)} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-white text-black hover:bg-[#F7F3EA]"}`}>{label}</button>
+            <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-white text-black hover:bg-[#F7F3EA]"}`}>{label}</button>
           ))}
         </nav>
         {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}

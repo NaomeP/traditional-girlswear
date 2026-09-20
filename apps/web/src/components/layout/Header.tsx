@@ -209,7 +209,7 @@ function Header() {
               <ShoppingBag size={20} strokeWidth={1.7} />
 
               {cartCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] px-1 text-[10px] font-bold text-[#0B0B0B] shadow-md animate-bounce">
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] px-1 text-[10px] font-bold text-[#0B0B0B] shadow-md ">
                   {cartCount}
                 </span>
               )}

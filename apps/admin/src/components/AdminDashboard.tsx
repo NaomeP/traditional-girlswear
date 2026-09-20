@@ -293,13 +293,13 @@ export default function AdminDashboard() {
 
 
 
-          <div className="flex gap-3">
+          <div className="grid gap-3 sm:flex">
 
             <input
               type="date"
               value={from}
               onChange={(e)=>setFrom(e.target.value)}
-              className="rounded-xl border px-3 py-2"
+              className="w-full rounded-xl border px-3 py-2 sm:w-auto"
             />
 
 
@@ -307,13 +307,13 @@ export default function AdminDashboard() {
               type="date"
               value={to}
               onChange={(e)=>setTo(e.target.value)}
-              className="rounded-xl border px-3 py-2"
+              className="w-full rounded-xl border px-3 py-2 sm:w-auto"
             />
 
 
             <button
               onClick={handleRefresh}
-              className="rounded-xl bg-[#171512] px-5 py-2 text-white"
+              className="w-full rounded-xl bg-[#171512] px-5 py-2 text-white sm:w-auto"
             >
               Refresh
             </button>

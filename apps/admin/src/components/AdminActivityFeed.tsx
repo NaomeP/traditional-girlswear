@@ -57,12 +57,12 @@ export default function AdminActivityFeed() {
 
   return (
     <section className="rounded-2xl border border-[#E7E1D4] bg-white p-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-base font-semibold">Customer activity</h2>
           <p className="mt-1 text-xs text-gray-500">New orders, returns, refunds and cancellations. Updates every minute.</p>
         </div>
-        <button type="button" onClick={() => void load()} className="rounded-lg border border-black/10 px-3 py-2 text-xs font-medium hover:bg-[#FFF9ED]">Refresh</button>
+        <button type="button" onClick={() => void load()} className="w-full rounded-lg border border-black/10 px-3 py-2.5 text-xs font-medium hover:bg-[#FFF9ED] sm:w-auto">Refresh</button>
       </div>
       {loading && <p className="mt-5 text-sm text-gray-500">Loading activity...</p>}
       {error && <p className="mt-5 text-sm text-red-600">{error}</p>}

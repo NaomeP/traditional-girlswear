@@ -48,6 +48,9 @@ export default function Shop() {
   const [color, setColor] =
     useState("All");
 
+  const [filtersOpen, setFiltersOpen] =
+    useState(false);
+
   /*
    * Read category from the URL.
    *
@@ -66,6 +69,8 @@ export default function Shop() {
     } else {
       setCategory("All");
     }
+
+    setSearch(searchParams.get("search") || "");
   }, [searchParams]);
 
   /*
@@ -355,7 +360,7 @@ export default function Shop() {
 
         {/* Filters */}
         <div className="mb-10 border border-black/10 bg-white p-5 shadow-sm sm:p-6">
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <SlidersHorizontal
                 size={18}
@@ -376,7 +381,11 @@ export default function Shop() {
             </button>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen} className="mb-4 w-full border border-black/10 px-4 py-3 text-left text-sm font-semibold text-[#24160f] sm:hidden">
+            {filtersOpen ? "Hide filter options" : "Show filter options"}
+          </button>
+
+          <div className={`${filtersOpen ? "grid" : "hidden"} gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5`}>
             {/* Category */}
             <select
               value={category}
@@ -522,7 +531,7 @@ export default function Shop() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-8 min-[400px]:grid-cols-2 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8">
             {filteredProducts.map(
               (product) => (
                 <ProductCard

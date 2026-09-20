@@ -46,3 +46,30 @@ img {
   background: #f6d77c;
   color: #24160f;
 }
+
+/* Responsive interaction polish */
+* {
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
+  }
+
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+}
