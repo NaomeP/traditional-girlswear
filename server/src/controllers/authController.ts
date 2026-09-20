@@ -61,9 +61,21 @@ export async function registerController(
 
     const user = await authService.registerUser(validation.data);
 
+    const token = generateAuthToken({
+      userId: user.id,
+      role: user.role,
+    });
+
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(201).json({
       success: true,
-      message: "Registration successful",
+      message: "Registration successful. You are now signed in.",
       data: user,
     });
   } catch (error) {

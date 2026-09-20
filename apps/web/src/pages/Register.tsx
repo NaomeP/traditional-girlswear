@@ -1,9 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { API_BASE_URL } from "../config/api";
 
 function Register() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const returnTo =
+    typeof location.state?.from === "string" &&
+    location.state.from.startsWith("/") &&
+    !location.state.from.startsWith("//")
+      ? location.state.from
+      : "/account";
+  const pendingAction = location.state?.pendingAction;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,15 +66,15 @@ function Register() {
         );
       }
 
-      setSuccessMessage(
-        "Registration successful. You can now log in.",
-      );
-
-      setName("");
-      setEmail("");
-      setMobile("");
-      setPassword("");
-      setConfirmPassword("");
+      navigate(returnTo, {
+        replace: true,
+        state: {
+          pendingAction,
+          confirmation: pendingAction
+            ? "Your account is ready. Adding your item now..."
+            : "Your account has been created successfully.",
+        },
+      });
     } catch (error) {
       setErrorMessage(
         error instanceof Error

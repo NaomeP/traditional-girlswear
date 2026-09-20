@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { getAdminRecentActivity } from "../controllers/adminActivityController";
 
 import {
   requireAuth,
@@ -48,4 +49,7 @@ router.get(
   getAdminDashboardBestSellers,
 );
 
+router.get("/activity", getAdminRecentActivity);
+
 export default router;
+

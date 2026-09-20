@@ -9,6 +9,7 @@ import AgeGroupSelector from "./components/AgeGroupSelector";
 import type { FormEvent } from "react";
 import AdminReturnManagement from "./components/AdminReturnManagement";
 import AdminDashboard from "./components/AdminDashboard";
+import AdminActivityFeed from "./components/AdminActivityFeed";
 import {
   createAdminProduct,
   deleteAdminProduct,
@@ -1731,6 +1732,7 @@ const [orderSearch, setOrderSearch] = useState("");
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
        <AdminDashboard />
+       <AdminActivityFeed />
 <AdminReturnManagement />
         {error &&
           !modalOpen &&
@@ -4217,3 +4219,5 @@ setDeliveredAt(
 }
 
 export default App;
+
+
