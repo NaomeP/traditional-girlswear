@@ -11,6 +11,8 @@ import {
 import {
   getAdminCoupons,
   createAdminCoupon,
+  updateAdminCoupon,
+  deleteAdminCoupon,
 } from "../controllers/adminCouponController";
 
 const router = Router();
@@ -29,5 +31,8 @@ router.post(
   "/",
   createAdminCoupon,
 );
+
+router.put("/:id", updateAdminCoupon);
+router.delete("/:id", deleteAdminCoupon);
 
 export default router;

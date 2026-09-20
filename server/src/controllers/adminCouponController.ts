@@ -269,3 +269,80 @@ export async function createAdminCoupon(
     });
   }
 }
+
+type CouponPayload = {
+  code: unknown;
+  discountType: unknown;
+  discountValue: unknown;
+  minimumOrderValue: unknown;
+  maximumDiscount: unknown;
+  usageLimit: unknown;
+  startsAt: unknown;
+  expiresAt: unknown;
+  status: unknown;
+};
+
+function validateCouponUpdate(input: CouponPayload):
+  | { data: { code: string; discountType: "PERCENTAGE" | "FIXED"; discountValue: number; minimumOrderValue: number | null; maximumDiscount: number | null; usageLimit: number | null; startsAt: Date; expiresAt: Date; status: "ACTIVE" | "INACTIVE" } }
+  | { message: string } {
+  const code = normalizeCouponCode(input.code);
+  if (!code || !COUPON_CODE_PATTERN.test(code)) return { message: "Coupon code must contain only letters, numbers, hyphens, or underscores" };
+  if (input.discountType !== "PERCENTAGE" && input.discountType !== "FIXED") return { message: "Discount type must be PERCENTAGE or FIXED" };
+  if (typeof input.discountValue !== "number" || !Number.isFinite(input.discountValue) || input.discountValue <= 0 || (input.discountType === "PERCENTAGE" && input.discountValue > 100)) return { message: "Discount value is invalid" };
+  if (input.minimumOrderValue !== null && (typeof input.minimumOrderValue !== "number" || !Number.isFinite(input.minimumOrderValue) || input.minimumOrderValue < 0)) return { message: "Minimum order value must be a non-negative number" };
+  if (input.maximumDiscount !== null && (typeof input.maximumDiscount !== "number" || !Number.isFinite(input.maximumDiscount) || input.maximumDiscount <= 0)) return { message: "Maximum discount must be greater than 0" };
+  if (input.usageLimit !== null && (typeof input.usageLimit !== "number" || !Number.isInteger(input.usageLimit) || input.usageLimit <= 0)) return { message: "Usage limit must be a positive integer" };
+  if (!isValidDate(input.startsAt) || !isValidDate(input.expiresAt) || new Date(input.expiresAt) <= new Date(input.startsAt)) return { message: "Expiry date must be later than start date" };
+  if (input.discountType === "FIXED" && input.maximumDiscount !== null) return { message: "Maximum discount should not be used with a fixed discount" };
+  return { data: { code, discountType: input.discountType, discountValue: input.discountValue, minimumOrderValue: input.minimumOrderValue ?? null, maximumDiscount: input.maximumDiscount ?? null, usageLimit: input.usageLimit ?? null, startsAt: new Date(input.startsAt), expiresAt: new Date(input.expiresAt), status: input.status === "INACTIVE" ? "INACTIVE" : "ACTIVE" } };
+}
+
+export async function updateAdminCoupon(req: Request, res: Response): Promise<void> {
+  try {
+    const couponId = req.params.id;
+    if (typeof couponId !== "string" || !couponId.trim()) {
+      res.status(400).json({ success: false, message: "Coupon ID is required" });
+      return;
+    }
+    const validation = validateCouponUpdate(req.body as CouponPayload);
+    if ("message" in validation) {
+      res.status(400).json({ success: false, message: validation.message });
+      return;
+    }
+    const existingCoupon = await prisma.coupon.findUnique({ where: { id: couponId }, select: { id: true } });
+    if (!existingCoupon) {
+      res.status(404).json({ success: false, message: "Coupon not found" });
+      return;
+    }
+    const duplicateCoupon = await prisma.coupon.findFirst({ where: { code: validation.data.code, NOT: { id: couponId } }, select: { id: true } });
+    if (duplicateCoupon) {
+      res.status(409).json({ success: false, message: "Coupon code already exists" });
+      return;
+    }
+    const coupon = await prisma.coupon.update({ where: { id: couponId }, data: validation.data });
+    res.status(200).json({ success: true, message: "Coupon updated successfully", data: coupon });
+  } catch (error) {
+    console.error("Failed to update admin coupon:", error);
+    res.status(500).json({ success: false, message: "Failed to update coupon" });
+  }
+}
+
+export async function deleteAdminCoupon(req: Request, res: Response): Promise<void> {
+  try {
+    const couponId = req.params.id;
+    if (typeof couponId !== "string" || !couponId.trim()) {
+      res.status(400).json({ success: false, message: "Coupon ID is required" });
+      return;
+    }
+    const existingCoupon = await prisma.coupon.findUnique({ where: { id: couponId }, select: { id: true } });
+    if (!existingCoupon) {
+      res.status(404).json({ success: false, message: "Coupon not found" });
+      return;
+    }
+    await prisma.coupon.delete({ where: { id: couponId } });
+    res.status(200).json({ success: true, message: "Coupon deleted successfully" });
+  } catch (error) {
+    console.error("Failed to delete admin coupon:", error);
+    res.status(500).json({ success: false, message: "Failed to delete coupon" });
+  }
+}
