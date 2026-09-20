@@ -36,7 +36,7 @@ function Cart() {
   }
 
   return (
-    <section className="min-h-screen bg-[#FFF9ED] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <section className="min-h-screen bg-[#f7f8f8] px-4 py-7 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A227]">
@@ -48,12 +48,12 @@ function Cart() {
           </h1>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
+        <div className="grid gap-6 lg:grid-cols-[1fr_380px] lg:gap-10">
           <div className="space-y-6">
             {items.map((item) => (
               <article
                 key={`${item.product.id}-${item.size}`}
-                className="flex gap-4 border-b border-black/10 pb-6 sm:gap-6"
+                className="flex gap-4 rounded-xl border border-black/10 bg-white p-3 shadow-sm sm:gap-6 sm:p-5"
               >
                 <Link
                   to={`/product/${item.product.slug}`}
@@ -138,7 +138,7 @@ function Cart() {
             ))}
           </div>
 
-          <aside className="h-fit border border-black/10 bg-[#F7F3EA] p-6 sm:p-8">
+          <aside className="h-fit rounded-2xl border border-black/10 bg-white p-6 shadow-[0_8px_28px_rgba(55,35,20,0.08)] sm:p-8 lg:sticky lg:top-24">
             <h2 className="text-lg font-semibold">Order Summary</h2>
 
             <div className="mt-6 space-y-4 text-sm">

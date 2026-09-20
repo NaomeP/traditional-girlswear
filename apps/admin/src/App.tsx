@@ -1712,8 +1712,8 @@ const [orderSearch, setOrderSearch] = useState("");
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9ED] text-[#0B0B0B]">
-      <header className="border-b border-black/10 bg-[#0B0B0B] px-4 py-4 text-[#FFF9ED] sm:px-6 sm:py-5">
+    <div className="min-h-screen bg-[#f4f5f6] text-[#17130e]">
+      <header className="border-b border-[#D4AF37]/25 bg-[linear-gradient(110deg,#17130e,#332315)] px-4 py-4 text-[#FFF9ED] shadow-lg sm:px-6 sm:py-5">
         <div className="mx-auto flex max-w-7xl items-start justify-between gap-4 sm:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
@@ -1731,10 +1731,10 @@ const [orderSearch, setOrderSearch] = useState("");
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-        <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border-b border-black/10 px-4 pb-4 sm:mx-0 sm:flex-wrap sm:px-0 sm:pb-5">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+        <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border border-black/10 bg-white p-2 shadow-sm sm:mx-0 sm:flex-wrap sm:px-2">
           {[ ["dashboard", "Dashboard"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
-            <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-white text-black hover:bg-[#F7F3EA]"}`}>{label}</button>
+            <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-transparent text-black/65 hover:bg-[#F7F3EA] hover:text-black"}`}>{label}</button>
           ))}
         </nav>
         {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}
@@ -1812,7 +1812,7 @@ const [orderSearch, setOrderSearch] = useState("");
           </div>
         </div>
 
-        <section className="mt-8 border border-amber-200 bg-white">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-amber-200 bg-white shadow-sm">
           <div className="flex flex-col gap-2 border-b border-amber-100 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -1870,7 +1870,7 @@ const [orderSearch, setOrderSearch] = useState("");
           )}
         </section>
 
-        <section className="mt-8 border border-black/10 bg-white">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               
@@ -2060,7 +2060,7 @@ const [orderSearch, setOrderSearch] = useState("");
         </>
         )}
         {activePage === "categories" && (
-          <section className="mt-8 border border-black/10 bg-white">
+          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -2181,7 +2181,7 @@ const [orderSearch, setOrderSearch] = useState("");
         </section>
         )}
         {activePage === "orders" && (
-          <section className="mt-8 border border-black/10 bg-white">
+          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
           <div className="border-b border-black/10 p-5">
             <h3 className="text-lg font-semibold">
               Customer Orders
@@ -2627,7 +2627,7 @@ setDeliveredAt(
         </section>
         )}
         {activePage === "coupons" && (
-          <section className="mt-8 border border-black/10 bg-white">
+          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">

@@ -92,7 +92,7 @@ const toggleWishlist = async () => {
 
   return (
     <>
-      <article className="group flex h-full flex-col bg-white">
+      <article className="group flex h-full flex-col bg-white transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(44,28,14,0.12)]">
         <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
           <Link to={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
             <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
@@ -134,8 +134,8 @@ const toggleWishlist = async () => {
 
           <p className="mt-3 text-xs text-[#3c3329]"><span className="font-semibold">Free delivery</span> on eligible orders</p>
 
-          <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
-            <button type="button" onClick={handleQuickAdd} className="flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] active:scale-[0.98]">
+          <div className="mt-4 grid grid-cols-[1fr_auto] gap-2">
+            <button type="button" onClick={handleQuickAdd} className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] active:scale-[0.98]">
               <ShoppingBag size={16} /> Add to cart
             </button>
             <button type="button" onClick={openQuickView} aria-label={`Choose size for ${product.name}`} className="rounded-full border border-black/15 px-3 text-xs font-semibold text-[#24160f] hover:border-[#a56c25]">
