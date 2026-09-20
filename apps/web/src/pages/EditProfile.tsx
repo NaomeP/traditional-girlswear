@@ -93,11 +93,6 @@ export default function EditProfile() {
     `${result.message || "Profile update failed"} ${validationErrors}`,
   );
 }
-const errorData = await response.json();
-
-console.log("Status:", response.status);
-console.log("Backend error message:", errorData.message);
-console.log("Full backend error:", errorData);
 
       setMessage("Profile updated successfully!");
 

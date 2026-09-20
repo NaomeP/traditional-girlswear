@@ -5,8 +5,8 @@ import {
   addWishlistItem,
   removeWishlistItem,
 } from "../../services/wishlistService";
-import { Eye, Heart, X } from "lucide-react";
-import { useState } from "react";
+import { Check, Eye, Heart, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Product } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
@@ -20,6 +20,7 @@ function ProductCard({ product }: ProductCardProps) {
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [showAddedMessage, setShowAddedMessage] = useState(false);
 
   const addToCart = useCartStore((state) => state.addToCart);
   const addToWishlist = useWishlistStore((state) => state.addToWishlist);
@@ -36,7 +37,14 @@ function ProductCard({ product }: ProductCardProps) {
     setIsQuickViewOpen(false);
     setSelectedSize("");
     setQuantity(1);
+    setShowAddedMessage(false);
   };
+
+  useEffect(() => {
+    if (!showAddedMessage) return;
+    const timer = window.setTimeout(() => setShowAddedMessage(false), 2500);
+    return () => window.clearTimeout(timer);
+  }, [showAddedMessage]);
 
 const handleAddToCart = () => {
   if (!product || !selectedSize) {
@@ -44,7 +52,7 @@ const handleAddToCart = () => {
   }
 
   addToCart(product, selectedSize, quantity);
-  
+  setShowAddedMessage(true);
 };
 
 const toggleWishlist = async () => {
@@ -183,6 +191,17 @@ const toggleWishlist = async () => {
         </div>
       </article>
 
+
+      {showAddedMessage && (
+        <div className="fixed left-1/2 top-6 z-[110] flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-xl border border-[#D4AF37]/40 bg-[#FFF9ED] px-4 py-3 shadow-xl" role="status">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#D4AF37] text-[#0B0B0B]">
+            <Check size={18} strokeWidth={2.5} />
+          </span>
+          <p className="flex-1 text-sm font-semibold text-[#0B0B0B]">Added to your cart</p>
+          <Link to="/cart" onClick={() => setShowAddedMessage(false)} className="text-xs font-bold uppercase tracking-wide text-[#9A6B1F] hover:text-[#0B0B0B]">View cart</Link>
+          <button type="button" onClick={() => setShowAddedMessage(false)} aria-label="Dismiss cart confirmation" className="text-black/45 hover:text-black"><X size={18} /></button>
+        </div>
+      )}
       {/* Quick View Modal */}
       {isQuickViewOpen && (
         <div

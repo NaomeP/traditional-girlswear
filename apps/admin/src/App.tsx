@@ -144,6 +144,7 @@ function createSlug(
 }
 
 function App() {
+  const [activePage, setActivePage] = useState("dashboard");
   
   const [products, setProducts] =
     useState<Product[]>([]);
@@ -1731,9 +1732,15 @@ const [orderSearch, setOrderSearch] = useState("");
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-       <AdminDashboard />
-       <AdminActivityFeed />
-<AdminReturnManagement />
+        <nav aria-label="Admin sections" className="mb-6 flex flex-wrap gap-2 border-b border-black/10 pb-5">
+          {[ ["dashboard", "Dashboard"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
+            <button key={id} type="button" onClick={() => setActivePage(id)} className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-white text-black hover:bg-[#F7F3EA]"}`}>{label}</button>
+          ))}
+        </nav>
+        {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}
+        {activePage === "returns" && <AdminReturnManagement />}
+        {activePage === "products" && (
+          <>
         {error &&
           !modalOpen &&
           !categoryModalOpen &&
@@ -2050,8 +2057,10 @@ const [orderSearch, setOrderSearch] = useState("");
             </div>
           )}
         </section>
-
-        <section className="mt-8 border border-black/10 bg-white">
+        </>
+        )}
+        {activePage === "categories" && (
+          <section className="mt-8 border border-black/10 bg-white">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -2170,7 +2179,8 @@ const [orderSearch, setOrderSearch] = useState("");
             </div>
           )}
         </section>
-
+        )}
+        {activePage === "orders" && (
           <section className="mt-8 border border-black/10 bg-white">
           <div className="border-b border-black/10 p-5">
             <h3 className="text-lg font-semibold">
@@ -2615,10 +2625,9 @@ setDeliveredAt(
             </div>
           )}
         </section>
-
-   
-   
-        <section className="mt-8 border border-black/10 bg-white">
+        )}
+        {activePage === "coupons" && (
+          <section className="mt-8 border border-black/10 bg-white">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -2794,7 +2803,7 @@ setDeliveredAt(
             </div>
           )}
         </section>
-
+        )}
               
       </main>
 
@@ -3655,6 +3664,7 @@ setDeliveredAt(
                   </label>
                 </div>
               </section>
+
 
               <div className="mt-8 flex flex-col-reverse gap-3 border-t border-black/10 pt-6 sm:flex-row sm:justify-end">
                 <button
