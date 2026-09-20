@@ -1,10 +1,22 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { API_BASE_URL } from "../config/api";
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const returnTo =
+    typeof location.state?.from === "string" &&
+    location.state.from.startsWith("/") &&
+    !location.state.from.startsWith("//")
+      ? location.state.from
+      : "/account";
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -45,7 +57,7 @@ function Login() {
         );
       }
 
-      navigate("/account");
+      navigate(returnTo, { replace: true });
     } catch (error) {
       setErrorMessage(
         error instanceof Error

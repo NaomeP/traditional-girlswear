@@ -75,7 +75,10 @@ app.use(cookieParser());
 app.use(
   "/uploads",
   express.static(
-    path.resolve(process.cwd(), "uploads"),
+    // Product uploads are stored in /tmp by the Multer route.  Serve that
+    // same directory; serving process.cwd()/uploads made every uploaded
+    // image URL return 404 because the two directories are different.
+    path.resolve("/tmp/uploads"),
   ),
 );
 

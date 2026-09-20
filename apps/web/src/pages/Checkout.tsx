@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import {
   Check,
   MapPin,
+  Pencil,
   Plus,
   ShieldCheck,
   Tag,
@@ -142,6 +143,9 @@ function Checkout() {
   const [showNewAddress, setShowNewAddress] =
     useState(false);
 
+  const [editingAddressId, setEditingAddressId] =
+    useState<string | null>(null);
+
   const [savingAddress, setSavingAddress] =
     useState(false);
 
@@ -217,7 +221,9 @@ function Checkout() {
       );
 
       if (response.status === 401) {
-        navigate("/login");
+        navigate("/login", {
+          state: { from: "/checkout" },
+        });
         return;
       }
 
@@ -281,13 +287,58 @@ function Checkout() {
     }));
   }
 
-  async function handleSaveNewAddress(
-    event: FormEvent<HTMLFormElement>,
-  ) {
-    event.preventDefault();
+  function resetAddressForm() {
+    setEditingAddressId(null);
+    setNewAddress({
+      fullName: "",
+      mobile: "",
+      addressLine1: "",
+      addressLine2: "",
+      landmark: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      isDefault: false,
+    });
+  }
+
+  function startNewAddress() {
+    resetAddressForm();
+    setError("");
+    setShowNewAddress(true);
+  }
+
+  function startEditAddress(address: Address) {
+    setEditingAddressId(address.id);
+    setNewAddress({
+      fullName: address.fullName,
+      mobile: address.mobile,
+      addressLine1: address.addressLine1,
+      addressLine2: address.addressLine2 ?? "",
+      landmark: address.landmark ?? "",
+      city: address.city,
+      state: address.state,
+      postalCode: address.postalCode,
+      isDefault: address.isDefault,
+    });
+    setError("");
+    setShowNewAddress(true);
+  }
+
+  async function handleSaveAddress() {
 
     setError("");
     setSuccess("");
+
+    if (
+      !newAddress.fullName.trim() ||
+      !newAddress.addressLine1.trim() ||
+      !newAddress.city.trim() ||
+      !newAddress.state.trim()
+    ) {
+      setError("Please provide all required address details.");
+      return;
+    }
 
     if (
       !/^[6-9]\d{9}$/.test(
@@ -315,9 +366,11 @@ function Checkout() {
       setSavingAddress(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/addresses`,
+        editingAddressId
+          ? `${API_BASE_URL}/addresses/${editingAddressId}`
+          : `${API_BASE_URL}/addresses`,
         {
-          method: "POST",
+          method: editingAddressId ? "PUT" : "POST",
           credentials: "include",
           headers: {
             "Content-Type":
@@ -345,7 +398,9 @@ function Checkout() {
       );
 
       if (response.status === 401) {
-        navigate("/login");
+        navigate("/login", {
+          state: { from: "/checkout" },
+        });
         return;
       }
 
@@ -362,39 +417,31 @@ function Checkout() {
         result.data as Address;
 
       setAddresses((current) => {
+        const otherAddresses = current.filter(
+          (address) => address.id !== savedAddress.id,
+        );
         const updated = savedAddress.isDefault
-          ? current.map((address) => ({
+          ? otherAddresses.map((address) => ({
               ...address,
               isDefault: false,
             }))
-          : current;
+          : otherAddresses;
 
-        return [
-          savedAddress,
-          ...updated,
-        ];
+        return [savedAddress, ...updated];
       });
 
       setSelectedAddressId(
         savedAddress.id,
       );
 
-      setNewAddress({
-        fullName: "",
-        mobile: "",
-        addressLine1: "",
-        addressLine2: "",
-        landmark: "",
-        city: "",
-        state: "",
-        postalCode: "",
-        isDefault: false,
-      });
-
+      const wasEditing = Boolean(editingAddressId);
+      resetAddressForm();
       setShowNewAddress(false);
 
       setSuccess(
-        "New delivery address saved.",
+        wasEditing
+          ? "Delivery address updated."
+          : "New delivery address saved.",
       );
     } catch (err) {
       setError(
@@ -456,7 +503,9 @@ function Checkout() {
       );
 
       if (response.status === 401) {
-        navigate("/login");
+        navigate("/login", {
+          state: { from: "/checkout" },
+        });
         return;
       }
 
@@ -532,7 +581,9 @@ function Checkout() {
     if (
       createPaymentResponse.status === 401
     ) {
-      navigate("/login");
+      navigate("/login", {
+        state: { from: "/checkout" },
+      });
       return;
     }
 
@@ -651,7 +702,9 @@ function Checkout() {
                   verifyResponse.status ===
                   401
                 ) {
-                  navigate("/login");
+                  navigate("/login", {
+                    state: { from: "/checkout" },
+                  });
                   finishError(
                     "Your session expired. Please log in again.",
                   );
@@ -768,7 +821,9 @@ function Checkout() {
       );
 
       if (response.status === 401) {
-        navigate("/login");
+        navigate("/login", {
+          state: { from: "/checkout" },
+        });
         return;
       }
 
@@ -896,10 +951,7 @@ function Checkout() {
                   {!showNewAddress && (
                     <button
                       type="button"
-                      onClick={() => {
-                        setShowNewAddress(true);
-                        setError("");
-                      }}
+                      onClick={startNewAddress}
                       className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[#8B6D13] hover:text-[#0B0B0B]"
                     >
                       <Plus size={16} />
@@ -923,9 +975,7 @@ function Checkout() {
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowNewAddress(true)
-                      }
+                      onClick={startNewAddress}
                       className="mt-4 bg-[#0B0B0B] px-5 py-3 text-sm font-medium text-white hover:bg-[#C9A227] hover:text-[#0B0B0B]"
                     >
                       Add Delivery Address
@@ -940,14 +990,8 @@ function Checkout() {
                           selectedAddressId;
 
                         return (
-                          <button
+                          <div
                             key={address.id}
-                            type="button"
-                            onClick={() =>
-                              setSelectedAddressId(
-                                address.id,
-                              )
-                            }
                             className={`w-full border p-4 text-left transition sm:p-5 ${
                               selected
                                 ? "border-[#C9A227] bg-[#FFFDF8]"
@@ -955,6 +999,14 @@ function Checkout() {
                             }`}
                           >
                             <div className="flex items-start gap-4">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setSelectedAddressId(address.id)
+                                }
+                                className="flex min-w-0 flex-1 items-start gap-4 text-left"
+                                aria-pressed={selected}
+                              >
                               <div
                                 className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
                                   selected
@@ -1003,8 +1055,19 @@ function Checkout() {
                                   {address.mobile}
                                 </p>
                               </div>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => startEditAddress(address)}
+                                className="inline-flex shrink-0 items-center gap-1 border border-[#DCD5C6] px-3 py-2 text-xs font-medium text-[#8B6D13] hover:border-[#C9A227] hover:bg-white"
+                                aria-label={`Edit ${address.fullName}'s address`}
+                              >
+                                <Pencil size={14} />
+                                Edit
+                              </button>
                             </div>
-                          </button>
+                          </div>
                         );
                       },
                     )}
@@ -1017,14 +1080,17 @@ function Checkout() {
                   <div className="mt-6 border-t border-[#EEE7D8] pt-6">
                     <div className="mb-5 flex items-center justify-between">
                       <h3 className="font-semibold">
-                        Add New Address
+                        {editingAddressId
+                          ? "Edit Delivery Address"
+                          : "Add New Address"}
                       </h3>
 
                       <button
                         type="button"
-                        onClick={() =>
-                          setShowNewAddress(false)
-                        }
+                        onClick={() => {
+                          resetAddressForm();
+                          setShowNewAddress(false);
+                        }}
                         className="text-sm text-gray-500 hover:text-[#0B0B0B]"
                       >
                         Cancel
@@ -1184,34 +1250,17 @@ function Checkout() {
                     <button
                       type="button"
                       disabled={savingAddress}
-                      onClick={() => {
-                        const form =
-                          document.querySelector(
-                            "#new-checkout-address-form",
-                          ) as HTMLFormElement | null;
-
-                        if (form) {
-                          form.requestSubmit();
-                        }
-                      }}
+                      onClick={() =>
+                        void handleSaveAddress()
+                      }
                       className="mt-5 bg-[#0B0B0B] px-5 py-3 text-sm font-medium text-white hover:bg-[#C9A227] hover:text-[#0B0B0B] disabled:opacity-50"
                     >
                       {savingAddress
                         ? "Saving..."
-                        : "Save & Select Address"}
+                        : editingAddressId
+                          ? "Update & Select Address"
+                          : "Save & Select Address"}
                     </button>
-
-                    <form
-                      id="new-checkout-address-form"
-                      onSubmit={
-                        handleSaveNewAddress
-                      }
-                      className="hidden"
-                    >
-                      <button type="submit">
-                        Save
-                      </button>
-                    </form>
                   </div>
                 )}
               </div>

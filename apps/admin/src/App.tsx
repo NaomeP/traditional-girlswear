@@ -18,6 +18,7 @@ import {
 
 import {
   createAdminCategory,
+  deleteAdminCategory,
   getAdminCategories,
 } from "./services/adminCategoryService";
 
@@ -103,6 +104,8 @@ const SIZES = [
   "6-8Y",
   "8-10Y",
 ];
+
+const LOW_STOCK_THRESHOLD = 5;
 
 function formatPrice(
   value: string | number | null | undefined,
@@ -201,6 +204,9 @@ const [orderSearch, setOrderSearch] = useState("");
 
   const [categorySaving, setCategorySaving] =
     useState(false);
+
+  const [deletingCategoryId, setDeletingCategoryId] =
+    useState<string | null>(null);
 
   const [categoryForm, setCategoryForm] =
     useState({
@@ -491,6 +497,36 @@ const [orderSearch, setOrderSearch] = useState("");
       );
     } finally {
       setCategorySaving(false);
+    }
+  }
+
+  async function handleCategoryDelete(
+    category: Category,
+  ): Promise<void> {
+    if (
+      !window.confirm(
+        `Delete the "${category.name}" category? This cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setDeletingCategoryId(category.id);
+      setError("");
+
+      await deleteAdminCategory(category.id);
+      await loadCategories();
+    } catch (err) {
+      console.error("Failed to delete category:", err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to delete category",
+      );
+    } finally {
+      setDeletingCategoryId(null);
     }
   }
 
@@ -874,6 +910,22 @@ const [orderSearch, setOrderSearch] = useState("");
         product.status ===
         "OUT_OF_STOCK",
     ).length;
+
+  const lowStockVariants = useMemo(
+    () =>
+      products.flatMap((product) =>
+        product.status === "ACTIVE"
+          ? product.variants
+              .filter(
+                (variant) =>
+                  Number(variant.stock) > 0 &&
+                  Number(variant.stock) <= LOW_STOCK_THRESHOLD,
+              )
+              .map((variant) => ({ product, variant }))
+          : [],
+      ),
+    [products],
+  );
 
   function clearPreviewUrls(): void {
     Object.values(previewUrls).forEach(
@@ -1660,7 +1712,7 @@ const [orderSearch, setOrderSearch] = useState("");
             </div>
           )}
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="border border-black/10 bg-white p-5">
             <p className="text-sm text-black/50">
               Total Products
@@ -1697,6 +1749,18 @@ const [orderSearch, setOrderSearch] = useState("");
             </p>
           </div>
 
+          <div className="border border-amber-200 bg-amber-50 p-5">
+            <p className="text-sm text-amber-900/70">
+              Low-stock variants
+            </p>
+
+            <p className="mt-2 text-3xl font-semibold text-amber-950">
+              {loading
+                ? "..."
+                : lowStockVariants.length}
+            </p>
+          </div>
+
           <div className="border border-black/10 bg-white p-5">
             <p className="text-sm text-black/50">
               Orders
@@ -1709,6 +1773,64 @@ const [orderSearch, setOrderSearch] = useState("");
             </p>
           </div>
         </div>
+
+        <section className="mt-8 border border-amber-200 bg-white">
+          <div className="flex flex-col gap-2 border-b border-amber-100 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">
+                Low-stock attention
+              </h3>
+
+              <p className="mt-1 text-sm text-black/60">
+                Variants with 1–{LOW_STOCK_THRESHOLD} units left. Update stock before they sell out.
+              </p>
+            </div>
+
+            <span className="text-sm font-semibold text-amber-800">
+              {lowStockVariants.length} need attention
+            </span>
+          </div>
+
+          {loading ? (
+            <div className="p-5 text-sm text-black/50">
+              Loading inventory...
+            </div>
+          ) : lowStockVariants.length === 0 ? (
+            <div className="p-5 text-sm text-black/60">
+              All active variants are above the low-stock threshold.
+            </div>
+          ) : (
+            <div className="divide-y divide-black/5">
+              {lowStockVariants.map(({ product, variant }) => (
+                <div
+                  key={variant.id}
+                  className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div>
+                    <p className="font-semibold">{product.name}</p>
+                    <p className="mt-1 text-sm text-black/60">
+                      {variant.size} · {variant.color} · SKU {variant.sku}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <span className="bg-amber-100 px-3 py-2 text-sm font-semibold text-amber-900">
+                      {variant.stock} left
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(product)}
+                      className="border border-black/15 px-3 py-2 text-xs font-semibold hover:border-[#D4AF37]"
+                    >
+                      Adjust stock
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         <section className="mt-8 border border-black/10 bg-white">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -1947,6 +2069,10 @@ const [orderSearch, setOrderSearch] = useState("");
                     <th className="px-5 py-4">
                       Status
                     </th>
+
+                    <th className="px-5 py-4 text-right">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
 
@@ -1982,6 +2108,27 @@ const [orderSearch, setOrderSearch] = useState("");
                               ? "ACTIVE"
                               : "INACTIVE"}
                           </span>
+                        </td>
+
+                        <td className="px-5 py-4 text-right">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              void handleCategoryDelete(
+                                category,
+                              )
+                            }
+                            disabled={
+                              deletingCategoryId ===
+                              category.id
+                            }
+                            className="border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {deletingCategoryId ===
+                            category.id
+                              ? "Deleting..."
+                              : "Delete"}
+                          </button>
                         </td>
                       </tr>
                     ),
