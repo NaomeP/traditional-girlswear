@@ -4,6 +4,9 @@ import {
   createProductSchema,
   updateProductSchema,
 } from "../validators/productValidator";
+import {
+  normalizeProductImages,
+} from "../utils/imageUrl";
 
 export async function getAdminProducts(
   _req: Request,
@@ -31,7 +34,7 @@ export async function getAdminProducts(
 
     res.status(200).json({
       success: true,
-      data: products,
+      data: products.map(normalizeProductImages),
     });
   } catch (error) {
     console.error(
@@ -225,7 +228,9 @@ export async function createAdminProduct(
     res.status(201).json({
       success: true,
       message: "Product created successfully",
-      data: createdProduct,
+      data: createdProduct
+        ? normalizeProductImages(createdProduct)
+        : createdProduct,
     });
   } catch (error) {
     console.error(
@@ -598,7 +603,9 @@ export async function updateAdminProduct(
     res.status(200).json({
       success: true,
       message: "Product updated successfully",
-      data: updatedProduct,
+      data: updatedProduct
+        ? normalizeProductImages(updatedProduct)
+        : updatedProduct,
     });
   } catch (error) {
     console.error(

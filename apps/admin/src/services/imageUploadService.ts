@@ -55,6 +55,12 @@ export async function uploadProductImage(
     );
   }
 
+  // Cloudinary returns a complete secure URL. Only legacy local uploads
+  // need the API host added in front of their relative /uploads path.
+  if (/^https?:\/\//i.test(result.data.imageUrl)) {
+    return result.data.imageUrl;
+  }
+
   return `${API_BASE_URL.replace(
     "/api/v1",
     "",

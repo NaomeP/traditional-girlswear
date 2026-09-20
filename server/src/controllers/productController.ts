@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../config/prisma";
+import {
+  normalizeProductImages,
+} from "../utils/imageUrl";
 
 export async function getProducts(
   _req: Request,
@@ -30,7 +33,7 @@ export async function getProducts(
 
     res.status(200).json({
       success: true,
-      data: products,
+      data: products.map(normalizeProductImages),
     });
   } catch (error) {
     console.error("Failed to fetch products:", error);
@@ -88,7 +91,7 @@ export async function getProductBySlug(
 
     res.status(200).json({
       success: true,
-      data: product,
+      data: normalizeProductImages(product),
     });
   } catch (error) {
     console.error("Failed to fetch product:", error);
