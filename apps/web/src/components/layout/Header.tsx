@@ -82,7 +82,7 @@ function Header() {
           }}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMenuOpen}
-          className="rounded-full p-2 transition-all duration-200 hover:bg-black/5 active:scale-95 md:hidden"
+          className="rounded-full p-2 transition-all duration-200 hover:bg-black/5 active:scale-95 xl:hidden"
         >
           {isMenuOpen ? (
             <X size={22} strokeWidth={1.7} className="transition-transform duration-300" />
@@ -109,8 +109,25 @@ function Header() {
           </span>
         </Link>
 
+
+        <form onSubmit={handleSearch} className="mx-6 hidden max-w-2xl flex-1 lg:flex">
+          <label className="flex w-full items-center gap-2 rounded-lg border border-[#c99b4a]/40 bg-white px-3 py-2 shadow-sm focus-within:border-[#a56c25]">
+            <Search size={18} className="shrink-0 text-[#8b541d]" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search dresses, fabrics, colours and sizes"
+              aria-label="Search products"
+              className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-black/40"
+            />
+            <button type="submit" className="rounded-md bg-[#f6d77c] px-3 py-1.5 text-xs font-bold text-[#24160f] transition hover:bg-[#e9c45d]">
+              Search
+            </button>
+          </label>
+        </form>
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-10 md:flex">
+        <nav className="hidden items-center gap-7 xl:flex">
           <Link
             to="/"
             className="relative text-sm font-medium text-[#0B0B0B] transition-colors duration-300 hover:text-[#C9A227]"

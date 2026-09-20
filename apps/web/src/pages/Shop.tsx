@@ -51,6 +51,9 @@ export default function Shop() {
   const [filtersOpen, setFiltersOpen] =
     useState(false);
 
+  const [sort, setSort] =
+    useState("featured");
+
   /*
    * Read category from the URL.
    *
@@ -274,6 +277,23 @@ export default function Shop() {
       color,
     ]);
 
+  const visibleProducts = useMemo(() => {
+    const productsToSort = [...filteredProducts];
+
+    if (sort === "price-low") {
+      return productsToSort.sort((first, second) => first.price - second.price);
+    }
+
+    if (sort === "price-high") {
+      return productsToSort.sort((first, second) => second.price - first.price);
+    }
+
+    if (sort === "name") {
+      return productsToSort.sort((first, second) => first.name.localeCompare(second.name));
+    }
+
+    return productsToSort;
+  }, [filteredProducts, sort]);
   /*
    * Clear all filters.
    */
@@ -499,18 +519,24 @@ export default function Shop() {
         </div>
 
         {/* Product count */}
-        <div className="mb-6 flex items-center justify-between border-b border-black/10 pb-4">
+        <div className="mb-6 flex flex-col gap-3 border-b border-black/10 pb-4 min-[480px]:flex-row min-[480px]:items-center min-[480px]:justify-between">
           <p className="text-sm text-black/55">
-            {filteredProducts.length}{" "}
-            {filteredProducts.length ===
-            1
-              ? "product"
-              : "products"}
-          </p><p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#a56c25]">Curated traditional wear</p>
+            {visibleProducts.length}{" "}
+            {visibleProducts.length === 1 ? "product" : "products"}
+            <span className="ml-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#a56c25]">available</span>
+          </p>
+          <label className="flex items-center gap-2 text-sm font-medium text-[#24160f]">
+            Sort
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-w-0 flex-1 border border-black/15 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#c99b4a] min-[480px]:w-48">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name: A to Z</option>
+            </select>
+          </label>
         </div>
-
         {/* Products */}
-        {filteredProducts.length ===
+        {visibleProducts.length ===
         0 ? (
           <div className="border border-dashed border-[#c99b4a]/45 bg-[#f7f1e5] py-20 text-center">
             <h2 className="font-serif text-2xl font-semibold text-[#24160f]">
@@ -532,7 +558,7 @@ export default function Shop() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 min-[400px]:grid-cols-2 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8">
-            {filteredProducts.map(
+            {visibleProducts.map(
               (product) => (
                 <ProductCard
                   key={product.id}
