@@ -557,7 +557,7 @@ export default function Shop() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-x-4 gap-y-8 min-[400px]:grid-cols-2 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-8">
+          <div className="grid grid-cols-2 gap-px overflow-hidden border border-black/10 bg-black/10 sm:grid-cols-3 lg:grid-cols-4">
             {visibleProducts.map(
               (product) => (
                 <ProductCard

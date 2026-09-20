@@ -5,7 +5,7 @@ import {
   addWishlistItem,
   removeWishlistItem,
 } from "../../services/wishlistService";
-import { Check, Eye, Heart, X } from "lucide-react";
+import { Check, Eye, Heart, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Product } from "../../data/products";
@@ -55,6 +55,19 @@ const handleAddToCart = () => {
   setShowAddedMessage(true);
 };
 
+const handleQuickAdd = () => {
+  const firstAvailableVariant = product.variants.find(
+    (variant) => Number(variant.stock) > 0,
+  );
+
+  if (!firstAvailableVariant) {
+    openQuickView();
+    return;
+  }
+
+  addToCart(product, firstAvailableVariant.size, 1);
+  setShowAddedMessage(true);
+};
 const toggleWishlist = async () => {
   const variantId =
     product.variants.find((variant) => variant.stock > 0)?.id ??
@@ -79,114 +92,55 @@ const toggleWishlist = async () => {
 
   return (
     <>
-      <article className="group">
-        {/* Product Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-sm transition-all duration-500 group-hover:shadow-xl">
+      <article className="group flex h-full flex-col bg-white">
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
           <Link to={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
-            <img
-              src={product.image}
-              alt={product.name}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            />
+            <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
           </Link>
 
-          {/* Gradient Overlay on Hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B]/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          {(product.newArrival || product.bestseller) && (
+            <span className="absolute left-2 top-2 bg-[#24160f] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-[#fffaf1]">
+              {product.newArrival ? "New" : "Bestseller"}
+            </span>
+          )}
 
-          {/* Product Badges */}
-          <div className="absolute left-3 top-3 flex gap-2 sm:left-4 sm:top-4">
-            {product.newArrival && (
-              <span className="inline-block animate-pulse bg-[#0B0B0B] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#FFF9ED] shadow-lg">
-                ✨ New
-              </span>
-            )}
-
-            {product.bestseller && !product.newArrival && (
-              <span className="inline-block bg-gradient-to-r from-[#D4AF37] to-[#C9A227] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0B0B0B] shadow-lg">
-                ⭐ Bestseller
-              </span>
-            )}
-          </div>
-
-          {/* Wishlist Button */}
           <button
             type="button"
             onClick={toggleWishlist}
             aria-label={isInWishlist ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-            className={`absolute right-3 top-3 rounded-full p-3 shadow-lg backdrop-blur transition-all duration-300 active:scale-90 sm:right-4 sm:top-4 ${
-              isInWishlist
-                ? "bg-[#D4AF37] text-[#0B0B0B] hover:bg-[#C9A227]"
-                : "bg-[#FFF9ED]/95 text-[#0B0B0B] hover:bg-[#D4AF37] hover:text-white"
-            }`}
+            className={`absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full shadow-sm transition ${isInWishlist ? "bg-[#f6d77c] text-[#24160f]" : "bg-white/95 text-[#24160f] hover:bg-[#f6d77c]"}`}
           >
-            <Heart
-              size={18}
-              strokeWidth={1.7}
-              fill={isInWishlist ? "currentColor" : "none"}
-              className="transition-transform duration-300"
-            />
-          </button>
-
-          {/* Quick View Button */}
-          <button
-            type="button"
-            onClick={openQuickView}
-            className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 rounded-xl bg-[#FFF9ED]/95 px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#0B0B0B] backdrop-blur transition-all duration-500 hover:bg-[#D4AF37] md:translate-y-16 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 sm:left-4 sm:right-4"
-          >
-            <Eye size={16} strokeWidth={2} />
-            Quick View
+            <Heart size={17} strokeWidth={1.8} fill={isInWishlist ? "currentColor" : "none"} />
           </button>
         </div>
 
-        {/* Product Information */}
-        <div className="pt-5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C9A227] sm:text-xs">
-            {product.category}
-          </p>
-
-          <Link to={`/product/${product.slug}`} className="block">
-            <h2 className="mt-2.5 text-sm font-semibold leading-tight text-[#0B0B0B] transition-colors duration-300 hover:text-[#C9A227] sm:text-base">
-              {product.name}
-            </h2>
+        <div className="flex flex-1 flex-col px-3 pb-3 pt-3 sm:px-4 sm:pb-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#8b541d]">{product.category}</p>
+          <Link to={`/product/${product.slug}`} className="mt-1 block">
+            <h2 className="line-clamp-2 min-h-10 text-sm font-medium leading-5 text-[#17130e] hover:text-[#a56c25] sm:text-base">{product.name}</h2>
           </Link>
+          <p className="mt-2 text-xs text-black/55">{product.material} · {product.color}</p>
 
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-base font-bold text-[#0B0B0B] sm:text-lg">
-              ₹{product.price.toLocaleString("en-IN")}
-            </span>
-
-            {product.originalPrice && (
-              <span className="text-xs text-[#0B0B0B]/40 line-through">
-                ₹{product.originalPrice.toLocaleString("en-IN")}
-              </span>
-            )}
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="text-xl font-semibold tracking-tight text-[#17130e]">₹{product.price.toLocaleString("en-IN")}</span>
+            {product.originalPrice && <span className="text-xs text-black/45 line-through">₹{product.originalPrice.toLocaleString("en-IN")}</span>}
           </div>
 
           {product.originalPrice && (
-            <p className="mt-2 inline-block text-xs font-bold text-white bg-[#D4AF37] px-2 py-1 rounded">
-              {Math.round(
-                ((product.originalPrice - product.price) / product.originalPrice) * 100
-              )}
-              % OFF
+            <p className="mt-1 text-xs font-semibold text-[#a56c25]">
+              {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% off
             </p>
           )}
 
-          {/* Size Preview */}
-          <div className="mt-3 hidden gap-1.5 sm:flex">
-            {product.sizes.slice(0, 3).map((size) => (
-              <span
-                key={size}
-                className="text-[10px] font-medium px-2 py-1 bg-[#F7F3EA] rounded border border-black/8"
-              >
-                {size}
-              </span>
-            ))}
-            {product.sizes.length > 3 && (
-              <span className="text-[10px] font-medium px-2 py-1 bg-[#F7F3EA] rounded border border-black/8">
-                +{product.sizes.length - 3}
-              </span>
-            )}
+          <p className="mt-3 text-xs text-[#3c3329]"><span className="font-semibold">Free delivery</span> on eligible orders</p>
+
+          <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+            <button type="button" onClick={handleQuickAdd} className="flex min-h-10 items-center justify-center gap-1.5 rounded-full bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] active:scale-[0.98]">
+              <ShoppingBag size={16} /> Add to cart
+            </button>
+            <button type="button" onClick={openQuickView} aria-label={`Choose size for ${product.name}`} className="rounded-full border border-black/15 px-3 text-xs font-semibold text-[#24160f] hover:border-[#a56c25]">
+              <Eye size={17} />
+            </button>
           </div>
         </div>
       </article>
