@@ -61,6 +61,9 @@ export type Product = {
 };
 
 export type ProductVariantInput = {
+  // Existing variants keep their database ID when an admin edits a product.
+  // This lets the API update them in place without breaking past orders.
+  id?: string;
   size: string;
   color: string;
   sku: string;

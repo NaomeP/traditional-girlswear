@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const variantSchema = z.object({
+  id: z.string().cuid().optional(),
   size: z.string().trim().min(1, "Size is required").max(50),
   color: z.string().trim().min(1, "Color is required").max(50),
   sku: z.string().trim().min(1, "Variant SKU is required").max(100),

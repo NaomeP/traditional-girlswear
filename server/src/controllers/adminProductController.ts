@@ -418,55 +418,6 @@ export async function updateAdminProduct(
       }
     }
 
-    const variantsChanged =
-      data.variants !== undefined &&
-      (
-        data.variants.length !==
-          existingProduct.variants.length ||
-        data.variants.some((variant) => {
-          const existingVariant =
-            existingProduct.variants.find(
-              (candidate) =>
-                candidate.sku === variant.sku,
-            );
-
-          return (
-            !existingVariant ||
-            existingVariant.size !== variant.size ||
-            existingVariant.color !== variant.color ||
-            Number(existingVariant.price) !==
-              variant.price ||
-            existingVariant.stock !== variant.stock
-          );
-        })
-      );
-
-    if (variantsChanged) {
-      const hasOrderHistory =
-        await prisma.orderItem.findFirst({
-          where: {
-            variantId: {
-              in: existingProduct.variants.map(
-                (variant) => variant.id,
-              ),
-            },
-          },
-          select: {
-            id: true,
-          },
-        });
-
-      if (hasOrderHistory) {
-        res.status(409).json({
-          success: false,
-          message:
-            "Products with order history cannot have their variants changed",
-        });
-
-        return;
-      }
-    }
-
     const updatedProduct =
       await prisma.$transaction(async (tx) => {
         const product =
@@ -559,25 +510,78 @@ export async function updateAdminProduct(
           }
         }
 
-        if (variantsChanged && data.variants !== undefined) {
-          await tx.productVariant.deleteMany({
-            where: {
-              productId,
-            },
-          });
+        if (data.variants !== undefined) {
+          const existingVariantsById = new Map(
+            existingProduct.variants.map((variant) => [
+              variant.id,
+              variant,
+            ]),
+          );
+          const retainedVariantIds = new Set<string>();
 
-          await tx.productVariant.createMany({
-            data: data.variants.map(
-              (variant) => ({
-                productId,
-                size: variant.size,
-                color: variant.color,
-                sku: variant.sku,
-                price: variant.price,
-                stock: variant.stock,
-              }),
-            ),
-          });
+          for (const variant of data.variants) {
+            if (variant.id) {
+              if (!existingVariantsById.has(variant.id)) {
+                throw new Error("Variant does not belong to this product");
+              }
+
+              retainedVariantIds.add(variant.id);
+              await tx.productVariant.update({
+                where: { id: variant.id },
+                data: {
+                  size: variant.size,
+                  color: variant.color,
+                  sku: variant.sku,
+                  price: variant.price,
+                  stock: variant.stock,
+                },
+              });
+            } else {
+              await tx.productVariant.create({
+                data: {
+                  productId,
+                  size: variant.size,
+                  color: variant.color,
+                  sku: variant.sku,
+                  price: variant.price,
+                  stock: variant.stock,
+                },
+              });
+            }
+          }
+
+          const removedVariantIds = existingProduct.variants
+            .filter((variant) => !retainedVariantIds.has(variant.id))
+            .map((variant) => variant.id);
+
+          if (removedVariantIds.length > 0) {
+            const orderedVariants = await tx.orderItem.findMany({
+              where: { variantId: { in: removedVariantIds } },
+              select: { variantId: true },
+            });
+            const orderedVariantIds = new Set(
+              orderedVariants.map((item) => item.variantId),
+            );
+            const deletableVariantIds = removedVariantIds.filter(
+              (id) => !orderedVariantIds.has(id),
+            );
+
+            // Order items retain a required relation to their original
+            // variant. Retire removed historical variants by setting stock to
+            // zero, while safely deleting variants never used in an order.
+            if (orderedVariantIds.size > 0) {
+              await tx.productVariant.updateMany({
+                where: { id: { in: [...orderedVariantIds] } },
+                data: { stock: 0 },
+              });
+            }
+
+            if (deletableVariantIds.length > 0) {
+              await tx.productVariant.deleteMany({
+                where: { id: { in: deletableVariantIds } },
+              });
+            }
+          }
         }
 
         return tx.product.findUnique({

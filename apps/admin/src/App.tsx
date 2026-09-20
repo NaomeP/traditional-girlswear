@@ -1026,6 +1026,7 @@ const [orderSearch, setOrderSearch] = useState("");
       variants:
         product.variants.map(
           (variant) => ({
+            id: variant.id,
             size:
               variant.size,
             color:
