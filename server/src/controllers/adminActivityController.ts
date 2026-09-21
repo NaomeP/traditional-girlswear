@@ -24,6 +24,7 @@ export async function getAdminRecentActivity(
         orderBy: { updatedAt: "desc" },
         include: {
           user: { select: { name: true, email: true } },
+          address: { select: { fullName: true } },
           items: { select: { productName: true, quantity: true } },
         },
       }),
@@ -42,7 +43,9 @@ export async function getAdminRecentActivity(
         .map((item) => `${item.productName} ×${item.quantity}`)
         .join(", ");
       const base = {
-        customerName: order.user.name,
+        // An order is fulfilled to the recipient recorded on its delivery address.
+        // Use that current order contact rather than an account display name.
+        customerName: order.address.fullName || order.user.name,
         customerEmail: order.user.email,
         orderNumber: order.orderNumber,
         amount: Number(order.total),
@@ -119,4 +122,3 @@ export async function getAdminRecentActivity(
     res.status(500).json({ success: false, message: "Failed to load recent activity" });
   }
 }
-
