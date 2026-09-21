@@ -1,5 +1,5 @@
 
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
 
@@ -18,8 +18,6 @@ function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [hoveredProduct, setHoveredProduct] =
-    useState<string | null>(null);
 
   const [wishlistVariantIds, setWishlistVariantIds] =
     useState<Set<string>>(new Set());
@@ -192,7 +190,7 @@ function FeaturedProducts() {
               Featured Collection
             </p>
 
-            <h2 className="mt-4 text-3xl font-black tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl lg:text-5xl">
               Little looks,
               <br />
               timeless charm
@@ -218,10 +216,14 @@ function FeaturedProducts() {
         </div>
 
         {loading && (
-          <div className="py-16 text-center">
-            <p className="text-sm text-[#0B0B0B]/60">
-              Loading featured products...
-            </p>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="aspect-[3/4] rounded-2xl bg-[#f0e8d8]" />
+                <div className="mt-4 h-3 w-20 rounded bg-[#eadfca]" />
+                <div className="mt-3 h-5 w-3/4 rounded bg-[#eadfca]" />
+              </div>
+            ))}
           </div>
         )}
 
@@ -256,7 +258,7 @@ function FeaturedProducts() {
           !error &&
           products.length > 0 && (
             <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-              {products.map((product, index) => {
+              {products.map((product) => {
                 const primaryImage =
                   product.images.find(
                     (image) => image.isPrimary,
@@ -283,15 +285,6 @@ function FeaturedProducts() {
                   <article
                     key={product.id}
                     className="group"
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                    }}
-                    onMouseEnter={() =>
-                      setHoveredProduct(product.id)
-                    }
-                    onMouseLeave={() =>
-                      setHoveredProduct(null)
-                    }
                   >
                     <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-md transition-all duration-500 group-hover:shadow-xl">
                       <Link
@@ -344,8 +337,8 @@ function FeaturedProducts() {
                         }
                         className={`absolute right-3 top-3 rounded-full p-2.5 shadow-lg transition-all sm:right-4 sm:top-4 ${
                           isWishlisted
-                            ? "bg-red-500 text-white hover:bg-red-600"
-                            : "bg-[#FFF9ED]/95 text-[#0B0B0B] hover:bg-[#D4AF37] hover:text-white"
+                            ? "bg-[#f6d77c] text-[#24160f]"
+                            : "bg-[#FFF9ED]/95 text-[#24160f] hover:bg-[#f6d77c]"
                         } ${
                           isWishlistActionLoading
                             ? "cursor-wait opacity-60"
@@ -362,29 +355,6 @@ function FeaturedProducts() {
                           }
                         />
                       </button>
-
-                      {hoveredProduct ===
-                        product.id && (
-                        <div className="absolute bottom-3 left-3 right-3">
-                          <div className="flex items-center gap-1 rounded-lg bg-[#FFF9ED]/95 px-3 py-2 backdrop-blur">
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map(
-                                (_, i) => (
-                                  <Star
-                                    key={i}
-                                    size={14}
-                                    className="fill-[#D4AF37] text-[#D4AF37]"
-                                  />
-                                ),
-                              )}
-                            </div>
-
-                            <span className="ml-auto text-xs font-semibold">
-                              New
-                            </span>
-                          </div>
-                        </div>
-                      )}
                     </div>
 
                     <div className="mt-4 sm:mt-5">
@@ -399,24 +369,6 @@ function FeaturedProducts() {
                           {product.name}
                         </h3>
                       </Link>
-
-                      <div className="mt-2.5 flex items-center gap-1">
-                        <div className="flex items-center gap-0.5">
-                          {[...Array(5)].map(
-                            (_, i) => (
-                              <Star
-                                key={i}
-                                size={13}
-                                className="fill-[#D4AF37] text-[#D4AF37]"
-                              />
-                            ),
-                          )}
-                        </div>
-
-                        <span className="ml-1 text-xs text-[#0B0B0B]/60">
-                          5.0
-                        </span>
-                      </div>
 
                       <div className="mt-3 flex items-center gap-2">
                         <p className="text-base font-bold text-[#0B0B0B] sm:text-lg">

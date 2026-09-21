@@ -6,37 +6,43 @@ const ageGroups = [
     label: "Newborn",
     shortLabel: "NB",
     description: "First little traditions",
-    age: "0–3M",
+    age: "Newborn",
+    displayAge: "0–3M",
   },
   {
     label: "Tiny Tots",
     shortLabel: "01",
     description: "Soft everyday styles",
-    age: "0–2Y",
+    age: "0–2 Years",
+    displayAge: "0–2Y",
   },
   {
     label: "Little Ones",
     shortLabel: "02",
     description: "Playful festive looks",
-    age: "2–4Y",
+    age: "2–4 Years",
+    displayAge: "2–4Y",
   },
   {
     label: "Growing Girls",
     shortLabel: "03",
     description: "Beautiful celebration wear",
-    age: "4–6Y",
+    age: "4–6 Years",
+    displayAge: "4–6Y",
   },
   {
     label: "Young Girls",
     shortLabel: "04",
     description: "Elegant traditional styles",
-    age: "6–8Y",
+    age: "6–8 Years",
+    displayAge: "6–8Y",
   },
   {
     label: "Big Girls",
     shortLabel: "05",
     description: "Timeless festive elegance",
-    age: "8–10Y",
+    age: "8–10 Years",
+    displayAge: "8–10Y",
   },
 ];
 
@@ -51,7 +57,7 @@ function AgeSection() {
               Shop by Age
             </p>
 
-            <h2 className="mt-4 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-4 max-w-xl font-serif text-3xl font-semibold leading-tight tracking-tight text-[#24160f] sm:text-4xl lg:text-5xl">
               Beautiful traditions,
               <br />
               made for every age.
@@ -87,7 +93,7 @@ function AgeSection() {
                 </p>
 
                 <p className="mt-1 text-xs text-black/40 sm:hidden">
-                  {group.age}
+                  {group.displayAge}
                 </p>
               </div>
 
@@ -98,7 +104,7 @@ function AgeSection() {
                 </p>
 
                 <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C9A227]">
-                  {group.age}
+                  {group.displayAge}
                 </p>
               </div>
 

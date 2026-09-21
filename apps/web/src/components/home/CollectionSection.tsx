@@ -24,7 +24,7 @@ function CollectionSection() {
               Our Collections
             </p>
 
-            <h2 className="text-3xl font-black tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
+            <h2 className="font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl lg:text-5xl">
               Featured Collections
             </h2>
 
@@ -47,6 +47,16 @@ function CollectionSection() {
         </div>
 
         {/* Collection Cards Grid */}
+        {collections.length === 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={index}
+                className="aspect-[4/5] animate-pulse rounded-2xl bg-[#f0e8d8]"
+              />
+            ))}
+          </div>
+        ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {collections.map((collection, index) => (
             <Link
@@ -91,6 +101,7 @@ function CollectionSection() {
             </Link>
           ))}
         </div>
+        )}
 
         {/* Stats Section */}
       </div>

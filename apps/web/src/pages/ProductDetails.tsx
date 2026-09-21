@@ -400,7 +400,7 @@ function ProductDetails() {
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
             {/* Product image */}
             <div className="relative">
-              <div className="aspect-[3/4] overflow-hidden bg-[#F7F3EA]">
+              <div className="aspect-[3/4] overflow-hidden rounded-3xl bg-[#F7F3EA]">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -427,7 +427,7 @@ function ProductDetails() {
                 {product.category}
               </p>
 
-              <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[#0B0B0B] sm:text-4xl">
+              <h1 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl">
                 {product.name}
               </h1>
 
@@ -524,7 +524,7 @@ function ProductDetails() {
                       type="button"
                       onClick={() => setSelectedSize(size)}
                       aria-pressed={selectedSize === size}
-                      className={`min-h-12 border px-3 py-3 text-sm font-medium transition ${
+                      className={`min-h-12 rounded-xl border px-3 py-3 text-sm font-medium transition ${
                         selectedSize === size
                           ? "border-[#0B0B0B] bg-[#0B0B0B] text-[#FFF9ED]"
                           : "border-black/15 bg-transparent hover:border-[#C9A227]"
@@ -546,7 +546,7 @@ function ProductDetails() {
               <div className="mt-8">
                 <p className="text-sm font-semibold">Quantity</p>
 
-                <div className="mt-3 flex w-fit items-center border border-black/15">
+                <div className="mt-3 flex w-fit items-center rounded-full border border-black/15">
                   <button
                     type="button"
                     onClick={decreaseQuantity}
@@ -577,7 +577,7 @@ function ProductDetails() {
                   type="button"
                   onClick={handleAddToCart}
                   disabled={!selectedSize}
-                  className="flex-1 bg-[#0B0B0B] px-5 py-4 text-sm font-semibold text-[#FFF9ED] transition hover:bg-[#C9A227] hover:text-[#0B0B0B] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex-1 rounded-full bg-[#24160f] px-5 py-4 text-sm font-semibold text-[#fffaf1] transition hover:bg-[#3a2418] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Add to Cart
                 </button>

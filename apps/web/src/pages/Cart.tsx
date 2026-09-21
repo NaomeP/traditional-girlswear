@@ -24,10 +24,10 @@ function Cart() {
             Add something beautiful to your little one's wardrobe.
           </p>
 
-          <Link
-            to="/shop"
-            className="mt-7 inline-flex bg-[#0B0B0B] px-7 py-3.5 text-sm font-semibold text-[#FFF9ED] transition hover:bg-[#D4AF37] hover:text-[#0B0B0B]"
-          >
+            <Link
+              to="/shop"
+              className="mt-7 inline-flex rounded-full bg-[#24160f] px-7 py-3.5 text-sm font-semibold text-[#fffaf1] transition hover:bg-[#3a2418]"
+            >
             Continue Shopping
           </Link>
         </div>
@@ -43,7 +43,7 @@ function Cart() {
             Your Selection
           </p>
 
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="mt-2 font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
             Shopping Cart
           </h1>
         </div>
@@ -86,7 +86,7 @@ function Cart() {
                   </p>
 
                   <div className="mt-4 flex items-center justify-between gap-4">
-                    <div className="flex items-center border border-black/15">
+                    <div className="flex items-center rounded-full border border-black/15">
                       <button
                         type="button"
                         onClick={() =>
@@ -166,14 +166,14 @@ function Cart() {
 
             <Link
               to="/checkout"
-              className="mt-7 flex w-full items-center justify-center bg-[#0B0B0B] px-5 py-4 text-sm font-semibold text-[#FFF9ED] transition hover:bg-[#D4AF37] hover:text-[#0B0B0B]"
+              className="btn-primary mt-7 w-full"
             >
               Proceed to Checkout
             </Link>
 
             <Link
               to="/shop"
-              className="mt-3 flex w-full items-center justify-center border border-black/15 px-5 py-4 text-sm font-medium transition hover:border-[#C9A227]"
+              className="btn-ghost mt-3 w-full"
             >
               Continue Shopping
             </Link>

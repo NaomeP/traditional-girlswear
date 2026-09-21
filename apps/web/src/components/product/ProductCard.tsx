@@ -46,6 +46,22 @@ function ProductCard({ product }: ProductCardProps) {
     return () => window.clearTimeout(timer);
   }, [showAddedMessage]);
 
+  useEffect(() => {
+    if (!isQuickViewOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeQuickView();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isQuickViewOpen]);
+
 const handleAddToCart = () => {
   if (!product || !selectedSize) {
     return;
@@ -92,14 +108,14 @@ const toggleWishlist = async () => {
 
   return (
     <>
-      <article className="group flex h-full flex-col bg-white transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(44,28,14,0.12)]">
+      <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#24160f]/8 bg-white shadow-[0_8px_24px_rgba(44,28,14,0.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(44,28,14,0.12)]">
         <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
           <Link to={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
             <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
           </Link>
 
           {(product.newArrival || product.bestseller) && (
-            <span className="absolute left-2 top-2 bg-[#24160f] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-[#fffaf1]">
+            <span className="absolute left-2 top-2 rounded-full bg-[#24160f] px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-[#fffaf1]">
               {product.newArrival ? "New" : "Bestseller"}
             </span>
           )}
@@ -195,7 +211,7 @@ const toggleWishlist = async () => {
                   {product.category}
                 </p>
 
-                <h2 className="mt-4 text-2xl font-bold tracking-tight text-[#0B0B0B] sm:text-3xl lg:text-4xl">
+            <h2 className="mt-4 font-serif text-2xl font-semibold tracking-tight text-[#24160f] sm:text-3xl lg:text-4xl">
                   {product.name}
                 </h2>
 

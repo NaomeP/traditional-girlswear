@@ -26,6 +26,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MyReturns from "./pages/MyReturns";
 import RequestReturn from "./pages/RequestReturn";
+import Help from "./pages/Help";
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -116,6 +117,7 @@ function App() {
           </Route>
 
           <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/help" element={<Help />} />
         </Route>
       </Routes>
     </BrowserRouter>

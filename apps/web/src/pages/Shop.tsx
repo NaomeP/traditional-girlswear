@@ -75,6 +75,7 @@ export default function Shop() {
     }
 
     setSearch(searchParams.get("search") || "");
+    setAgeGroup(searchParams.get("age") || "All");
   }, [searchParams]);
 
   /*
@@ -312,7 +313,7 @@ export default function Shop() {
    */
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#fffaf1] px-4 py-16">
+      <div className="min-h-screen bg-[#fffaf1] px-4 py-16">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, index) => (
@@ -325,7 +326,7 @@ export default function Shop() {
             ))}
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -334,7 +335,7 @@ export default function Shop() {
    */
   if (error) {
     return (
-      <main className="min-h-screen bg-[#fffaf1] px-4 py-16">
+      <div className="min-h-screen bg-[#fffaf1] px-4 py-16">
         <div className="mx-auto max-w-xl border border-red-200 bg-white p-10 text-center shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b3533c]">Something went wrong</p>
           <h1 className="mt-3 text-2xl font-semibold text-[#24160f]">
@@ -344,12 +345,12 @@ export default function Shop() {
             {error}
           </p>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#f7f8f8]">
+    <div className="min-h-screen bg-[#fffaf1]">
       <div className="border-b border-[#24160f]/10 bg-[linear-gradient(115deg,#fff8e8,#f2e2bb)]">
         <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#a56c25]">The Nila collection</p>
@@ -400,7 +401,7 @@ export default function Shop() {
             </button>
           </div>
 
-          <button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen} className="mb-4 w-full border border-black/10 px-4 py-3 text-left text-sm font-semibold text-[#24160f] sm:hidden">
+          <button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen} className="mb-4 w-full rounded-xl border border-black/10 px-4 py-3 text-left text-sm font-semibold text-[#24160f] sm:hidden">
             {filtersOpen ? "Hide filter options" : "Show filter options"}
           </button>
 
@@ -413,7 +414,7 @@ export default function Shop() {
                   event.target.value,
                 )
               }
-              className="border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
+              className="rounded-xl border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
             >
               {categories.map(
                 (item) => (
@@ -435,7 +436,7 @@ export default function Shop() {
                   event.target.value,
                 )
               }
-              className="border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
+              className="rounded-xl border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
             >
               {ageGroups.map(
                 (item) => (
@@ -457,7 +458,7 @@ export default function Shop() {
                   event.target.value,
                 )
               }
-              className="border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
+              className="rounded-xl border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
             >
               {sizes.map(
                 (item) => (
@@ -479,7 +480,7 @@ export default function Shop() {
                   event.target.value,
                 )
               }
-              className="border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
+              className="rounded-xl border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
             >
               {materials.map(
                 (item) => (
@@ -501,7 +502,7 @@ export default function Shop() {
                   event.target.value,
                 )
               }
-              className="border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
+              className="rounded-xl border border-black/10 bg-[#fffaf1] px-3 py-3 text-sm text-[#24160f] outline-none focus:border-[#c99b4a]"
             >
               {colors.map(
                 (item) => (
@@ -526,7 +527,7 @@ export default function Shop() {
           </p>
           <label className="flex items-center gap-2 text-sm font-medium text-[#24160f]">
             Sort
-            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-w-0 flex-1 border border-black/15 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#c99b4a] min-[480px]:w-48">
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-w-0 flex-1 rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#c99b4a] min-[480px]:w-48">
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
@@ -537,7 +538,7 @@ export default function Shop() {
         {/* Products */}
         {visibleProducts.length ===
         0 ? (
-          <div className="border border-dashed border-[#c99b4a]/45 bg-[#f7f1e5] py-20 text-center">
+          <div className="rounded-3xl border border-dashed border-[#c99b4a]/45 bg-[#f7f1e5] py-20 text-center">
             <h2 className="font-serif text-2xl font-semibold text-[#24160f]">
               No products found
             </h2>
@@ -550,13 +551,13 @@ export default function Shop() {
             <button
               type="button"
               onClick={clearFilters}
-              className="mt-6 bg-[#24160f] px-6 py-3 text-sm font-semibold text-[#fffaf1] transition hover:bg-[#a56c25]"
+              className="btn-primary mt-6"
             >
               Clear filters
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-black/10 bg-black/10 shadow-[0_12px_35px_rgba(55,35,20,0.08)] sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
             {visibleProducts.map(
               (product) => (
                 <ProductCard
@@ -568,6 +569,6 @@ export default function Shop() {
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }

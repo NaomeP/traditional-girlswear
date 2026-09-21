@@ -167,7 +167,7 @@ function Account() {
             My Account
           </p>
 
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="mt-3 font-serif text-3xl font-semibold tracking-tight sm:text-4xl">
             Welcome, {user.name}
           </h1>
 
@@ -188,7 +188,7 @@ function Account() {
               <Link
                 key={card.title}
                 to={card.href}
-                className="group border border-black/10 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-[#C9A227]/50"
+                className="group rounded-2xl border border-black/10 bg-white p-6 transition duration-200 hover:-translate-y-0.5 hover:border-[#C9A227]/50 hover:shadow-[0_12px_28px_rgba(55,35,20,0.08)]"
               >
                 <div className="flex items-start justify-between">
                   <Icon
@@ -219,7 +219,7 @@ function Account() {
             type="button"
             onClick={handleLogout}
             disabled={loggingOut}
-            className="group border border-black/10 bg-white p-6 text-left transition duration-200 hover:border-red-200 disabled:cursor-not-allowed disabled:opacity-60"
+            className="group rounded-2xl border border-black/10 bg-white p-6 text-left transition duration-200 hover:border-red-200 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <div className="flex items-start justify-between">
               <LogOut
@@ -247,7 +247,7 @@ function Account() {
 
         {/* Profile */}
 
-        <div className="mt-10 border border-[#E5DDCC] bg-white">
+        <div className="mt-10 overflow-hidden rounded-3xl border border-[#E5DDCC] bg-white">
           <div className="border-b border-[#EEE7D8] px-6 py-5">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C9A227]">
               Profile

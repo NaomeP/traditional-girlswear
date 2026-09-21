@@ -7,7 +7,7 @@ function BrandStory() {
 
         {/* Our Story Image */}
         <div className="relative overflow-hidden">
-          <div className="aspect-[4/5] overflow-hidden bg-[#EDE7D9]">
+          <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-[#EDE7D9]">
             <img
               src="/images/story/our-story.jpg"
               alt="Our traditional girlswear story"
@@ -25,7 +25,7 @@ function BrandStory() {
             Our Story
           </p>
 
-          <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-serif text-3xl font-semibold leading-tight tracking-tight text-[#0B0B0B] sm:text-4xl lg:text-5xl">
             Tradition made for
             <span className="block text-[#C9A227]">
               little moments.
