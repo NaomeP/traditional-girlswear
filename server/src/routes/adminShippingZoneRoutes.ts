@@ -1,0 +1,2 @@
+import { Router } from "express"; import { requireAuth } from "../middleware/authMiddleware"; import { requireAdmin } from "../middleware/roleMiddleware"; import { createShippingZone, deleteShippingZone, listShippingZones, updateShippingZone } from "../controllers/adminShippingZoneController";
+const router=Router();router.use(requireAuth,requireAdmin);router.get("/",listShippingZones);router.post("/",createShippingZone);router.put("/:id",updateShippingZone);router.delete("/:id",deleteShippingZone);export default router;

@@ -10,6 +10,10 @@ import adminDashboardRoutes from "./routes/adminDashboardRoutes";
 //import adminCategoryManagementRoutes from "./routes/adminCategoryManagementRoutes";
 //import { router as adminDashboardRoutes } from "./routes/adminDashboardRoutes";
 import adminOrderRoutes from "./routes/adminOrderRoutes";
+import adminCustomerRoutes from "./routes/adminCustomerRoutes";
+import adminShippingRoutes from "./routes/adminShippingRoutes";
+import adminShippingZoneRoutes from "./routes/adminShippingZoneRoutes";
+import siteContentRoutes from "./routes/siteContentRoutes";
 import {
   AuthenticatedRequest,
   requireAuth,
@@ -241,4 +245,8 @@ console.log(
 
 
 app.use("/api/v1/admin/orders", adminOrderRoutes);
+app.use("/api/v1/admin/customers", adminCustomerRoutes);
+app.use("/api/v1/admin/shipping", adminShippingRoutes);
+app.use("/api/v1/admin/shipping-zones", adminShippingZoneRoutes);
+app.use("/api/v1/content", siteContentRoutes);
 export default app;

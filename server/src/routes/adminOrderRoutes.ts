@@ -7,6 +7,7 @@ import {
   getAdminOrders,
   updateAdminOrderStatus,
   updateAdminShipment,
+  getAdminOrderInvoice,
 } from "../controllers/adminOrderController";
 
 import {
@@ -30,6 +31,8 @@ router.get(
   getAdminOrders,
 );
 
+router.get("/:id/invoice", getAdminOrderInvoice);
+
 // Existing order status update
 router.put(
   "/:id/status",
@@ -40,6 +43,7 @@ router.put(
 router.put(
   "/:id/shipment",
   updateAdminShipment,
+  getAdminOrderInvoice,
 );
 
 console.log("ADMIN ORDER ROUTES LOADED");

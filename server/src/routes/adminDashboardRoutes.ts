@@ -15,6 +15,7 @@ import {
   getAdminDashboardOrderStats,
   getAdminDashboardCategorySales,
   getAdminDashboardBestSellers,
+  getAdminAnalytics,
 } from "../controllers/adminDashboardController";
 
 const router = Router();
@@ -47,9 +48,10 @@ router.get(
 router.get(
   "/best-sellers",
   getAdminDashboardBestSellers,
+  getAdminAnalytics,
 );
 
+router.get("/analytics", getAdminAnalytics);
 router.get("/activity", getAdminRecentActivity);
 
 export default router;
-

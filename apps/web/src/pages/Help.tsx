@@ -1,5 +1,6 @@
 import { Mail, MapPin, RefreshCcw, Ruler, Truck } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 import { useLocation } from "react-router";
 
 const sections = [
@@ -29,7 +30,19 @@ const sections = [
   },
 ];
 
+type HelpContent = { shipping?: string; returns?: string; "size-guide"?: string; contact?: string };
+
 function Help() {
+  const [content, setContent] = useState<HelpContent>({});
+  useEffect(() => {
+    void (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/content/help`);
+        const result = await response.json();
+        if (response.ok && result.success) setContent(result.data);
+      } catch { /* static help remains available */ }
+    })();
+  }, []);
   const location = useLocation();
 
   useEffect(() => {
@@ -64,7 +77,7 @@ function Help() {
                 </span>
                 <div>
                   <h2 className="font-serif text-2xl font-semibold text-[#24160f]">{title}</h2>
-                  <p className="mt-2 text-sm leading-7 text-black/65">{body}</p>
+                  <p className="mt-2 text-sm leading-7 text-black/65">{content[id as keyof HelpContent] || body}</p>
                 </div>
               </div>
             </article>

@@ -1,0 +1,6 @@
+import { Request, Response } from "express";
+import prisma from "../config/prisma";
+
+async function settings() { return prisma.storeSettings.upsert({ where: { id: "store" }, update: {}, create: {} }); }
+export async function getShippingSettings(_req: Request, res: Response) { try { res.json({ success: true, data: await settings() }); } catch { res.status(500).json({ success: false, message: "Failed to load shipping settings" }); } }
+export async function updateShippingSettings(req: Request, res: Response) { try { const { flatShippingFee, freeShippingThreshold, standardDeliveryDays } = req.body; if (![flatShippingFee, freeShippingThreshold, standardDeliveryDays].every(Number.isFinite) || flatShippingFee < 0 || freeShippingThreshold < 0 || !Number.isInteger(standardDeliveryDays) || standardDeliveryDays < 1) { res.status(400).json({ success: false, message: "Provide valid shipping settings" }); return; } const data = await prisma.storeSettings.upsert({ where: { id: "store" }, update: { flatShippingFee, freeShippingThreshold, standardDeliveryDays }, create: { id: "store", flatShippingFee, freeShippingThreshold, standardDeliveryDays } }); res.json({ success: true, data }); } catch { res.status(500).json({ success: false, message: "Failed to save shipping settings" }); } }

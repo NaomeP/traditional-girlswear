@@ -680,3 +680,16 @@ export async function getAdminDashboardBestSellers(
     });
   }
 }
+export async function getAdminAnalytics(req: Request, res: Response): Promise<void> {
+  try {
+    const { fromDate, toDate } = getDateRange(req);
+    const where = { ...getOrderDateWhere(fromDate, toDate), paymentStatus: "PAID" as const };
+    const orders = await prisma.order.findMany({ where, select: { userId: true, total: true } });
+    const revenue = orders.reduce((sum, order) => sum + decimalToNumber(order.total), 0);
+    const customers = new Set(orders.map((order) => order.userId));
+    const allCustomerOrderCounts = await prisma.order.groupBy({ by: ["userId"], where: { paymentStatus: "PAID" }, _count: { _all: true } });
+    const countByCustomer = new Map(allCustomerOrderCounts.map((entry) => [entry.userId, entry._count._all]));
+    const returningCustomers = [...customers].filter((id) => (countByCustomer.get(id) ?? 0) > 1).length;
+    res.json({ success: true, data: { revenue, paidOrders: orders.length, averageOrderValue: orders.length ? revenue / orders.length : 0, purchasingCustomers: customers.size, newCustomers: customers.size - returningCustomers, returningCustomers } });
+  } catch (error) { console.error("Failed to load analytics:", error); res.status(400).json({ success: false, message: "Failed to load analytics" }); }
+}

@@ -1,8 +1,23 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { API_BASE_URL } from "../../config/api";
 import { ArrowRight } from "lucide-react";
 import heroImage from "../../assets/hero.png";
 
+type HeroContent = { eyebrow: string; title: string; description: string; ctaLabel: string; ctaHref: string };
+const defaultContent: HeroContent = { eyebrow: "Tradition · Comfort · Elegance", title: "Little girls, timeless traditions.", description: "Discover beautiful South Indian traditional wear crafted for little girls, from everyday cottons to festive pattu styles.", ctaLabel: "Shop Collection", ctaHref: "/shop" };
+
 function Hero() {
+  const [content, setContent] = useState<HeroContent>(defaultContent);
+  useEffect(() => {
+    void (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/content/hero`);
+        const result = await response.json();
+        if (response.ok && result.success) setContent({ ...defaultContent, ...result.data });
+      } catch { /* retain local defaults when the CMS is unavailable */ }
+    })();
+  }, []);
   return (
     <section className="relative overflow-hidden bg-[#24160f]">
       <div className="relative min-h-[520px] w-full sm:min-h-[580px] lg:min-h-[620px]">
@@ -29,7 +44,7 @@ function Hero() {
 
             {/* Eyebrow */}
             <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f6d77c] sm:text-xs">
-              Tradition · Comfort · Elegance
+              {content.eyebrow}
             </p>
 
             {/* Heading */}
@@ -50,10 +65,10 @@ function Hero() {
             {/* Primary actions */}
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
-                to="/shop"
+                to={content.ctaHref}
                 className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#f6d77c] px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#24160f] shadow-[0_8px_24px_rgba(246,215,124,0.18)] transition hover:bg-[#fff0bf]"
               >
-                Shop Collection
+                {content.ctaLabel}
 
                 <ArrowRight
                   size={15}

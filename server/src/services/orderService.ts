@@ -155,10 +155,14 @@ export async function applyCoupon(
       subtotal,
     );
 
-    const shippingFee =
-      subtotal.greaterThanOrEqualTo(2000)
-        ? new Prisma.Decimal(0)
-        : new Prisma.Decimal(79);
+    const shippingSettings = await tx.storeSettings.upsert({
+      where: { id: "store" },
+      update: {},
+      create: {},
+    });
+    const shippingFee = subtotal.greaterThanOrEqualTo(shippingSettings.freeShippingThreshold)
+      ? new Prisma.Decimal(0)
+      : shippingSettings.flatShippingFee;
 
     const total = subtotal
       .sub(discount)
@@ -307,10 +311,17 @@ const orderItems: {
       });
     }
 
-    const shippingFee =
-      subtotal.greaterThanOrEqualTo(2000)
-        ? new Prisma.Decimal(0)
-        : new Prisma.Decimal(79);
+    const shippingSettings = await tx.storeSettings.upsert({
+      where: { id: "store" },
+      update: {},
+      create: {},
+    });
+    const shippingZone = await tx.shippingZone.findFirst({
+      where: { isActive: true, postalCodes: { has: address.postalCode } },
+    });
+    const shippingFee = subtotal.greaterThanOrEqualTo(shippingSettings.freeShippingThreshold)
+      ? new Prisma.Decimal(0)
+      : shippingZone?.shippingFee ?? shippingSettings.flatShippingFee;
 
     const total = subtotal
       .sub(discount)
