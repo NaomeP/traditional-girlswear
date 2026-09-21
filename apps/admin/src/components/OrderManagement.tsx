@@ -1226,7 +1226,7 @@ export default function OrderManagement() {
                   <p className="font-semibold">
                     {
                       selectedOrder
-                        .address.name
+                        .address.fullName
                     }
                   </p>
 
@@ -1263,7 +1263,7 @@ export default function OrderManagement() {
                     -{" "}
                     {
                       selectedOrder
-                        .address.pincode
+                        .address.postalCode
                     }
                   </p>
 

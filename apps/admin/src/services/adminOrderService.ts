@@ -45,13 +45,15 @@ export type AdminOrder = {
   };
 
   address: {
-    name: string;
+    fullName: string;
     mobile: string;
     addressLine1: string;
     addressLine2: string | null;
+    landmark: string | null;
     city: string;
     state: string;
-    pincode: string;
+    postalCode: string;
+    country: string;
   };
 
   items: {

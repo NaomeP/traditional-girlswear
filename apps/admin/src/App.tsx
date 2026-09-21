@@ -394,6 +394,14 @@ const [orderSearch, setOrderSearch] = useState("");
     void loadData();
   }, []);
 
+  // Always request current customer information when the order view opens.
+  // The admin shell can stay mounted while a customer updates their profile.
+  useEffect(() => {
+    if (activePage === "orders") {
+      void loadOrders();
+    }
+  }, [activePage]);
+
   function openCategoryModal(): void {
     setEditingCategory(null);
     setCategoryForm({
@@ -1870,7 +1878,7 @@ const [orderSearch, setOrderSearch] = useState("");
           )}
         </section>
 
-        <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+        <section className="mt-6 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm sm:mt-8">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               
@@ -2060,7 +2068,7 @@ const [orderSearch, setOrderSearch] = useState("");
         </>
         )}
         {activePage === "categories" && (
-          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+          <section className="mt-6 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm sm:mt-8">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -2181,8 +2189,8 @@ const [orderSearch, setOrderSearch] = useState("");
         </section>
         )}
         {activePage === "orders" && (
-          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
-          <div className="border-b border-black/10 p-5">
+          <section className="mt-6 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm sm:mt-8">
+          <div className="border-b border-black/10 p-4 sm:p-6">
             <h3 className="text-lg font-semibold">
               Customer Orders
             </h3>
@@ -2191,7 +2199,7 @@ const [orderSearch, setOrderSearch] = useState("");
               View customer information, ordered products,
               payment and delivery details.
             </p>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
   <input
     type="search"
     value={orderSearch}
@@ -2200,8 +2208,15 @@ const [orderSearch, setOrderSearch] = useState("");
   setOrderSearch(event.target.value);
 }}
     placeholder="Search orders by order ID, customer name, email or mobile"
-    className="w-full border border-black/15 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#D4AF37] sm:max-w-xl"
+    className="w-full rounded-lg border border-black/15 bg-white px-4 py-3 text-sm outline-none focus:border-[#D4AF37] sm:max-w-xl"
   />
+  <button
+    type="button"
+    onClick={() => void loadOrders()}
+    className="shrink-0 rounded-lg border border-[#C9A227]/45 px-4 py-3 text-sm font-semibold text-[#6f491c] transition hover:bg-[#fff8e8]"
+  >
+    Refresh orders
+  </button>
 </div>
           </div>
 
@@ -2210,7 +2225,7 @@ const [orderSearch, setOrderSearch] = useState("");
               No customer orders yet.
             </div>
           ) : (
-            <div className="space-y-4 p-5">
+            <div className="space-y-4 p-4 sm:p-6">
             <p className="mb-3 text-xs text-black/50">
   Showing {orders.filter((order) => {
     const search = orderSearch.trim().toLowerCase();
@@ -2274,7 +2289,7 @@ const [orderSearch, setOrderSearch] = useState("");
                 
                 <div
                   key={order.id}
-                  className="border border-black/10 bg-[#FFF9ED] p-5"
+                  className="rounded-xl border border-black/10 bg-[#FFF9ED] p-4 shadow-sm sm:p-5"
                 >
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
@@ -2293,7 +2308,7 @@ const [orderSearch, setOrderSearch] = useState("");
                       </p>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-2 sm:gap-3">
                       <select
                         value={order.status}
                         onChange={(event) =>
@@ -2326,7 +2341,7 @@ const [orderSearch, setOrderSearch] = useState("");
                     </div>
                   </div>
 
-                  <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="mt-5 grid gap-5 border-t border-black/10 pt-5 md:grid-cols-2 lg:grid-cols-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-black/45">
                         Customer
@@ -2352,7 +2367,7 @@ const [orderSearch, setOrderSearch] = useState("");
                       </p>
 
                       <p className="mt-2 text-sm">
-                        {order.address.name}
+                        {order.address.fullName}
                       </p>
 
                       <p className="text-sm">
@@ -2371,7 +2386,7 @@ const [orderSearch, setOrderSearch] = useState("");
                       </p>
 
                       <p className="text-sm">
-                        {order.address.pincode}
+                        {order.address.postalCode}
                       </p>
 
                       <p className="mt-1 text-sm text-black/60">
@@ -2627,7 +2642,7 @@ setDeliveredAt(
         </section>
         )}
         {activePage === "coupons" && (
-          <section className="mt-8 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
+          <section className="mt-6 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm sm:mt-8">
           <div className="flex flex-col gap-4 border-b border-black/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold">
@@ -4229,5 +4244,3 @@ setDeliveredAt(
 }
 
 export default App;
-
-
