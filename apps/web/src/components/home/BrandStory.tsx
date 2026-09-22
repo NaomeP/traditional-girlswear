@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 function BrandStory() {
   return (
-    <section className="bg-[#F7F3EA] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section className="bg-[#F7F3EA] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
       <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
 
         {/* Our Story Image */}

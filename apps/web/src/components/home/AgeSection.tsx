@@ -48,7 +48,7 @@ const ageGroups = [
 
 function AgeSection() {
   return (
-    <section className="bg-[#FFF9ED] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section className="bg-[#FFF9ED] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">

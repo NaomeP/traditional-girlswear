@@ -20,7 +20,7 @@ function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden bg-[#24160f]">
-      <div className="relative min-h-[520px] w-full sm:min-h-[580px] lg:min-h-[620px]">
+      <div className="relative min-h-[400px] w-full sm:min-h-[450px] lg:min-h-[500px]">
         {/* Hero Image */}
         <img
           src={heroImage}
@@ -35,7 +35,7 @@ function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B0B0B]/45 to-transparent" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[460px] max-w-7xl items-center px-5 py-14 sm:min-h-[520px] sm:px-8 lg:min-h-[560px] lg:px-12">
+        <div className="relative z-10 mx-auto flex min-h-[400px] max-w-7xl items-center px-5 py-10 sm:min-h-[450px] sm:px-8 sm:py-12 lg:min-h-[500px] lg:px-12">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
@@ -43,12 +43,12 @@ function Hero() {
             </div>
 
             {/* Eyebrow */}
-            <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f6d77c] sm:text-xs">
+            <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f6d77c] sm:text-xs">
               {content.eyebrow}
             </p>
 
             {/* Heading */}
-            <h1 className="mt-4 font-serif text-4xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-serif text-3xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-5xl lg:text-6xl">
               Little girls,
               <span className="mt-1 block text-[#f6d77c]">
                 timeless traditions.
@@ -56,14 +56,14 @@ function Hero() {
             </h1>
 
             {/* Description */}
-            <p className="mt-5 max-w-md text-sm leading-7 text-[#FFF9ED]/75 sm:text-base">
+            <p className="mt-3 max-w-md text-sm leading-6 text-[#FFF9ED]/75 sm:mt-5 sm:leading-7 sm:text-base">
               Discover beautiful South Indian traditional wear
               crafted for little girls, from everyday cottons to
               festive pattu styles.
             </p>
 
             {/* Primary actions */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               <Link
                 to={content.ctaHref}
                 className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#f6d77c] px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#24160f] shadow-[0_8px_24px_rgba(246,215,124,0.18)] transition hover:bg-[#fff0bf]"
@@ -90,7 +90,7 @@ function Hero() {
             </div>
 
             {/* Trust indicators */}
-            <div className="mt-8 flex items-center gap-6 border-t border-[#FFF9ED]/15 pt-5">
+            <div className="mt-5 flex items-center gap-6 border-t border-[#FFF9ED]/15 pt-4">
               <div>
                 <p className="text-base font-semibold text-[#D4AF37]">
                   100+

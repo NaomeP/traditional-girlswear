@@ -178,25 +178,25 @@ function FeaturedProducts() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
       <div className="absolute -right-20 -top-40 h-96 w-96 rounded-full bg-[#D4AF37]/8 blur-3xl" />
 
       <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#C9A227]/8 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="mb-16 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="mb-7 flex flex-col gap-4 sm:mb-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#C9A227]">
               Featured Collection
             </p>
 
-            <h2 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl lg:text-5xl">
+            <h2 className="mt-3 font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl">
               Little looks,
               <br />
               timeless charm
             </h2>
 
-            <p className="mt-5 max-w-xl text-sm leading-7 text-[#0B0B0B]/65 sm:text-base">
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#0B0B0B]/65 sm:text-base sm:leading-7">
               Explore our carefully selected traditional
               styles, created for celebrations and
               cherished moments.
@@ -216,10 +216,10 @@ function FeaturedProducts() {
         </div>
 
         {loading && (
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="aspect-[3/4] rounded-2xl bg-[#f0e8d8]" />
+                <div className="aspect-[4/5] rounded-xl bg-[#f0e8d8] sm:aspect-[3/4] sm:rounded-2xl" />
                 <div className="mt-4 h-3 w-20 rounded bg-[#eadfca]" />
                 <div className="mt-3 h-5 w-3/4 rounded bg-[#eadfca]" />
               </div>
@@ -257,7 +257,7 @@ function FeaturedProducts() {
         {!loading &&
           !error &&
           products.length > 0 && (
-            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {products.map((product) => {
                 const primaryImage =
                   product.images.find(
@@ -286,7 +286,7 @@ function FeaturedProducts() {
                     key={product.id}
                     className="group"
                   >
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-md transition-all duration-500 group-hover:shadow-xl">
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-sm transition-all duration-500 group-hover:shadow-lg sm:aspect-[3/4] sm:rounded-2xl">
                       <Link
                         to={`/product/${product.slug}`}
                       >
@@ -357,7 +357,7 @@ function FeaturedProducts() {
                       </button>
                     </div>
 
-                    <div className="mt-4 sm:mt-5">
+                    <div className="mt-3 sm:mt-4">
                       <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#C9A227] sm:text-xs">
                         {product.category.name}
                       </p>
@@ -365,12 +365,12 @@ function FeaturedProducts() {
                       <Link
                         to={`/product/${product.slug}`}
                       >
-                        <h3 className="mt-2.5 line-clamp-2 text-sm font-semibold leading-tight text-[#0B0B0B] transition-colors hover:text-[#C9A227] sm:text-base">
+                        <h3 className="mt-1.5 line-clamp-2 text-sm font-semibold leading-tight text-[#0B0B0B] transition-colors hover:text-[#C9A227] sm:mt-2.5 sm:text-base">
                           {product.name}
                         </h3>
                       </Link>
 
-                      <div className="mt-3 flex items-center gap-2">
+                      <div className="mt-2 flex items-center gap-2 sm:mt-3">
                         <p className="text-base font-bold text-[#0B0B0B] sm:text-lg">
                           ₹
                           {price.toLocaleString(

@@ -10,7 +10,7 @@ function CollectionSection() {
   const [collections, setCollections] = useState<Collection[]>([]);
   useEffect(() => { void fetch(`${API_BASE_URL}/categories`).then((response) => response.json()).then((result) => { if (result.success) setCollections(result.data); }).catch(console.error); }, []);
   return (
-    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       {/* Decorative Background Elements */}
       <div className="absolute right-0 top-20 h-80 w-80 rounded-full bg-[#D4AF37]/5 blur-3xl" />
 
@@ -18,7 +18,7 @@ function CollectionSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Section Heading */}
-        <div className="mb-8 flex flex-col justify-between gap-4 sm:mb-10 sm:flex-row sm:items-end">
+        <div className="mb-6 flex flex-col justify-between gap-3 sm:mb-8 sm:flex-row sm:items-end">
           <div className="max-w-lg">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.3em] text-[#C9A227] animate-in fade-in slide-in-from-left-4 duration-500">
               Our Collections

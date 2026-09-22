@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 function CTASection() {
   return (
-    <section className="bg-[#F7F3EA] px-4 py-12 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+    <section className="bg-[#F7F3EA] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
       <div className="mx-auto max-w-5xl">
         <div className="relative overflow-hidden rounded-2xl bg-[#24160f] px-6 py-12 text-center sm:rounded-3xl sm:px-12 sm:py-14 lg:px-20 lg:py-16">
           {/* Decorative elements */}
