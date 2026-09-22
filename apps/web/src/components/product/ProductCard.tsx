@@ -27,9 +27,13 @@ function ProductCard({ product }: ProductCardProps) {
   const removeFromWishlist = useWishlistStore((state) => state.removeFromWishlist);
   const isInWishlist = useWishlistStore((state) => state.isInWishlist(product.id));
 
-  const selectedVariant = product.variants.find((variant) => variant.size === selectedSize);
+  const selectedVariant = product.variants.find(
+    (variant) => variant.size === selectedSize && Number(variant.stock) > 0,
+  ) ?? product.variants.find((variant) => variant.size === selectedSize);
   const availableStock = Number(selectedVariant?.stock ?? 0);
   const canAddSelectedVariant = availableStock > 0 && quantity <= availableStock;
+  const selectedSizeOutOfStock = Boolean(selectedSize) && availableStock <= 0;
+  const quantityExceedsStock = Boolean(selectedSize) && availableStock > 0 && quantity > availableStock;
 
   const openQuickView = () => {
     setSelectedSize("");
@@ -350,7 +354,7 @@ const toggleWishlist = async () => {
                     disabled={!selectedSize || !canAddSelectedVariant}
                     className="flex-1 rounded-lg bg-gradient-to-r from-[#0B0B0B] to-[#1a1a1a] px-6 py-4 text-base font-bold text-[#FFF9ED] transition-all duration-300 hover:shadow-xl hover:shadow-black/20 disabled:cursor-not-allowed disabled:opacity-40 active:scale-95"
                   >
-                    {selectedSize && !canAddSelectedVariant ? "Out of Stock" : "Add to Cart"}
+                    {selectedSizeOutOfStock ? "Out of Stock" : quantityExceedsStock ? `Only ${availableStock} left` : "Add to Cart"}
                   </button>
                 </div>
 

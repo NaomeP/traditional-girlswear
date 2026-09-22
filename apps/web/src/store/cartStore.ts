@@ -40,6 +40,8 @@ export const useCartStore = create<CartStore>()(
       addToCart: (product, size, quantity) =>
         set((state) => {
           const variant = product.variants.find(
+            (item) => item.size === size && Number(item.stock) > 0,
+          ) ?? product.variants.find(
             (item) => item.size === size,
           );
 

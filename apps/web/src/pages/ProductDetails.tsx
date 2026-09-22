@@ -68,9 +68,13 @@ function ProductDetails() {
   const isInWishlist = useWishlistStore((state) =>
     product ? state.isInWishlist(product.id) : false,
   );
-  const selectedVariant = product?.variants.find((variant) => variant.size === selectedSize);
+  const selectedVariant = product?.variants.find(
+    (variant) => variant.size === selectedSize && Number(variant.stock) > 0,
+  ) ?? product?.variants.find((variant) => variant.size === selectedSize);
   const availableStock = Number(selectedVariant?.stock ?? 0);
   const canAddSelectedVariant = availableStock > 0 && quantity <= availableStock;
+  const selectedSizeOutOfStock = Boolean(selectedSize) && availableStock <= 0;
+  const quantityExceedsStock = Boolean(selectedSize) && availableStock > 0 && quantity > availableStock;
 
 
   // Load product
@@ -583,7 +587,7 @@ function ProductDetails() {
                   disabled={!selectedSize || !canAddSelectedVariant}
                   className="flex-1 rounded-full bg-[#24160f] px-5 py-4 text-sm font-semibold text-[#fffaf1] transition hover:bg-[#3a2418] disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {selectedSize && !canAddSelectedVariant ? "Out of Stock" : "Add to Cart"}
+                  {selectedSizeOutOfStock ? "Out of Stock" : quantityExceedsStock ? `Only ${availableStock} left` : "Add to Cart"}
                 </button>
 
                 <button
@@ -639,7 +643,7 @@ function ProductDetails() {
                 disabled={!selectedSize || !canAddSelectedVariant}
                 className="mt-3 w-full bg-[#D4AF37] px-5 py-4 text-sm font-semibold text-[#0B0B0B] transition hover:bg-[#C9A227] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                {selectedSize && !canAddSelectedVariant ? "Out of Stock" : "Buy Now"}
+                {selectedSizeOutOfStock ? "Out of Stock" : quantityExceedsStock ? `Only ${availableStock} left` : "Buy Now"}
               </button>
 
               {/* Shipping */}
