@@ -55,6 +55,10 @@ export const useCartStore = create<CartStore>()(
             return state;
           }
 
+          if (Number(variant.stock) <= 0) {
+            console.warn("Cannot add an out-of-stock variant to cart", variant.id);
+            return state;
+          }
           const existingItem = state.items.find(
             (item) =>
               item.product.id === product.id &&

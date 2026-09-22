@@ -5,7 +5,7 @@ import {
   Package,
   Truck,
 } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { API_ENDPOINTS } from "../config/api";
@@ -173,9 +173,11 @@ function getShipmentStatusText(status: string) {
 function OrderDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const orderPlaced = Boolean((location.state as { orderPlaced?: boolean } | null)?.orderPlaced);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -418,6 +420,13 @@ function OrderDetails() {
           <ArrowLeft size={16} />
           Back to Orders
         </Link>
+        {orderPlaced && (
+          <div role="status" className="mb-6 flex items-center gap-3 border border-green-300 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800">
+            <Check size={20} aria-hidden="true" />
+            Order placed successfully. We have received your order.
+          </div>
+        )}
+
 
         {/* Header */}
 

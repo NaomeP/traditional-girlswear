@@ -744,9 +744,9 @@ function Checkout() {
 
                 finishSuccess();
 
-                navigate(
-                  `/account/orders/${orderId}`,
-                );
+                navigate(`/account/orders/${orderId}`, {
+                  state: { orderPlaced: true },
+                });
               } catch (err) {
                 finishError(
                   err instanceof Error
@@ -867,9 +867,9 @@ function Checkout() {
           "Order placed successfully.",
         );
 
-        navigate(
-          `/account/orders/${order.id}`,
-        );
+        navigate(`/account/orders/${order.id}`, {
+          state: { orderPlaced: true },
+        });
 
         return;
       }

@@ -27,6 +27,10 @@ function ProductCard({ product }: ProductCardProps) {
   const removeFromWishlist = useWishlistStore((state) => state.removeFromWishlist);
   const isInWishlist = useWishlistStore((state) => state.isInWishlist(product.id));
 
+  const selectedVariant = product.variants.find((variant) => variant.size === selectedSize);
+  const availableStock = Number(selectedVariant?.stock ?? 0);
+  const canAddSelectedVariant = availableStock > 0 && quantity <= availableStock;
+
   const openQuickView = () => {
     setSelectedSize("");
     setQuantity(1);
@@ -64,6 +68,9 @@ function ProductCard({ product }: ProductCardProps) {
 
 const handleAddToCart = () => {
   if (!product || !selectedSize) {
+    return;
+  }
+  if (!canAddSelectedVariant) {
     return;
   }
 
@@ -340,10 +347,10 @@ const toggleWishlist = async () => {
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    disabled={!selectedSize}
+                    disabled={!selectedSize || !canAddSelectedVariant}
                     className="flex-1 rounded-lg bg-gradient-to-r from-[#0B0B0B] to-[#1a1a1a] px-6 py-4 text-base font-bold text-[#FFF9ED] transition-all duration-300 hover:shadow-xl hover:shadow-black/20 disabled:cursor-not-allowed disabled:opacity-40 active:scale-95"
                   >
-                    Add to Cart
+                    {selectedSize && !canAddSelectedVariant ? "Out of Stock" : "Add to Cart"}
                   </button>
                 </div>
 
