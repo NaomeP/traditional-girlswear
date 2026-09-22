@@ -11,7 +11,6 @@ import AdminReturnManagement from "./components/AdminReturnManagement";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminActivityFeed from "./components/AdminActivityFeed";
 import { API_BASE_URL } from "./config/api";
-import CustomerManagement from "./components/CustomerManagement";
 import ShippingSettings from "./components/ShippingSettings";
 import ContentManagement from "./components/ContentManagement";
 import Analytics from "./components/Analytics";
@@ -1760,14 +1759,13 @@ const [orderSearch, setOrderSearch] = useState("");
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border border-black/10 bg-white p-2 shadow-sm sm:mx-0 sm:flex-wrap sm:px-2">
-          {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["customers", "Customers"], ["reviews", "Reviews"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
+          {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["reviews", "Reviews"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
             <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-transparent text-black/65 hover:bg-[#F7F3EA] hover:text-black"}`}>{label}</button>
           ))}
         </nav>
         {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}
         {activePage === "analytics" && <Analytics />}
         {activePage === "reviews" && <ReviewModeration />}
-        {activePage === "customers" && <CustomerManagement />}
         {activePage === "shipping" && <ShippingSettings />}
         {activePage === "content" && <ContentManagement />}
         {activePage === "returns" && <AdminReturnManagement />}
