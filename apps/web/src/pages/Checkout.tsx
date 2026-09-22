@@ -192,8 +192,7 @@ function Checkout() {
     [items],
   );
 
-  const shippingFee =
-    subtotal >= 2000 ? 0 : 79;
+  const [shippingFee, setShippingFee] = useState(0);
 
   const discount =
     appliedCoupon?.discount ?? 0;
@@ -207,6 +206,18 @@ function Checkout() {
     (address) =>
       address.id === selectedAddressId,
   );
+  useEffect(() => {
+    let active = true;
+    const postalCode = selectedAddress?.postalCode || "";
+    void (async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/shipping/quote?${new URLSearchParams({ subtotal: String(subtotal), postalCode })}`);
+        const result = await response.json();
+        if (active && response.ok && result.success) setShippingFee(Number(result.data.shippingFee));
+      } catch { if (active) setShippingFee(0); }
+    })();
+    return () => { active = false; };
+  }, [selectedAddress?.postalCode, subtotal]);
 
   async function loadAddresses() {
     try {
@@ -728,7 +739,7 @@ function Checkout() {
                 clearCart();
 
                 setSuccess(
-                  "Payment successful. Your order has been confirmed.",
+                  "Order placed successfully. Your payment has been confirmed.",
                 );
 
                 finishSuccess();

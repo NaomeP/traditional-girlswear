@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { requireAuth } from "../middleware/authMiddleware";
 
 import {
   getProductReviews,
@@ -14,6 +15,7 @@ router.get(
 
 router.post(
   "/product/:productId",
+  requireAuth,
   createReview,
 );
 

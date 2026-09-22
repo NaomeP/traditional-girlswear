@@ -87,6 +87,18 @@ export async function getAdminOrders(
   }
 }
 
+async function restockOrderItems(
+  tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
+  orderId: string,
+) {
+  const items = await tx.orderItem.findMany({ where: { orderId } });
+  for (const item of items) {
+    await tx.productVariant.update({
+      where: { id: item.variantId },
+      data: { stock: { increment: item.quantity } },
+    });
+  }
+}
 // UPDATE ORDER STATUS
 export async function updateAdminOrderStatus(
   req: Request,
@@ -124,16 +136,16 @@ export async function updateAdminOrderStatus(
       });
     }
 
-    const updatedOrder = await prisma.order.update({
-      where: {
-        id,
-      },
-
-      data: {
-        status: status as (typeof ORDER_STATUSES)[number],
-      },
-
-      include: orderInclude(),
+    const updatedOrder = await prisma.$transaction(async (tx) => {
+      const nextStatus = status as (typeof ORDER_STATUSES)[number];
+      if (nextStatus === "CANCELLED" && existingOrder.status !== "CANCELLED") {
+        await restockOrderItems(tx, id);
+      }
+      return tx.order.update({
+        where: { id },
+        data: { status: nextStatus },
+        include: orderInclude(),
+      });
     });
 
     return res.status(200).json({
@@ -273,7 +285,32 @@ export async function updateAdminShipment(
       message: "Failed to update shipping details",
     });
   }
-}export async function getAdminOrderInvoice(req: Request, res: Response): Promise<void> {
+}
+export async function updateAdminPaymentStatus(req: Request, res: Response) {
+  try {
+    const id = String(req.params.id);
+    const { paymentStatus } = req.body;
+    if (!id || !["PENDING", "PAID", "FAILED", "REFUNDED"].includes(paymentStatus)) {
+      return res.status(400).json({ success: false, message: "Invalid payment status" });
+    }
+    const order = await prisma.order.findUnique({ where: { id }, include: { payment: true } });
+    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    if (order.paymentMethod !== "COD") return res.status(400).json({ success: false, message: "Only COD payments can be updated here" });
+    const updated = await prisma.order.update({
+      where: { id },
+      data: {
+        paymentStatus,
+        payment: { upsert: { create: { amount: order.total, method: "COD", status: paymentStatus, paidAt: paymentStatus === "PAID" ? new Date() : null }, update: { status: paymentStatus, paidAt: paymentStatus === "PAID" ? new Date() : null } } },
+      },
+      include: orderInclude(),
+    });
+    return res.json({ success: true, data: updated, message: "COD payment status updated" });
+  } catch (error) {
+    console.error("Update COD payment status error:", error);
+    return res.status(500).json({ success: false, message: "Failed to update payment status" });
+  }
+}
+export async function getAdminOrderInvoice(req: Request, res: Response): Promise<void> {
   try {
     const order = await prisma.order.findUnique({ where: { id: String(req.params.id) }, include: { user: true, address: true, items: true, payment: true, shipment: true } });
     if (!order) { res.status(404).json({ success: false, message: "Order not found" }); return; }

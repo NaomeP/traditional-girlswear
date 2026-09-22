@@ -377,10 +377,20 @@ export async function deleteAddressController(
       return;
     }
 
+    const linkedOrderCount = await prisma.order.count({
+      where: { addressId },
+    });
+
+    if (linkedOrderCount > 0) {
+      res.status(409).json({
+        success: false,
+        message: "This address is used by an existing order and cannot be deleted.",
+      });
+      return;
+    }
+
     await prisma.address.delete({
-      where: {
-        id: addressId,
-      },
+      where: { id: addressId },
     });
 
     if (address.isDefault) {

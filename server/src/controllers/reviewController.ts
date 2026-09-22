@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AuthenticatedRequest } from "../middleware/authMiddleware";
 import prisma from "../config/prisma";
 
 // Get reviews for a product
@@ -24,6 +25,7 @@ export async function getProductReviews(
     const reviews = await prisma.review.findMany({
       where: {
         productId: productId,
+        status: "APPROVED",
       },
       include: {
         replies: {
@@ -83,10 +85,14 @@ export async function getProductReviews(
 
 // Create a review
 export async function createReview(
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
 ): Promise<void> {
   try {
+    if (!req.user?.userId) {
+      res.status(401).json({ success: false, message: "Please sign in to submit a review" });
+      return;
+    }
     const productIdParam = req.params.productId;
 
     const productId = Array.isArray(productIdParam)
@@ -149,6 +155,18 @@ export async function createReview(
         success: false,
         message: "Product not found",
       });
+      return;
+    }
+
+    const purchased = await prisma.orderItem.findFirst({
+      where: {
+        order: { userId: req.user.userId, status: "DELIVERED" },
+        variant: { productId },
+      },
+    });
+
+    if (!purchased) {
+      res.status(403).json({ success: false, message: "Only customers with a delivered purchase can review this product" });
       return;
     }
 

@@ -143,7 +143,11 @@ export function logoutController(
   _req: Request,
   res: Response,
 ): void {
-  res.clearCookie("auth_token");
+  res.clearCookie("auth_token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  });
 
   res.status(200).json({
     success: true,

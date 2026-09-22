@@ -193,3 +193,9 @@ export async function updateAdminShipment(
 
   return result.data;
 }
+export async function updateAdminCodPaymentStatus(orderId: string, paymentStatus: "PAID" | "PENDING" | "FAILED"): Promise<AdminOrder> {
+  const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}/payment-status`, { method: "PUT", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify({ paymentStatus }) });
+  const result = (await response.json()) as AdminOrderResponse;
+  if (!response.ok || !result.success) throw new Error(result.message || "Failed to update COD payment");
+  return result.data;
+}

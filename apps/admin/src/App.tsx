@@ -15,6 +15,7 @@ import CustomerManagement from "./components/CustomerManagement";
 import ShippingSettings from "./components/ShippingSettings";
 import ContentManagement from "./components/ContentManagement";
 import Analytics from "./components/Analytics";
+import ReviewModeration from "./components/ReviewModeration";
 import {
   createAdminProduct,
   deleteAdminProduct,
@@ -37,6 +38,7 @@ import {
   getAdminOrders,
   updateAdminOrderStatus,
   updateAdminShipment,
+  updateAdminCodPaymentStatus,
   ADMIN_ORDER_STATUSES,
   SHIPMENT_STATUSES,
 } from "./services/adminOrderService";
@@ -321,6 +323,14 @@ const [orderSearch, setOrderSearch] = useState("");
     }
   }
 
+  async function handleCodPayment(orderId: string): Promise<void> {
+    try {
+      const updated = await updateAdminCodPaymentStatus(orderId, "PAID");
+      setOrders((current) => current.map((order) => order.id === orderId ? updated : order));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update COD payment");
+    }
+  }
   async function handleShipmentUpdate(
     orderId: string,
   ): Promise<void> {
@@ -1738,20 +1748,25 @@ const [orderSearch, setOrderSearch] = useState("");
             </h1>
           </div>
 
-          <span className="text-sm text-white/60">
-            Administrator
-          </span>
+          <button
+            type="button"
+            onClick={async () => { await fetch(`${API_BASE_URL}/auth/logout`, { method: "POST", credentials: "include" }); window.location.reload(); }}
+            className="rounded-lg border border-white/25 px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Sign out
+          </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border border-black/10 bg-white p-2 shadow-sm sm:mx-0 sm:flex-wrap sm:px-2">
-          {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["customers", "Customers"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
+          {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["customers", "Customers"], ["reviews", "Reviews"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
             <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-transparent text-black/65 hover:bg-[#F7F3EA] hover:text-black"}`}>{label}</button>
           ))}
         </nav>
         {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}
         {activePage === "analytics" && <Analytics />}
+        {activePage === "reviews" && <ReviewModeration />}
         {activePage === "customers" && <CustomerManagement />}
         {activePage === "shipping" && <ShippingSettings />}
         {activePage === "content" && <ContentManagement />}
@@ -2425,6 +2440,15 @@ const [orderSearch, setOrderSearch] = useState("");
                         </span>
                       </p>
 
+                      {order.payment?.method === "COD" && order.payment?.status !== "PAID" && (
+                        <button
+                          type="button"
+                          onClick={() => void handleCodPayment(order.id)}
+                          className="mt-3 border border-[#C9A227]/50 bg-[#FFF9ED] px-3 py-2 text-xs font-semibold text-[#6f491c] transition hover:bg-[#f6d77c]"
+                        >
+                          Mark COD as paid
+                        </button>
+                      )}
                       {order.shipment && (
                         <>
                           <p className="mt-3 text-sm">

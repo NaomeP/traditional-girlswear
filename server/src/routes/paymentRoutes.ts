@@ -6,6 +6,7 @@ import {
   createPaymentController,
   verifyPaymentController,
   paymentWebhookController,
+  abandonPaymentController,
 } from "../controllers/paymentController";
 
 const router = Router();
@@ -16,6 +17,8 @@ router.post(
   createPaymentController,
 );
 
+router.post("/abandon/:orderId", requireAuth, abandonPaymentController);
+
 router.post(
   "/verify",
   requireAuth,
@@ -25,6 +28,7 @@ router.post(
 router.post(
   "/webhook",
   paymentWebhookController,
+  abandonPaymentController,
 );
 
 export default router;

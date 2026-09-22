@@ -56,6 +56,12 @@ enum CouponStatus {
   EXPIRED
 }
 
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  HIDDEN
+}
+
 enum ShipmentStatus {
   PENDING
   SHIPPED
@@ -421,6 +427,7 @@ model Review {
   rating    Int
   comment   String
   guestName String
+  status    ReviewStatus @default(PENDING)
 
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -431,6 +438,7 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@index([productId])
+  @@index([status])
 }
 
 model ReviewReply {

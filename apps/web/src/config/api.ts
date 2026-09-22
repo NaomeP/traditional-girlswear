@@ -20,6 +20,9 @@ export const API_ENDPOINTS = {
 
   paymentsVerify: `${API_BASE_URL}/payments/verify`,
 
+  paymentsAbandon: (orderId: string) =>
+    `${API_BASE_URL}/payments/abandon/${orderId}`,
+
   returns: `${API_BASE_URL}/returns`,
 
   returnById: (id: string) =>

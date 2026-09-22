@@ -10,16 +10,16 @@ const customerSelect = {
   addresses: { orderBy: { updatedAt: "desc" as const } },
   orders: {
     orderBy: { createdAt: "desc" as const },
-    select: { id: true, orderNumber: true, status: true, total: true, createdAt: true },
+    select: { id: true, orderNumber: true, status: true, paymentStatus: true, total: true, createdAt: true },
   },
 };
 
-function toCustomer(user: Awaited<ReturnType<typeof prisma.user.findMany>>[number] & { addresses: unknown[]; orders: { total: unknown; createdAt: Date }[] }) {
+function toCustomer(user: Awaited<ReturnType<typeof prisma.user.findMany>>[number] & { addresses: unknown[]; orders: { total: unknown; createdAt: Date; status: string; paymentStatus: string }[] }) {
   const orders = user.orders;
   return {
     ...user,
     totalOrders: orders.length,
-    totalSpend: orders.reduce((sum, order) => sum + Number(order.total), 0),
+    totalSpend: orders.filter((order) => order.status !== "CANCELLED" && order.paymentStatus === "PAID").reduce((sum, order) => sum + Number(order.total), 0),
     lastOrderAt: orders[0]?.createdAt ?? null,
   };
 }
@@ -56,7 +56,7 @@ export async function getAdminCustomer(req: Request, res: Response): Promise<voi
       return;
     }
     const orders = user.orders;
-    res.status(200).json({ success: true, data: { ...user, totalOrders: orders.length, totalSpend: orders.reduce((sum, order) => sum + Number(order.total), 0), lastOrderAt: orders[0]?.createdAt ?? null } });
+    res.status(200).json({ success: true, data: { ...user, totalOrders: orders.length, totalSpend: orders.filter((order) => order.status !== "CANCELLED" && order.paymentStatus === "PAID").reduce((sum, order) => sum + Number(order.total), 0), lastOrderAt: orders[0]?.createdAt ?? null } });
   } catch (error) {
     console.error("Failed to load customer:", error);
     res.status(500).json({ success: false, message: "Failed to load customer" });

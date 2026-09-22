@@ -14,12 +14,14 @@ import adminCustomerRoutes from "./routes/adminCustomerRoutes";
 import adminShippingRoutes from "./routes/adminShippingRoutes";
 import adminShippingZoneRoutes from "./routes/adminShippingZoneRoutes";
 import siteContentRoutes from "./routes/siteContentRoutes";
+import shippingRoutes from "./routes/shippingRoutes";
 import {
   AuthenticatedRequest,
   requireAuth,
 } from "./middleware/authMiddleware";
 import adminCouponRoutes from "./routes/adminCouponRoutes";
 import { env } from "./config/env";
+import adminReviewRoutes from "./routes/adminReviewRoutes";
 import prisma from "./config/prisma";
 import reviewRoutes from "./routes/reviewRoutes";
 import authRoutes from "./routes/authRoutes";
@@ -90,6 +92,9 @@ app.use(
 app.use(
   express.json({
     limit: "1mb",
+    verify: (req: any, _res, buf) => {
+      req.rawBody = buf;
+    },
   }),
 );
 
@@ -196,6 +201,9 @@ app.use(
   reviewRoutes,
 );
 app.use(
+  "/api/v1/admin/reviews", adminReviewRoutes,
+);
+app.use(
   "/api/v1/auth",
   authRoutes,
 );
@@ -206,10 +214,6 @@ app.use(
 );
 app.use("/api/v1/categories", categoryRoutes);
 
-app.use(
-  "/api/v1/orders",
-  orderRoutes,
-);
 
 app.use(
   "/api/v1/addresses",
@@ -249,4 +253,5 @@ app.use("/api/v1/admin/customers", adminCustomerRoutes);
 app.use("/api/v1/admin/shipping", adminShippingRoutes);
 app.use("/api/v1/admin/shipping-zones", adminShippingZoneRoutes);
 app.use("/api/v1/content", siteContentRoutes);
+app.use("/api/v1/shipping", shippingRoutes);
 export default app;

@@ -8,6 +8,7 @@ import {
   updateAdminOrderStatus,
   updateAdminShipment,
   getAdminOrderInvoice,
+  updateAdminPaymentStatus,
 } from "../controllers/adminOrderController";
 
 import {
@@ -44,6 +45,7 @@ router.put(
   "/:id/shipment",
   updateAdminShipment,
   getAdminOrderInvoice,
+  updateAdminPaymentStatus,
 );
 
 console.log("ADMIN ORDER ROUTES LOADED");

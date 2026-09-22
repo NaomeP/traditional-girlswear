@@ -7,6 +7,7 @@ import {
   createOnlinePaymentOrder,
   verifyOnlinePayment,
   handlePaymentWebhook,
+  abandonOnlineOrder,
 } from "../services/paymentService";
 
 import {
@@ -138,12 +139,25 @@ export async function verifyPaymentController(
   }
 }
 
+
+export async function abandonPaymentController(req: AuthenticatedRequest, res: Response) {
+  try {
+    if (!req.user?.userId) { res.status(401).json({ success: false, message: "Authentication required" }); return; }
+    const order = await abandonOnlineOrder(req.user.userId, String(req.params.orderId));
+    res.json({ success: true, data: order });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error instanceof Error ? error.message : "Failed to cancel payment" });
+  }
+}
 export async function paymentWebhookController(
   req: Request,
   res: Response,
 ) {
   try {
-    await handlePaymentWebhook(req.body);
+    const signature = req.header("x-razorpay-signature");
+    const requestWithRawBody = req as Request & { rawBody?: Buffer };
+    const rawBody = requestWithRawBody.rawBody ?? Buffer.from(JSON.stringify(req.body));
+    await handlePaymentWebhook(req.body, rawBody, signature);
 
     res.status(200).json({
       success: true,
