@@ -35,7 +35,7 @@ function Hero() {
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B0B0B]/45 to-transparent" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[520px] max-w-7xl items-center px-5 py-16 sm:min-h-[580px] sm:px-8 lg:min-h-[620px] lg:px-12">
+        <div className="relative z-10 mx-auto flex min-h-[460px] max-w-7xl items-center px-5 py-14 sm:min-h-[520px] sm:px-8 lg:min-h-[560px] lg:px-12">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
