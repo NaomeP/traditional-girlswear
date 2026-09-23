@@ -19,38 +19,30 @@ function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden bg-[#24160f]">
-      <div className="relative min-h-[420px] w-full sm:min-h-[480px] lg:min-h-[540px]">
-        {/* Hero Image */}
-        <img
-          src="/images/hero/home-hero.webp"
-          fetchPriority="high"
-          decoding="async"
-          alt="Traditional South Indian girlswear collection"
-          className="cinematic-hero-image absolute inset-0 h-full w-full object-cover object-center"
-        />
+      <div className="relative bg-[#24160f] sm:min-h-[480px] lg:min-h-[540px]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#24160f] sm:absolute sm:inset-0 sm:aspect-auto">
+          <img
+            src="/images/hero/home-hero.webp"
+            fetchPriority="high"
+            decoding="async"
+            alt="Traditional South Indian girlswear collection"
+            className="cinematic-hero-image absolute inset-0 h-full w-full object-contain sm:object-cover sm:object-center"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#24160f]/35 via-transparent to-transparent sm:bg-gradient-to-r sm:from-[#24160f]/90 sm:via-[#24160f]/48 sm:to-[#24160f]/8" />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(ellipse_at_78%_44%,rgba(246,215,124,0.12),transparent_48%)] sm:block" />
+        </div>
 
-        {/* Simple, softer overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#24160f]/90 via-[#24160f]/48 to-[#24160f]/8" />
-
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_78%_44%,rgba(246,215,124,0.12),transparent_48%)]" />
-
-        {/* Subtle bottom fade */}
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B0B0B]/45 to-transparent" />
-
-        {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[420px] max-w-7xl items-center px-5 py-10 sm:min-h-[480px] sm:px-8 sm:py-12 lg:min-h-[540px] lg:px-12">
+        <div className="relative z-10 mx-auto flex max-w-7xl items-center px-5 py-8 sm:min-h-[480px] sm:px-8 sm:py-12 lg:min-h-[540px] lg:px-12">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
               New festive edit
             </div>
 
-            {/* Eyebrow */}
             <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f6d77c] sm:text-xs">
               {content.eyebrow}
             </p>
 
-            {/* Heading */}
             <h1 className="mt-3 font-serif text-3xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-6xl lg:text-7xl">
               Little girls,
               <span className="mt-1 block text-[#f6d77c]">
@@ -58,25 +50,19 @@ function Hero() {
               </span>
             </h1>
 
-            {/* Description */}
             <p className="mt-3 max-w-md text-sm leading-6 text-[#FFF9ED]/75 sm:mt-5 sm:leading-7 sm:text-base">
               Discover beautiful South Indian traditional wear
               crafted for little girls, from everyday cottons to
               festive pattu styles.
             </p>
 
-            {/* Primary actions */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Link
                 to={content.ctaHref}
                 className="group inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#f6d77c] px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#24160f] shadow-[0_8px_24px_rgba(246,215,124,0.18)] transition hover:bg-[#fff0bf]"
               >
                 {content.ctaLabel}
-
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
 
               <Link
@@ -84,42 +70,24 @@ function Hero() {
                 className="group inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#fffaf1]/45 bg-[#24160f]/10 px-6 text-xs font-semibold uppercase tracking-[0.12em] text-[#fffaf1] backdrop-blur-sm transition hover:border-[#f6d77c] hover:text-[#f6d77c]"
               >
                 Explore Pattu
-
-                <ArrowRight
-                  size={15}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
 
-            {/* Trust indicators */}
             <div className="mt-5 flex items-center gap-6 border-t border-[#FFF9ED]/15 pt-4">
               <div>
-                <p className="text-base font-semibold text-[#D4AF37]">
-                  100+
-                </p>
-
-                <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[#FFF9ED]/55">
-                  Happy Customers
-                </p>
+                <p className="text-base font-semibold text-[#D4AF37]">100+</p>
+                <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[#FFF9ED]/55">Happy Customers</p>
               </div>
-
               <div className="h-7 w-px bg-[#FFF9ED]/15" />
-
               <div>
-                <p className="text-base font-semibold text-[#D4AF37]">
-                  7 Days
-                </p>
-
-                <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[#FFF9ED]/55">
-                  Easy Returns
-                </p>
+                <p className="text-base font-semibold text-[#D4AF37]">7 Days</p>
+                <p className="mt-0.5 text-[9px] uppercase tracking-[0.12em] text-[#FFF9ED]/55">Easy Returns</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Small scroll hint */}
         <div className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-[9px] uppercase tracking-[0.25em] text-[#FFF9ED]/35 sm:flex">
           Scroll
           <span className="h-5 w-px bg-[#FFF9ED]/25" />

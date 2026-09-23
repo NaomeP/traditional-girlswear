@@ -65,9 +65,11 @@ img {
   }
 }
 
-.cinematic-hero-image {
-  animation: cinematic-drift 28s ease-in-out infinite alternate;
-  transform-origin: 68% center;
+@media (min-width: 640px) {
+  .cinematic-hero-image {
+    animation: cinematic-drift 28s ease-in-out infinite alternate;
+    transform-origin: 68% center;
+  }
 }
 
 ::selection {
