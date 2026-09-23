@@ -2,6 +2,7 @@
 import { Heart, ShoppingBag } from "lucide-react";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
+import { optimizedImageUrl } from "../../utils/optimizedImageUrl";
 
 import {
   getProducts,
@@ -258,7 +259,7 @@ function FeaturedProducts() {
           !error &&
           products.length > 0 && (
             <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-              {products.map((product) => {
+              {products.map((product, index) => {
                 const primaryImage =
                   product.images.find(
                     (image) => image.isPrimary,
@@ -292,7 +293,10 @@ function FeaturedProducts() {
                       >
                         {primaryImage?.imageUrl ? (
                           <img
-                            src={primaryImage.imageUrl}
+                            src={optimizedImageUrl(primaryImage.imageUrl, 700)}
+                            loading="lazy"
+                            fetchPriority={index < 2 ? "high" : "auto"}
+                            decoding="async"
                             alt={
                               primaryImage.altText ||
                               product.name

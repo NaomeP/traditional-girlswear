@@ -11,6 +11,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { optimizedImageUrl } from "../utils/optimizedImageUrl";
 
 import {
   mapApiProductToProduct,
@@ -410,7 +411,9 @@ function ProductDetails() {
             <div className="relative">
               <div className="aspect-[3/4] overflow-hidden rounded-3xl bg-[#F7F3EA]">
                 <img
-                  src={product.image}
+                  src={optimizedImageUrl(product.image, 1100)}
+                  fetchPriority="high"
+                  decoding="async"
                   alt={product.name}
                   className="h-full w-full object-cover"
                 />

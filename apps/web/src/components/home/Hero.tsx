@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { API_BASE_URL } from "../../config/api";
 import { ArrowRight } from "lucide-react";
-import heroImage from "../../assets/hero.png";
 
 type HeroContent = { eyebrow: string; title: string; description: string; ctaLabel: string; ctaHref: string };
 const defaultContent: HeroContent = { eyebrow: "Tradition · Comfort · Elegance", title: "Little girls, timeless traditions.", description: "Discover beautiful South Indian traditional wear crafted for little girls, from everyday cottons to festive pattu styles.", ctaLabel: "Shop Collection", ctaHref: "/shop" };
@@ -23,7 +22,9 @@ function Hero() {
       <div className="relative min-h-[400px] w-full sm:min-h-[450px] lg:min-h-[500px]">
         {/* Hero Image */}
         <img
-          src={heroImage}
+          src="/images/hero/home-hero.webp"
+          fetchPriority="high"
+          decoding="async"
           alt="Traditional South Indian girlswear collection"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />

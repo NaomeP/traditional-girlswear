@@ -11,12 +11,14 @@ import { Link } from "react-router";
 import type { Product } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
 import { useWishlistStore } from "../../store/wishlistStore";
+import { optimizedImageUrl } from "../../utils/optimizedImageUrl";
 
 type ProductCardProps = {
   product: Product;
+  imagePriority?: boolean;
 };
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, imagePriority = false }: ProductCardProps) {
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -122,7 +124,7 @@ const toggleWishlist = async () => {
       <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#24160f]/8 bg-white shadow-[0_8px_24px_rgba(44,28,14,0.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(44,28,14,0.12)]">
         <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
           <Link to={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
-            <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+            <img src={optimizedImageUrl(product.image, 700)} alt={product.name} loading="lazy" fetchPriority={imagePriority ? "high" : "auto"} decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
           </Link>
 
           {(product.newArrival || product.bestseller) && (
@@ -210,7 +212,7 @@ const toggleWishlist = async () => {
               {/* Image Section */}
               <div className="aspect-[3/4] overflow-hidden bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] md:aspect-auto">
                 <img
-                  src={product.image}
+                  src={optimizedImageUrl(product.image, 1000)}
                   alt={product.name}
                   className="h-full w-full object-cover"
                 />

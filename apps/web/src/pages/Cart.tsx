@@ -1,6 +1,7 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router";
 import { useCartStore } from "../store/cartStore";
+import { optimizedImageUrl } from "../utils/optimizedImageUrl";
 
 function Cart() {
   const items = useCartStore((state) => state.items);
@@ -60,7 +61,9 @@ function Cart() {
                   className="h-32 w-24 shrink-0 overflow-hidden bg-[#F7F3EA] sm:h-40 sm:w-32"
                 >
                   <img
-                    src={item.product.image}
+                    src={optimizedImageUrl(item.product.image, 320)}
+                    loading="lazy"
+                    decoding="async"
                     alt={item.product.name}
                     className="h-full w-full object-cover"
                   />

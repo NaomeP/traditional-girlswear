@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import { optimizedImageUrl } from "../utils/optimizedImageUrl";
 
 import {
   API_BASE_URL,
@@ -1370,7 +1371,9 @@ function Checkout() {
                     className="flex gap-3"
                   >
                     <img
-                      src={item.product.image}
+                      src={optimizedImageUrl(item.product.image, 240)}
+                      loading="lazy"
+                      decoding="async"
                       alt={item.product.name}
                       className="h-20 w-16 object-cover"
                     />

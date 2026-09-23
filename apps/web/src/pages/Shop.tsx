@@ -559,10 +559,11 @@ export default function Shop() {
         ) : (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
             {visibleProducts.map(
-              (product) => (
+              (product, index) => (
                 <ProductCard
                   key={product.id}
                   product={product}
+                  imagePriority={index < 2}
                 />
               ),
             )}

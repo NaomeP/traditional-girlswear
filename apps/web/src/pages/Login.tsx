@@ -76,7 +76,7 @@ function Login() {
         {/* Left — Brand Visual */}
         <div className="relative hidden min-h-[620px] overflow-hidden bg-[#0B0B0B] lg:block">
           <img
-            src="/hero.png"
+            src="/images/hero/hero-banner.webp"
             alt="Traditional girlswear collection"
             className="absolute inset-0 h-full w-full object-cover opacity-45"
           />

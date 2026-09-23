@@ -10,6 +10,7 @@ function BrandStory() {
           <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDE7D9] lg:aspect-[4/5] lg:rounded-3xl">
             <img
               src="/images/story/our-story.jpg"
+              decoding="async"
               alt="Our traditional girlswear story"
               loading="lazy"
               className="h-full w-full object-cover transition duration-700 hover:scale-105"
