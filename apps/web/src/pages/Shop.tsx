@@ -354,12 +354,9 @@ export default function Shop() {
       <div className="border-b border-[#24160f]/10 bg-[linear-gradient(115deg,#fff8e8,#f2e2bb)]">
         <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-9 lg:px-8">
           <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#a56c25]">The Nila collection</p>
-          <div className="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl">Shop Girlswear</h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-black/60 sm:text-base">Festive silhouettes and everyday comfort, crafted for little celebrations.</p>
-            </div>
-            <p className="rounded-full border border-[#c99b4a]/35 bg-[#fffaf1] px-4 py-2 text-xs font-semibold text-[#7b4b1a]">{products.length} styles to discover</p>
+          <div className="mt-3">
+            <h1 className="font-serif text-3xl font-semibold tracking-tight text-[#24160f] sm:text-4xl">Shop Girlswear</h1>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-black/60 sm:text-base">Festive silhouettes and everyday comfort, crafted for little celebrations.</p>
           </div>
         </div>
       </div>
