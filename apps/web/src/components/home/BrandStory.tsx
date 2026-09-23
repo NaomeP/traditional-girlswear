@@ -3,25 +3,10 @@ import { Link } from "react-router";
 function BrandStory() {
   return (
     <section className="bg-[#F7F3EA] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-      <div className="mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-2 lg:gap-14">
-
-        {/* Our Story Image */}
-        <div className="relative overflow-hidden">
-          <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-[#EDE7D9] lg:aspect-[4/5] lg:rounded-3xl">
-            <img
-              src="/images/story/our-story.jpg"
-              decoding="async"
-              alt="Our traditional girlswear story"
-              loading="lazy"
-              className="h-full w-full object-cover transition duration-700 hover:scale-105"
-            />
-          </div>
-
-          <div className="absolute -bottom-3 -right-3 h-20 w-20 border-b border-r border-[#C9A227] sm:-bottom-5 sm:-right-5 sm:h-28 sm:w-28" />
-        </div>
+      <div className="mx-auto max-w-3xl">
 
         {/* Content */}
-        <div className="max-w-xl">
+        <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#C9A227]">
             Our Story
           </p>
