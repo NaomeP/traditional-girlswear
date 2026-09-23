@@ -363,10 +363,10 @@ export default function Shop() {
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-8 lg:px-8">
         {/* Header */}
         {/* Search */}
-        <div className="mb-5 rounded-xl border border-[#c99b4a]/35 bg-white p-1.5 shadow-[0_6px_20px_rgba(55,35,20,0.08)]">
+        <div className="mb-3 rounded-xl border border-[#c99b4a]/35 bg-white p-1.5 shadow-[0_6px_20px_rgba(55,35,20,0.08)]">
           <div className="flex items-center gap-2 px-3">
             <Search size={20} className="shrink-0 text-[#8b541d]" />
             <input
@@ -374,13 +374,13 @@ export default function Shop() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by style, colour or fabric..."
-              className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-black/35"
+              className="w-full bg-transparent py-2.5 text-sm outline-none placeholder:text-black/35"
             />
           </div>
         </div>
         {/* Filters */}
-        <div className="mb-7 rounded-2xl border border-black/10 bg-white p-4 shadow-[0_8px_28px_rgba(55,35,20,0.06)] sm:p-6">
-          <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="mb-4 rounded-2xl border border-black/10 bg-white p-3 shadow-[0_8px_28px_rgba(55,35,20,0.06)] sm:mb-7 sm:p-6">
+          <div className="mb-2 flex items-center justify-between gap-3 sm:mb-4">
             <div className="flex items-center gap-2">
               <SlidersHorizontal
                 size={18}
@@ -401,7 +401,7 @@ export default function Shop() {
             </button>
           </div>
 
-          <button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen} className="mb-4 w-full rounded-xl border border-black/10 px-4 py-3 text-left text-sm font-semibold text-[#24160f] sm:hidden">
+          <button type="button" onClick={() => setFiltersOpen((open) => !open)} aria-expanded={filtersOpen} className={`w-full rounded-xl border border-black/10 px-4 py-2.5 text-left text-sm font-semibold text-[#24160f] sm:hidden ${filtersOpen ? "mb-3" : "mb-0"}`}>
             {filtersOpen ? "Hide filter options" : "Show filter options"}
           </button>
 
@@ -519,7 +519,7 @@ export default function Shop() {
         </div>
 
         {/* Product count */}
-        <div className="mb-6 flex flex-col gap-3 border-b border-black/10 pb-4 min-[480px]:flex-row min-[480px]:items-center min-[480px]:justify-between">
+        <div className="mb-4 flex flex-col gap-3 border-b border-black/10 pb-4 min-[480px]:flex-row min-[480px]:items-center min-[480px]:justify-between">
           <p className="text-sm text-black/55">
             {visibleProducts.length}{" "}
             {visibleProducts.length === 1 ? "product" : "products"}
