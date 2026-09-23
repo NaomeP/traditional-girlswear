@@ -14,7 +14,7 @@ function Home() {
       <CTASection />
       <div
         data-ad-slot="home-bottom"
-        className="min-h-12 bg-[#fffaf1] sm:min-h-32"
+        className="min-h-24 bg-[#fffaf1] sm:min-h-32"
       />
     </>
   );
