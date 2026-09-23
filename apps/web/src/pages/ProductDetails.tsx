@@ -1,6 +1,7 @@
 import {
   Check,
   Heart,
+  ShoppingBag,
   Minus,
   Plus,
   Ruler,
@@ -287,6 +288,18 @@ function ProductDetails() {
     setShowAddedMessage(true);
   };
 
+  const handleMobileQuickAdd = () => {
+    if (!product) return;
+    const variant = selectedSize
+      ? product.variants.find((item) => item.size === selectedSize && Number(item.stock) > 0)
+      : product.variants.find((item) => Number(item.stock) > 0);
+    if (!variant) return;
+
+    const size = variant.size;
+    setSelectedSize(size);
+    addToCart(product, size, selectedSize ? quantity : 1);
+    setShowAddedMessage(true);
+  };
   // Buy now
   const handleBuyNow = () => {
     if (!product || !selectedSize || !canAddSelectedVariant) {
@@ -373,7 +386,7 @@ function ProductDetails() {
 
   return (
     <>
-      <section className="min-h-screen bg-[#FFF9ED] px-4 py-8 sm:px-6 lg:px-8 lg:py-14">
+      <section className="min-h-screen bg-[#FFF9ED] px-4 py-8 pb-28 sm:px-6 sm:pb-8 lg:px-8 lg:py-14">
         <div className="mx-auto max-w-7xl">
           {/* Breadcrumb */}
           <nav
@@ -982,6 +995,30 @@ function ProductDetails() {
         </div>
       </section>
 
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#FFF9ED]/95 px-4 pt-3 shadow-[0_-8px_24px_rgba(36,22,15,0.12)] backdrop-blur sm:hidden" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.75rem)" }}>
+        <div className="mx-auto flex max-w-lg items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleWishlist}
+            aria-label={isInWishlist ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+            aria-pressed={isInWishlist}
+            className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${isInWishlist ? "border-[#D4AF37] bg-[#D4AF37]" : "border-black/15 bg-white"}`}
+          >
+            <Heart size={19} fill={isInWishlist ? "currentColor" : "none"} />
+          </button>
+          <button
+            type="button"
+            onClick={handleMobileQuickAdd}
+            disabled={!product.variants.some((variant) => Number(variant.stock) > 0)}
+            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#24160f] px-4 text-sm font-semibold text-[#fffaf1] disabled:opacity-50"
+          >
+            <ShoppingBag size={17} />
+            {product.variants.some((variant) => Number(variant.stock) > 0)
+              ? `Add to Cart${selectedSize ? ` · ${selectedSize}` : ""}`
+              : "Sold Out"}
+          </button>
+        </div>
+      </div>
       {/* Size Guide Modal */}
       {isSizeGuideOpen && (
         <div
