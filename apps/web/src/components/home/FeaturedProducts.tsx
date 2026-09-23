@@ -1,5 +1,5 @@
 
-import { Heart, ShoppingBag } from "lucide-react";
+import { Eye, Heart, ShoppingBag } from "lucide-react";
 import { mapApiProductToProduct } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
 import { Link } from "react-router";
@@ -409,21 +409,23 @@ function FeaturedProducts() {
                           )}
                       </div>
 
-                      <div className="mt-3 grid gap-2 sm:mt-4">
+                      <div className="mt-3 grid grid-cols-[1fr_auto] gap-2 sm:mt-4">
                         <button
                           type="button"
                           onClick={() => handleAddToCart(product)}
                           disabled={!product.variants?.some((variant) => Number(variant.stock) > 0)}
-                          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] disabled:cursor-not-allowed disabled:opacity-60"
+                          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] disabled:cursor-not-allowed disabled:opacity-60"
                         >
                           <ShoppingBag size={16} />
                           {cartAddedProduct === product.id ? "Added to cart" : product.variants?.some((variant) => Number(variant.stock) > 0) ? "Add to cart" : "Sold out"}
                         </button>
                         <Link
                           to={`/product/${product.slug}`}
-                          className="inline-flex min-h-10 w-full items-center justify-center rounded-lg border border-[#24160f]/20 px-3 text-sm font-semibold text-[#24160f] transition hover:border-[#a56c25] hover:bg-white/60"
+                          aria-label={`View ${product.name}`}
+                          title="View product"
+                          className="inline-flex h-10 w-11 items-center justify-center rounded-lg border border-[#24160f]/20 text-[#24160f] transition hover:border-[#a56c25] hover:bg-white/60"
                         >
-                          View product
+                          <Eye size={18} />
                         </Link>
                       </div>
                     </div>
