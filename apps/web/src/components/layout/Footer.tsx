@@ -7,8 +7,8 @@ function Footer() {
   return (
     <footer className="bg-[#24160f] text-[#fffaf1]">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-        <div className="grid gap-7 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-12 lg:grid-cols-4">
+          <div className="col-span-2 lg:col-span-1">
             <Link to="/" className="inline-flex items-center gap-3">
               <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d4af37]/55 bg-[#fffaf1] font-serif text-xl font-bold italic text-[#8b541d]">
                 N
