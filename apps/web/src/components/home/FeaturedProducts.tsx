@@ -1,5 +1,7 @@
 
 import { Heart, ShoppingBag } from "lucide-react";
+import { mapApiProductToProduct } from "../../data/products";
+import { useCartStore } from "../../store/cartStore";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { optimizedImageUrl } from "../../utils/optimizedImageUrl";
@@ -25,6 +27,8 @@ function FeaturedProducts() {
 
   const [wishlistLoading, setWishlistLoading] =
     useState<string | null>(null);
+  const [cartAddedProduct, setCartAddedProduct] = useState<string | null>(null);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
@@ -79,6 +83,19 @@ function FeaturedProducts() {
     void loadProducts();
     void loadWishlist();
   }, []);
+
+  useEffect(() => {
+    if (!cartAddedProduct) return;
+    const timer = window.setTimeout(() => setCartAddedProduct(null), 1800);
+    return () => window.clearTimeout(timer);
+  }, [cartAddedProduct]);
+
+  function handleAddToCart(product: Product): void {
+    const variant = product.variants?.find((item) => Number(item.stock) > 0);
+    if (!variant) return;
+    addToCart(mapApiProductToProduct(product), variant.size, 1);
+    setCartAddedProduct(product.id);
+  }
 
   function getWishlistVariantId(
     product: Product,
@@ -390,6 +407,24 @@ function FeaturedProducts() {
                               )}
                             </p>
                           )}
+                      </div>
+
+                      <div className="mt-3 grid gap-2 sm:mt-4">
+                        <button
+                          type="button"
+                          onClick={() => handleAddToCart(product)}
+                          disabled={!product.variants?.some((variant) => Number(variant.stock) > 0)}
+                          className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          <ShoppingBag size={16} />
+                          {cartAddedProduct === product.id ? "Added to cart" : product.variants?.some((variant) => Number(variant.stock) > 0) ? "Add to cart" : "Sold out"}
+                        </button>
+                        <Link
+                          to={`/product/${product.slug}`}
+                          className="inline-flex min-h-10 w-full items-center justify-center rounded-lg border border-[#24160f]/20 px-3 text-sm font-semibold text-[#24160f] transition hover:border-[#a56c25] hover:bg-white/60"
+                        >
+                          View product
+                        </Link>
                       </div>
                     </div>
                   </article>
