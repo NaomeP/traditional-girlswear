@@ -5,7 +5,6 @@ import {
   ShoppingBag,
   User,
   X,
-  ChevronDown,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -167,32 +166,6 @@ function Header() {
           <Link to="/shop" className={navLinkClass(location.pathname.startsWith("/shop"))}>
             Shop
           </Link>
-          <div className="group relative">
-            <button
-              type="button"
-              className="flex items-center gap-1 text-sm font-medium text-[#24160f] transition-colors hover:text-[#a56c25]"
-              aria-haspopup="true"
-            >
-              Collections
-              <ChevronDown
-                size={16}
-                className="transition-transform duration-300 group-hover:rotate-180"
-              />
-            </button>
-            <div className="invisible absolute left-0 top-full z-20 w-52 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-              <div className="overflow-hidden rounded-2xl border border-black/8 bg-[#fffaf1] shadow-xl">
-                {collections.map((item) => (
-                  <Link
-                    key={item.category}
-                    to={`/shop?category=${encodeURIComponent(item.category)}`}
-                    className="block px-4 py-3 text-sm text-[#24160f] transition hover:bg-[#f7f1e5] hover:text-[#a56c25]"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
         </nav>
 
         <div className="flex items-center gap-0.5 sm:gap-1">
@@ -296,19 +269,6 @@ function Header() {
             <Link to="/shop" onClick={closeMenu} className="border-b border-black/8 py-4 text-sm font-medium">
               Shop
             </Link>
-            <p className="pt-4 pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a56c25]">
-              Collections
-            </p>
-            {collections.map((item) => (
-              <Link
-                key={item.category}
-                to={`/shop?category=${encodeURIComponent(item.category)}`}
-                onClick={closeMenu}
-                className="border-b border-black/8 py-3.5 text-sm"
-              >
-                {item.label}
-              </Link>
-            ))}
             <Link to="/account" onClick={closeMenu} className="py-4 text-sm font-medium">
               My Account
             </Link>

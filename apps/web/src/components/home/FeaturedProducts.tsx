@@ -179,7 +179,7 @@ function FeaturedProducts() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[#FFF9ED] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+    <section className="relative isolate overflow-hidden bg-gradient-to-b from-[#fffaf1] via-[#fffaf1] to-[#f8f1e4] px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <div className="absolute -right-20 -top-40 h-96 w-96 rounded-full bg-[#D4AF37]/8 blur-3xl" />
 
       <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#C9A227]/8 blur-3xl" />
@@ -301,7 +301,7 @@ function FeaturedProducts() {
                               primaryImage.altText ||
                               product.name
                             }
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">

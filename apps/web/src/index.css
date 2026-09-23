@@ -55,6 +55,21 @@ img {
   max-width: 100%;
 }
 
+@keyframes cinematic-drift {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.045);
+  }
+}
+
+.cinematic-hero-image {
+  animation: cinematic-drift 28s ease-in-out infinite alternate;
+  transform-origin: 68% center;
+}
+
 ::selection {
   background: #f6d77c;
   color: #24160f;

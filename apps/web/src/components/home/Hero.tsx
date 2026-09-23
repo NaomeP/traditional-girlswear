@@ -19,24 +19,26 @@ function Hero() {
   }, []);
   return (
     <section className="relative overflow-hidden bg-[#24160f]">
-      <div className="relative min-h-[400px] w-full sm:min-h-[450px] lg:min-h-[500px]">
+      <div className="relative min-h-[420px] w-full sm:min-h-[480px] lg:min-h-[540px]">
         {/* Hero Image */}
         <img
           src="/images/hero/home-hero.webp"
           fetchPriority="high"
           decoding="async"
           alt="Traditional South Indian girlswear collection"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="cinematic-hero-image absolute inset-0 h-full w-full object-cover object-center"
         />
 
         {/* Simple, softer overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#24160f]/95 via-[#24160f]/62 to-[#24160f]/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#24160f]/90 via-[#24160f]/48 to-[#24160f]/8" />
+
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_78%_44%,rgba(246,215,124,0.12),transparent_48%)]" />
 
         {/* Subtle bottom fade */}
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0B0B0B]/45 to-transparent" />
 
         {/* Content */}
-        <div className="relative z-10 mx-auto flex min-h-[400px] max-w-7xl items-center px-5 py-10 sm:min-h-[450px] sm:px-8 sm:py-12 lg:min-h-[500px] lg:px-12">
+        <div className="relative z-10 mx-auto flex min-h-[420px] max-w-7xl items-center px-5 py-10 sm:min-h-[480px] sm:px-8 sm:py-12 lg:min-h-[540px] lg:px-12">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
@@ -49,7 +51,7 @@ function Hero() {
             </p>
 
             {/* Heading */}
-            <h1 className="mt-3 font-serif text-3xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 font-serif text-3xl font-semibold leading-[1.03] tracking-[-0.035em] text-[#fffaf1] sm:text-6xl lg:text-7xl">
               Little girls,
               <span className="mt-1 block text-[#f6d77c]">
                 timeless traditions.
