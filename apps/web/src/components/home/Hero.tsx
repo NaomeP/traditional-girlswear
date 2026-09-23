@@ -30,9 +30,29 @@ function Hero() {
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#24160f]/35 via-transparent to-transparent sm:bg-gradient-to-r sm:from-[#24160f]/90 sm:via-[#24160f]/48 sm:to-[#24160f]/8" />
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(ellipse_at_78%_44%,rgba(246,215,124,0.12),transparent_48%)] sm:block" />
+
+          <div className="absolute inset-y-0 left-0 z-10 flex w-[70%] flex-col justify-center px-3 sm:hidden">
+            <p className="text-[8px] font-semibold uppercase tracking-[0.18em] text-[#8b541d]">
+              {content.eyebrow}
+            </p>
+            <h1 className="mt-1.5 font-serif text-[clamp(1.1rem,5.5vw,1.4rem)] font-semibold leading-[1.03] tracking-[-0.035em] text-[#24160f]">
+              Little girls,
+              <span className="mt-1 block text-[#8b541d]">timeless traditions.</span>
+            </h1>
+            <p className="mt-1.5 line-clamp-3 text-[9px] leading-3 text-[#24160f]/75">
+              {content.description}
+            </p>
+            <Link
+              to={content.ctaHref}
+              className="mt-2.5 inline-flex h-8 w-fit items-center gap-2 rounded-full bg-[#24160f] px-3.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#fffaf1] shadow-sm"
+            >
+              {content.ctaLabel}
+              <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
 
-        <div className="relative z-10 mx-auto flex max-w-7xl items-center px-5 py-8 sm:min-h-[480px] sm:px-8 sm:py-12 lg:min-h-[540px] lg:px-12">
+        <div className="relative z-10 mx-auto hidden max-w-7xl items-center px-5 py-8 sm:flex sm:min-h-[480px] sm:px-8 sm:py-12 lg:min-h-[540px] lg:px-12">
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#f6d77c]/35 bg-[#24160f]/35 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#f6d77c] backdrop-blur-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#f6d77c]" />
