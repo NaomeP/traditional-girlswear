@@ -5,28 +5,29 @@ import {
   Route,
   useLocation,
 } from "react-router";
-import { useEffect } from "react";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import ChangePassword from "./pages/ChangePassword";
-import EditProfile from "./pages/EditProfile";
+import { lazy, Suspense, useEffect } from "react";
 import MainLayout from "./components/layout/MainLayout";
-import OrderDetails from "./pages/OrderDetails";
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import ProductDetailsPage from "./pages/ProductDetails";
-import CartPage from "./pages/Cart";
-import WishlistPage from "./pages/Wishlist";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import Account from "./pages/Account";
-import Orders from "./pages/Orders";
-import Addresses from "./pages/Addresses";
-import Checkout from "./pages/Checkout";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import MyReturns from "./pages/MyReturns";
-import RequestReturn from "./pages/RequestReturn";
-import Help from "./pages/Help";
+
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+const EditProfile = lazy(() => import("./pages/EditProfile"));
+const OrderDetails = lazy(() => import("./pages/OrderDetails"));
+const Home = lazy(() => import("./pages/Home"));
+const Shop = lazy(() => import("./pages/Shop"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetails"));
+const CartPage = lazy(() => import("./pages/Cart"));
+const WishlistPage = lazy(() => import("./pages/Wishlist"));
+const Account = lazy(() => import("./pages/Account"));
+const Orders = lazy(() => import("./pages/Orders"));
+const Addresses = lazy(() => import("./pages/Addresses"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const MyReturns = lazy(() => import("./pages/MyReturns"));
+const RequestReturn = lazy(() => import("./pages/RequestReturn"));
+const Help = lazy(() => import("./pages/Help"));
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -46,6 +47,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
 
+      <Suspense fallback={<main className="flex min-h-[40vh] items-center justify-center bg-[#FFF9ED] px-4 text-sm text-[#756d62]">Loading page…</main>}>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -120,6 +122,7 @@ function App() {
           <Route path="/help" element={<Help />} />
         </Route>
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

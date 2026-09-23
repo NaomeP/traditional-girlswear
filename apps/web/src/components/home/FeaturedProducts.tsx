@@ -309,7 +309,9 @@ function FeaturedProducts() {
                       >
                         {primaryImage?.imageUrl ? (
                           <img
-                            src={optimizedImageUrl(primaryImage.imageUrl, 700)}
+                            src={optimizedImageUrl(primaryImage.imageUrl, 480)}
+                            srcSet={`${optimizedImageUrl(primaryImage.imageUrl, 480)} 480w, ${optimizedImageUrl(primaryImage.imageUrl, 800)} 800w`}
+                            sizes="(min-width: 1024px) 25vw, 50vw"
                             loading="lazy"
                             fetchPriority={index < 2 ? "high" : "auto"}
                             decoding="async"

@@ -124,7 +124,7 @@ const toggleWishlist = async () => {
       <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#24160f]/8 bg-white shadow-[0_8px_24px_rgba(44,28,14,0.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(44,28,14,0.12)]">
         <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
           <Link to={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
-            <img src={optimizedImageUrl(product.image, 700)} alt={product.name} loading="lazy" fetchPriority={imagePriority ? "high" : "auto"} decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+            <img src={optimizedImageUrl(product.image, 480)} srcSet={`${optimizedImageUrl(product.image, 480)} 480w, ${optimizedImageUrl(product.image, 800)} 800w`} sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw" alt={product.name} loading="lazy" fetchPriority={imagePriority ? "high" : "auto"} decoding="async" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
           </Link>
 
           {(product.newArrival || product.bestseller) && (
