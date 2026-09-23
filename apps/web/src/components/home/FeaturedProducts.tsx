@@ -302,9 +302,8 @@ function FeaturedProducts() {
                 return (
                   <article
                     key={product.id}
-                    className="group"
-                  >
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-sm transition-all duration-500 group-hover:shadow-lg sm:aspect-[3/4] sm:rounded-2xl">
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#24160f]/8 bg-white shadow-[0_8px_24px_rgba(44,28,14,0.05)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(44,28,14,0.12)]">
+                    <div className="relative aspect-[3/4] overflow-hidden bg-[#f4f1ec]">
                       <Link
                         to={`/product/${product.slug}`}
                       >
@@ -331,8 +330,8 @@ function FeaturedProducts() {
 
                       {(product.isNewArrival ||
                         product.isBestseller) && (
-                        <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
-                          <span className="rounded bg-gradient-to-r from-[#D4AF37] to-[#C9A227] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#0B0B0B] shadow-lg">
+                        <div className="absolute left-2 top-2">
+                          <span className="rounded-full bg-[#24160f] px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-[#fffaf1]">
                             {product.isBestseller
                               ? "Bestseller"
                               : "New"}
@@ -355,10 +354,10 @@ function FeaturedProducts() {
                             product,
                           )
                         }
-                        className={`absolute right-3 top-3 rounded-full p-2.5 shadow-lg transition-all sm:right-4 sm:top-4 ${
+                        className={`absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-full shadow-sm transition ${
                           isWishlisted
                             ? "bg-[#f6d77c] text-[#24160f]"
-                            : "bg-[#FFF9ED]/95 text-[#24160f] hover:bg-[#f6d77c]"
+                            : "bg-white/95 text-[#24160f] hover:bg-[#f6d77c]"
                         } ${
                           isWishlistActionLoading
                             ? "cursor-wait opacity-60"
@@ -377,21 +376,23 @@ function FeaturedProducts() {
                       </button>
                     </div>
 
-                    <div className="mt-3 sm:mt-4">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#C9A227] sm:text-xs">
+                    <div className="flex flex-1 flex-col px-3 pb-3 pt-3 sm:px-4 sm:pb-4">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#8b541d]">
                         {product.category.name}
                       </p>
 
                       <Link
                         to={`/product/${product.slug}`}
                       >
-                        <h3 className="mt-1.5 line-clamp-2 text-sm font-semibold leading-tight text-[#0B0B0B] transition-colors hover:text-[#C9A227] sm:mt-2.5 sm:text-base">
+                        <h3 className="mt-1 block line-clamp-2 min-h-10 text-sm font-medium leading-5 text-[#17130e] hover:text-[#a56c25] sm:text-base">
                           {product.name}
                         </h3>
                       </Link>
 
-                      <div className="mt-2 flex items-center gap-2 sm:mt-3">
-                        <p className="text-base font-bold text-[#0B0B0B] sm:text-lg">
+                      <p className="mt-2 text-xs text-black/55">{product.material} · {product.color}</p>
+
+                      <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <p className="text-xl font-semibold tracking-tight text-[#17130e]">
                           ₹
                           {price.toLocaleString(
                             "en-IN",
@@ -400,7 +401,7 @@ function FeaturedProducts() {
 
                         {originalPrice !== null &&
                           originalPrice > price && (
-                            <p className="text-xs text-[#0B0B0B]/45 line-through sm:text-sm">
+                            <p className="text-xs text-black/45 line-through">
                               ₹
                               {originalPrice.toLocaleString(
                                 "en-IN",
@@ -409,12 +410,20 @@ function FeaturedProducts() {
                           )}
                       </div>
 
-                      <div className="mt-3 grid grid-cols-[1fr_auto] gap-2 sm:mt-4">
+                      {originalPrice !== null && originalPrice > price && (
+                        <p className="mt-1 text-xs font-semibold text-[#a56c25]">
+                          {Math.round(((originalPrice - price) / originalPrice) * 100)}% off
+                        </p>
+                      )}
+
+                      <p className="mt-3 text-xs text-[#3c3329]"><span className="font-semibold">Free delivery</span> on eligible orders</p>
+
+                      <div className="mt-4 grid grid-cols-[1fr_auto] gap-2">
                         <button
                           type="button"
                           onClick={() => handleAddToCart(product)}
                           disabled={!product.variants?.some((variant) => Number(variant.stock) > 0)}
-                          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] disabled:cursor-not-allowed disabled:opacity-60"
+                          className="flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-[#f6d77c] px-3 text-sm font-semibold text-[#24160f] transition hover:bg-[#e9c45d] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                         >
                           <ShoppingBag size={16} />
                           {cartAddedProduct === product.id ? "Added to cart" : product.variants?.some((variant) => Number(variant.stock) > 0) ? "Add to cart" : "Sold out"}
@@ -423,7 +432,7 @@ function FeaturedProducts() {
                           to={`/product/${product.slug}`}
                           aria-label={`View ${product.name}`}
                           title="View product"
-                          className="inline-flex h-10 w-11 items-center justify-center rounded-lg border border-[#24160f]/20 text-[#24160f] transition hover:border-[#a56c25] hover:bg-white/60"
+                          className="inline-flex h-10 w-11 items-center justify-center rounded-full border border-[#24160f]/20 text-[#24160f] transition hover:border-[#a56c25] hover:bg-white/60"
                         >
                           <Eye size={18} />
                         </Link>
