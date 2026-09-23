@@ -219,3 +219,30 @@ select {
     border-radius: 14px;
   }
 }
+/* Compact admin workspace on phones while preserving comfortable desktop spacing. */
+@media (max-width: 640px) {
+  .admin-app .p-5,
+  .admin-app .p-6,
+  .admin-app .p-8 {
+    padding: 0.875rem;
+  }
+
+  .admin-app .px-6,
+  .admin-app .px-8 {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+
+  .admin-app .py-6,
+  .admin-app .py-8 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .admin-app .mt-8 { margin-top: 1rem; }
+  .admin-app .mb-8 { margin-bottom: 1rem; }
+  .admin-app .gap-6 { gap: 0.875rem; }
+  .admin-app .space-y-6 > :not(:first-child) { margin-top: 1rem; }
+  .admin-app .text-3xl { font-size: 1.5rem; line-height: 2rem; }
+  .admin-app table { min-width: 600px; }
+}

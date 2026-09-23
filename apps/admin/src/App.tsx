@@ -1734,9 +1734,9 @@ const [orderSearch, setOrderSearch] = useState("");
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f5f6] text-[#17130e]">
-      <header className="border-b border-[#D4AF37]/25 bg-[linear-gradient(110deg,#17130e,#332315)] px-4 py-4 text-[#FFF9ED] shadow-lg sm:px-6 sm:py-5">
-        <div className="mx-auto flex max-w-7xl items-start justify-between gap-4 sm:items-center">
+    <div className="admin-app min-h-screen bg-[#f4f5f6] text-[#17130e]">
+      <header className="border-b border-[#D4AF37]/25 bg-[linear-gradient(110deg,#17130e,#332315)] px-4 py-3 text-[#FFF9ED] shadow-lg sm:px-6 sm:py-5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#D4AF37]">
               Traditional Girlswear
@@ -1757,11 +1757,19 @@ const [orderSearch, setOrderSearch] = useState("");
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
-        <nav aria-label="Admin sections" className="-mx-4 mb-6 flex gap-2 overflow-x-auto border border-black/10 bg-white p-2 shadow-sm sm:mx-0 sm:flex-wrap sm:px-2">
+      <main className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-8">
+        <nav aria-label="Admin sections" className="mb-4 border border-black/10 bg-white p-2 shadow-sm sm:mb-6">
+          <label className="block sm:hidden">
+            <span className="sr-only">Admin section</span>
+            <select aria-label="Admin section" value={activePage} onChange={(event) => setActivePage(event.target.value)} className="w-full rounded-lg px-3 py-2.5 font-semibold">
+              {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["reviews", "Reviews"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+            </select>
+          </label>
+          <div className="hidden flex-wrap gap-2 sm:flex">
           {[ ["dashboard", "Dashboard"], ["analytics", "Analytics"], ["products", "Products"], ["categories", "Categories"], ["orders", "Orders"], ["reviews", "Reviews"], ["shipping", "Shipping"], ["content", "Content"], ["returns", "Returns"], ["coupons", "Coupons"] ].map(([id, label]) => (
             <button key={id} type="button" onClick={() => setActivePage(id)} className={`shrink-0 rounded-lg px-4 py-2.5 text-sm font-semibold transition ${activePage === id ? "bg-[#0B0B0B] text-[#FFF9ED]" : "bg-transparent text-black/65 hover:bg-[#F7F3EA] hover:text-black"}`}>{label}</button>
           ))}
+          </div>
         </nav>
         {activePage === "dashboard" && <><AdminDashboard /><AdminActivityFeed /></>}
         {activePage === "analytics" && <Analytics />}
