@@ -71,7 +71,7 @@ function CollectionSection() {
               <div className="relative aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[#F7F3EA] to-[#F0E8D8] shadow-md transition-all duration-500 group-hover:shadow-xl sm:aspect-[4/5] sm:rounded-2xl">
                 {/* Image */}
                 <img
-                  src={optimizedImageUrl(collection.imageUrl || "/images/products/traditional-cotton-frock.jpg", 700)}
+                  src={optimizedImageUrl(collection.imageUrl || "/images/products/traditional-cotton-frock.webp", 700)}
                   loading="lazy"
                   decoding="async"
                   alt={collection.name}
