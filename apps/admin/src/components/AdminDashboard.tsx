@@ -71,16 +71,16 @@ function PrimaryStat({
   description: string;
 }) {
   return (
-    <div className="rounded-2xl border border-[#E7E1D4] bg-white p-5 transition hover:border-[#C9A227]">
+    <div className="rounded-2xl border border-[#E7E1D4] bg-white p-3 sm:p-5 transition hover:border-[#C9A227]">
       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#8A8172]">
         {label}
       </p>
 
-      <p className="mt-3 text-2xl font-semibold tracking-tight text-[#171512] sm:text-3xl">
+      <p className="mt-2 text-xl font-semibold tracking-tight text-[#171512] sm:mt-3 sm:text-3xl">
         {value}
       </p>
 
-      <p className="mt-2 text-xs text-[#8A8172]">
+      <p className="mt-1 text-xs text-[#8A8172] sm:mt-2">
         {description}
       </p>
     </div>
@@ -90,7 +90,7 @@ function PrimaryStat({
 
 function EmptyState() {
   return (
-    <div className="flex min-h-[360px] items-center justify-center rounded-2xl border border-[#E7E1D4] bg-white">
+    <div className="flex min-h-44 sm:min-h-[360px] items-center justify-center rounded-2xl border border-[#E7E1D4] bg-white">
       <div className="max-w-sm px-6 text-center">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#F7F3EA] text-lg text-[#8A8172]">
           —
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
   if (loading && !summary) {
 
     return (
-      <div className="min-h-[500px] rounded-2xl border border-[#E7E1D4] bg-white flex items-center justify-center">
+      <div className="min-h-44 sm:min-h-[500px] rounded-2xl border border-[#E7E1D4] bg-white flex items-center justify-center">
         Loading dashboard...
       </div>
     );
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
   if(error && !summary){
 
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 sm:p-8">
 
         <p className="font-semibold text-red-700">
           Unable to load dashboard
@@ -263,14 +263,14 @@ export default function AdminDashboard() {
 
   return (
 
-    <div className="space-y-6 pb-8">
+    <div className="space-y-4 pb-4 sm:space-y-6 sm:pb-8">
 
 
       {/* Header */}
 
       <section className="rounded-2xl border border-[#E7E1D4] bg-white">
 
-        <div className="flex flex-col gap-5 p-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-3 p-4 sm:gap-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
 
 
           <div>
@@ -332,17 +332,17 @@ export default function AdminDashboard() {
 
       <section>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 xl:grid-cols-4">
 
 
-          <div className="rounded-2xl border border-[#C9A227]/40 bg-[#FFF9E9] p-5">
+          <div className="rounded-2xl border border-[#C9A227]/40 bg-[#FFF9E9] p-3 sm:p-5">
 
             <p className="text-xs uppercase text-[#8A6D13]">
               Total Revenue
             </p>
 
 
-            <p className="mt-3 text-3xl font-semibold">
+            <p className="mt-2 text-xl font-semibold sm:mt-3 sm:text-3xl">
               {formatCurrency(summary.totalRevenue)}
             </p>
 
@@ -385,7 +385,7 @@ export default function AdminDashboard() {
 
       {/* Order Overview */}
 
-      <section className="rounded-2xl border border-[#E7E1D4] bg-white p-6">
+      <section className="rounded-2xl border border-[#E7E1D4] bg-white p-4 sm:p-6">
 
 
         <h2 className="text-base font-semibold">
@@ -399,7 +399,7 @@ export default function AdminDashboard() {
 
 
 
-        <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 md:grid-cols-4">
 
 
           {[
@@ -411,7 +411,7 @@ export default function AdminDashboard() {
 
             <div
               key={label}
-              className="rounded-xl border bg-[#FFFDF8] p-5"
+              className="rounded-xl border bg-[#FFFDF8] p-3 sm:p-5"
             >
 
               <p className="text-xs text-gray-500">
